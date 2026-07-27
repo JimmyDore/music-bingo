@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { connect } from 'node:net';
 
 import { fakeThemes, seeded, startApp } from './helpers.mjs';
 
@@ -362,6 +363,59 @@ test('un JSON illisible rend 400 et non 500', async (t) => {
     body: '{ nope',
   });
   assert.equal(res.status, 400);
+});
+
+test('un corps qui n\'est pas un objet rend « corps invalide »', async (t) => {
+  const app = await startApp();
+  t.after(app.close);
+  for (const body of [[], 42, 'hello', true, null]) {
+    const res = await app.call('POST', '/api/games', { body });
+    assert.equal(res.status, 400, JSON.stringify(body));
+    assert.equal(res.body.error, 'corps invalide', JSON.stringify(body));
+  }
+});
+
+test('un corps trop volumineux rend 413, pas une socket coupée', async (t) => {
+  // Détruire la socket sans répondre fait remonter un 502 par le proxy :
+  // illisible pour l'appelant, et impossible à distinguer d'un serveur mort.
+  const app = await startApp();
+  t.after(app.close);
+  const { code } = await app.createGame();
+  const { playerId, token } = (await join(app, code, 'Marie')).body;
+
+  const res = await app.call('PUT', `/api/players/${playerId}/checks`, {
+    body: { checked: new Array(200_000).fill(true) },
+    token,
+  });
+  assert.equal(res.status, 413);
+  assert.equal(res.body.error, 'corps trop volumineux');
+
+  // Le serveur est toujours debout et le joueur intact.
+  assert.equal((await app.call('GET', '/api/health')).status, 200);
+  assert.deepEqual((await app.call('GET', `/api/players/${playerId}`, { token })).body.checked.length, 20);
+});
+
+test('un en-tête Host malformé ne tue pas le serveur', async (t) => {
+  // Régression : `new URL(req.url, ...Host...)` levait hors du try, ce qui
+  // faisait tomber le process — donc toutes les parties en cours d'un coup.
+  const app = await startApp();
+  t.after(app.close);
+  const port = new URL(app.base).port;
+
+  for (const host of ['a b', '', '[', ':::', '%', 'a<b', 'a|b', 'a:99999999']) {
+    const reponse = await new Promise((resolve) => {
+      const socket = connect(Number(port), '127.0.0.1', () => {
+        socket.write(`GET /api/health HTTP/1.1\r\nHost: ${host}\r\nConnection: close\r\n\r\n`);
+      });
+      let brut = '';
+      socket.on('data', (chunk) => (brut += chunk));
+      socket.on('close', () => resolve(brut));
+      socket.on('error', () => resolve(''));
+    });
+    assert.match(reponse, /^HTTP\/1\.1 [24]\d\d/, `Host: « ${host} » doit obtenir une réponse`);
+    // Et surtout : le serveur répond encore.
+    assert.equal((await app.call('GET', '/api/health')).status, 200, `serveur mort après Host « ${host} »`);
+  }
 });
 
 test('les vidéos injouables sont remplacées, le pool garde sa taille', async (t) => {

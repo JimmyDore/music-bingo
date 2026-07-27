@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#0d0716" />
     <meta name="description" content="Bingo musical à jouer en soirée : le présentateur lance les titres, les autres cochent leurs cases." />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="apple-mobile-web-app-title" content="Bingo" />
+    <!-- La police d'affiche est sur le chemin critique : sans préchargement,
+         le titre s'affiche en police système avant de sauter. -->
+    <link rel="preload" href="/fonts/anton-latin.woff2" as="font" type="font/woff2" crossorigin />
     <title>Bingo musical</title>
   </head>
   <body>

@@ -6,11 +6,13 @@ import { useEffect, useRef, useState } from 'react'
 // changer de pièce. Un poll sans état se rétablit tout seul ; un flux SSE mort
 // s'arrête en silence et personne ne le voit avant qu'il soit trop tard.
 
-export type Sondage<T> = { donnees: T | null; erreur: string | null; rafraichir: () => void }
+/** `erreur` porte l'objet et non son message : l'appelant doit pouvoir
+ *  distinguer une coupure réseau (status 0) d'un token refusé (403). */
+export type Sondage<T> = { donnees: T | null; erreur: Error | null; rafraichir: () => void }
 
 export function useSondage<T>(charger: () => Promise<T>, intervalle: number, actif = true): Sondage<T> {
   const [donnees, setDonnees] = useState<T | null>(null)
-  const [erreur, setErreur] = useState<string | null>(null)
+  const [erreur, setErreur] = useState<Error | null>(null)
   const [tic, setTic] = useState(0)
   const chargerRef = useRef(charger)
   chargerRef.current = charger
@@ -28,7 +30,7 @@ export function useSondage<T>(charger: () => Promise<T>, intervalle: number, act
       } catch (err) {
         // On garde les dernières données à l'écran : mieux vaut un état d'il y
         // a deux secondes qu'un écran vide au milieu d'une partie.
-        if (vivant) setErreur(err instanceof Error ? err.message : 'Erreur')
+        if (vivant) setErreur(err instanceof Error ? err : new Error('Erreur'))
       }
     }
 

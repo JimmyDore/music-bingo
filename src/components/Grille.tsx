@@ -4,6 +4,23 @@ import type { Cellule } from '../api'
 // Une case = un groupe, jamais un titre. Le titre qui passe est le moyen de
 // reconnaître le groupe : l'afficher ici donnerait la réponse.
 
+/**
+ * Multiplicateur de taille de police pour une case, en `cqw`.
+ *
+ * On dimensionne sur le mot le plus long, pas sur la longueur totale : c'est
+ * lui qui fixe la largeur minimale, puisqu'on ne coupe jamais à l'intérieur
+ * d'un mot. « KORN » a donc droit à de grosses lettres, « Rage Against the
+ * Machine » se contente de ce qu'il faut et prend quatre lignes.
+ *
+ * 175 vient de la chasse d'Anton en capitales (~0,5 em par lettre) : un mot de
+ * n lettres tient dans la case tant que la police fait au plus 200/n cqw, dont
+ * on garde une marge.
+ */
+export function tailleTexte(nom: string): number {
+  const motLePlusLong = Math.max(...nom.split(/\s+/).map((mot) => mot.length), 1)
+  return Math.min(34, Math.max(11, 175 / motLePlusLong))
+}
+
 function Case({ cellule, cochee }: { cellule: Cellule; cochee: boolean }) {
   // Le catalogue part sans aucun logo : le mécanisme existe pour qu'on puisse
   // en ajouter plus tard sans toucher une ligne de code. Si le fichier manque,
@@ -16,7 +33,12 @@ function Case({ cellule, cochee }: { cellule: Cellule; cochee: boolean }) {
       {logo ? (
         <img src={logo} alt={cellule.name} className="cellule-logo" onError={() => setLogoCasse(true)} />
       ) : (
-        <span className="cellule-nom">{cellule.name}</span>
+        <span
+          className="cellule-nom"
+          style={{ '--taille': tailleTexte(cellule.name) } as React.CSSProperties}
+        >
+          {cellule.name}
+        </span>
       )}
       {cochee && (
         <svg viewBox="0 0 24 24" className="cellule-coche h-4 w-4" aria-hidden="true">
@@ -40,6 +62,7 @@ export function Grille({
   cols,
   onBasculer,
   joues,
+  plein = false,
 }: {
   cases: Cellule[]
   coches: boolean[]
@@ -48,11 +71,16 @@ export function Grille({
   /** Slugs déjà passés. Fourni uniquement à l'arbitrage : une case cochée dont
    *  le groupe n'est jamais passé saute alors aux yeux du présentateur. */
   joues?: Set<string>
+  /** Étire la grille sur toute la hauteur restante (écran joueur). */
+  plein?: boolean
 }) {
   const interactive = typeof onBasculer === 'function'
 
   return (
-    <div className="grille" style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}>
+    <div
+      className={`grille${plein ? ' grille--plein' : ''}`}
+      style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
+    >
       {cases.map((cellule, index) => {
         const cochee = coches[index] === true
         const suspecte = joues !== undefined && cochee && !joues.has(cellule.slug)

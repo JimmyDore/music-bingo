@@ -43,6 +43,7 @@ function Console({ code, token }: { code: string; token: string }) {
   const [enAttente, setEnAttente] = useState(false)
   const [arbitre, setArbitre] = useState<JoueurVu | null>(null)
   const [partageOuvert, setPartageOuvert] = useState(true)
+  const [panne, setPanne] = useState<string | null>(null)
   const idCharge = useRef<string | null>(null)
 
   const lecteur = useLecteurYouTube()
@@ -57,6 +58,7 @@ function Console({ code, token }: { code: string; token: string }) {
   const suivant = useCallback(async () => {
     if (enAttente) return
     setEnAttente(true)
+    setPanne(null)
     try {
       const res = await api.titreSuivant(code, token)
       if (res.track) {
@@ -68,6 +70,9 @@ function Console({ code, token }: { code: string; token: string }) {
         setTitre(null)
       }
       rafraichir()
+    } catch {
+      // Réseau coupé au moment du tap : on le dit, le titre n'est pas consommé.
+      setPanne('Titre suivant impossible à charger. Réessaie.')
     } finally {
       setEnAttente(false)
     }
@@ -87,27 +92,14 @@ function Console({ code, token }: { code: string; token: string }) {
 
   const reclamations = etat?.players.filter((p) => p.bingoClaimedAt !== null) ?? []
   const finie = etat?.status === 'ended'
-  const restants = etat?.remaining ?? 0
+  // `null` tant que le premier sondage n'a pas répondu : sans ça, « Suivant »
+  // resterait grisé au chargement, et définitivement si le réseau bronche.
+  const restants = etat?.remaining ?? null
+  const poolEpuise = restants === 0
 
-  if (arbitre && etat) {
-    return (
-      <Arbitrage
-        joueur={arbitre}
-        etat={etat}
-        onFermer={() => setArbitre(null)}
-        onRejeter={async () => {
-          await api.rejeterBingo(code, token, arbitre.id)
-          setArbitre(null)
-          rafraichir()
-        }}
-        onValider={async () => {
-          await api.terminer(code, token)
-          setArbitre(null)
-          rafraichir()
-        }}
-      />
-    )
-  }
+  // L'arbitrage se superpose à la console au lieu de la remplacer : le lecteur
+  // YouTube reste monté, donc la musique continue pendant qu'on tranche.
+  const arbitreVif = arbitre ? (etat?.players.find((p) => p.id === arbitre.id) ?? arbitre) : null
 
   return (
     <div className="ecran pb-40">
@@ -145,6 +137,13 @@ function Console({ code, token }: { code: string; token: string }) {
         </div>
       )}
 
+      {poolEpuise && !finie && (
+        <p className="bandeau-alerte mb-3 !border-menthe/50 !bg-menthe/10 !text-menthe">
+          <span aria-hidden="true">✓</span>
+          Tous les titres sont passés. Arbitre le dernier bingo, puis termine la partie.
+        </p>
+      )}
+
       {finie && (
         <div className="carte mb-3 border-menthe text-center">
           <p className="titre-affiche text-xl text-menthe">Partie terminée</p>
@@ -175,12 +174,13 @@ function Console({ code, token }: { code: string; token: string }) {
             </>
           ) : (
             <p className="text-sm font-semibold text-doux">
-              {restants === 0 && (etat?.history.length ?? 0) > 0
+              {poolEpuise && (etat?.history.length ?? 0) > 0
                 ? 'Pool épuisé — tous les titres sont passés.'
                 : 'Appuie sur Suivant pour lancer le premier titre.'}
             </p>
           )}
           {lecteur.etat.erreur && <p className="mt-1 text-sm font-bold text-neon">{lecteur.etat.erreur}</p>}
+          {panne && <p className="mt-1 text-sm font-bold text-neon">{panne}</p>}
         </div>
       </section>
 
@@ -269,9 +269,9 @@ function Console({ code, token }: { code: string; token: string }) {
                 type="button"
                 className="bouton bouton--neon flex-1"
                 onClick={suivant}
-                disabled={enAttente || restants === 0}
+                disabled={enAttente || poolEpuise}
               >
-                {restants === 0 ? 'Fini' : '⏭ Suivant'}
+                {poolEpuise ? 'Fini' : '⏭ Suivant'}
               </button>
             </div>
           </div>
@@ -282,6 +282,24 @@ function Console({ code, token }: { code: string; token: string }) {
         <p className="mt-4 text-center text-xs font-semibold text-neon">
           Connexion instable — la console se resynchronise toute seule.
         </p>
+      )}
+
+      {arbitreVif && etat && (
+        <Arbitrage
+          joueur={arbitreVif}
+          etat={etat}
+          onFermer={() => setArbitre(null)}
+          onRejeter={async () => {
+            await api.rejeterBingo(code, token, arbitreVif.id)
+            setArbitre(null)
+            rafraichir()
+          }}
+          onValider={async () => {
+            await api.terminer(code, token)
+            setArbitre(null)
+            rafraichir()
+          }}
+        />
       )}
     </div>
   )
@@ -352,7 +370,8 @@ function Arbitrage({
   const suspectes = cochees.filter((c) => !joues.has(c.slug))
 
   return (
-    <div className="ecran pb-40">
+    <div className="fixed inset-0 z-40 overflow-y-auto overscroll-contain bg-nuit" role="dialog" aria-modal="true">
+      <div className="ecran pb-40">
       <header className="pb-3 pt-2">
         <button type="button" className="bouton bouton--fantome !justify-start" onClick={onFermer}>
           ← Retour à la console
@@ -394,18 +413,32 @@ function Arbitrage({
         </ol>
       </section>
 
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t-2 border-bord bg-nuit/95 backdrop-blur">
+      <div className="fixed inset-x-0 bottom-0 z-50 border-t-2 border-bord bg-nuit/95 backdrop-blur">
         <div
-          className="mx-auto flex max-w-lg gap-2 px-4 pt-3"
+          className="mx-auto flex max-w-lg items-center gap-6 px-4 pt-3"
           style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom))' }}
         >
+          {/* Rejeter doit être parfaitement banal : la triche est prévue. */}
           <button type="button" className="bouton bouton--sombre flex-1" onClick={() => void onRejeter()}>
             Rejeter
           </button>
-          <button type="button" className="bouton bouton--stabilo flex-1" onClick={() => void onValider()}>
+          {/* Valider termine la partie pour tout le monde, sans retour arrière.
+              D'où l'écart franc avec « Rejeter » et la confirmation : c'est le
+              bouton le plus destructeur du jeu, à portée de pouce, à la seconde
+              où tout le monde crie. */}
+          <button
+            type="button"
+            className="bouton bouton--stabilo flex-1"
+            onClick={() => {
+              if (window.confirm(`Bingo validé pour ${joueur.name} ? La partie se termine pour tout le monde.`)) {
+                void onValider()
+              }
+            }}
+          >
             Valider
           </button>
         </div>
+      </div>
       </div>
     </div>
   )

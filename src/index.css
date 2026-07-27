@@ -8,6 +8,20 @@
    éclairée, par quelqu'un qui a bu un verre.
 --------------------------------------------------------------------------- */
 
+/* Police d'affiche auto-hébergée (Anton, SIL OFL — cf. public/fonts/README.md).
+   Sans elle, l'identité typographique n'existait que sur iOS : Android tombait
+   sur Roboto et il ne restait plus rien du parti pris.
+   `font-weight: 100 900` : Anton n'a qu'une graisse, déjà très grasse. On la
+   déclare sur toute la plage pour empêcher les navigateurs de la re-grossir
+   synthétiquement, ce qui bouchait les contreformes. */
+@font-face {
+  font-family: 'Affiche';
+  src: url('/fonts/anton-latin.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --color-nuit: #0d0716;
   --color-nuit-2: #16102a;
@@ -20,7 +34,7 @@
   --color-texte: #f6f2ff;
   --color-doux: #b0a2d2;
 
-  --font-titre: ui-rounded, 'SF Pro Rounded', 'Segoe UI', system-ui, sans-serif;
+  --font-titre: 'Affiche', 'Haettenschweiler', 'Arial Narrow', system-ui, sans-serif;
   --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
 
@@ -113,8 +127,11 @@
            transition-colors;
   }
 
+  /* Le jeu a déjà une convention parfaite pour « choisi » : l'aplat stabilo de
+     la grille. L'écran de création s'en sert au lieu d'un liseré de 2 px sur un
+     fond qui ne disait rien (1,07:1 entre choisi et non choisi). */
   .choix[aria-pressed='true'] {
-    @apply border-neon bg-neon/15 text-texte;
+    @apply border-stabilo bg-stabilo text-nuit;
   }
 
   .choix-titre {
@@ -126,7 +143,7 @@
   }
 
   .choix[aria-pressed='true'] .choix-detail {
-    @apply text-neon;
+    @apply text-nuit/70;
   }
 
   /* --- La grille --------------------------------------------------------- */
@@ -135,10 +152,15 @@
     @apply grid gap-1.5;
   }
 
+  /* Sur l'écran joueur, la grille mange toute la hauteur disponible au lieu de
+     laisser un tiers d'écran vide sous elle : les cases grandissent, et les
+     noms longs gagnent les lignes dont ils ont besoin. */
+  .grille--plein {
+    @apply min-h-0 flex-1;
+    grid-auto-rows: 1fr;
+  }
+
   .cellule {
-    /* La taille de police se calcule sur la largeur de la case (cqw), et non
-       sur celle de l'écran : « Rage Against the Machine » rétrécit tout seul
-       sans jamais déborder ni être rogné. */
     container-type: inline-size;
     @apply relative flex aspect-square items-center justify-center overflow-hidden
            rounded-xl border-2 border-bord bg-carte p-1 text-center
@@ -146,11 +168,24 @@
            active:scale-95;
   }
 
+  .grille--plein .cellule {
+    @apply h-full;
+    aspect-ratio: auto;
+  }
+
   .cellule-nom {
-    @apply font-titre font-black uppercase leading-[1.05] text-texte;
-    font-size: clamp(0.6rem, 15cqw, 1.15rem);
-    overflow-wrap: anywhere;
-    hyphens: auto;
+    /* La taille se calcule case par case, sur le mot le plus long du nom
+       (`--taille`, posé par Grille.tsx). Une taille purement relative à la
+       largeur de case donnait 10 px pour TOUT le monde : « KORN » s'affichait
+       aussi petit que « THE WHITE STRIPES », illisible à bout de bras.
+       On coupe entre les mots, jamais à l'intérieur : la césure automatique
+       appliquait un dictionnaire français à des noms anglais
+       (« THE SMA-SHING PUMPKINS »). */
+    @apply font-titre uppercase leading-[1.04] text-texte;
+    font-size: clamp(0.72rem, calc(var(--taille, 20) * 1cqw), 1.9rem);
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
   }
 
   /* Coché : la case est « tamponnée » au stabilo. Impossible de confondre les
@@ -184,8 +219,11 @@
     box-shadow: 0 0 0 2px var(--color-neon), 0 6px 18px -4px rgb(255 46 136 / 0.55);
   }
 
+  /* Pastille sur fond nuit : en magenta directement sur le jaune stabilo, le
+     contraste tombait à 2,5:1 et le repère était invisible. */
   .cellule-alerte {
-    @apply pointer-events-none absolute left-1 top-0.5 font-titre text-sm font-black text-neon;
+    @apply pointer-events-none absolute left-1 top-1 flex h-4 w-4 items-center justify-center
+           rounded-full bg-nuit font-titre text-[0.7rem] leading-none text-neon;
   }
 
   /* --- Divers ------------------------------------------------------------ */
@@ -228,8 +266,37 @@
     50%      { box-shadow: 0 4px 0 0 var(--color-neon-sombre), 0 0 0 12px rgb(255 46 136 / 0); }
   }
 
+  /* Crier BINGO est le sommet émotionnel du jeu : il s'y passe quelque chose. */
+  .fete-bingo {
+    animation: fete-bingo 620ms cubic-bezier(0.22, 1.2, 0.36, 1) both;
+  }
+
+  @keyframes fete-bingo {
+    0%   { transform: scale(0.6) rotate(-6deg); opacity: 0; }
+    55%  { transform: scale(1.08) rotate(2deg); opacity: 1; }
+    75%  { transform: scale(0.97) rotate(-1deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  .confetti {
+    @apply pointer-events-none fixed inset-0 z-50 overflow-hidden;
+  }
+
+  .confetti span {
+    @apply absolute block h-2.5 w-1.5;
+    top: -6vh;
+    animation: chute linear forwards;
+  }
+
+  @keyframes chute {
+    0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(112vh) rotate(720deg); opacity: 0.9; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .pulse-bingo { animation: none; }
     .cellule, .bouton { transition: none; }
+    .fete-bingo { animation: none; }
+    .confetti { display: none; }
   }
 }

@@ -61,10 +61,13 @@ export function createApp(db, themes, deps = {}) {
       return;
     }
 
-    const url = new URL(req.url, `http://${req.headers.host ?? 'localhost'}`);
-    const seg = url.pathname.split('/').filter(Boolean); // ['api', 'games', 'ABCD', ...]
-
     try {
+      // Base fixe, et surtout PAS l'en-tête `Host` : un `Host` malformé
+      // ferait lever `new URL` et, hors de ce try, tuerait le process entier —
+      // donc toutes les parties en cours d'un coup. On ne lit que le chemin.
+      const seg = new URL(req.url ?? '/', 'http://bingo.local').pathname
+        .split('/')
+        .filter(Boolean); // ['api', 'games', 'ABCD', ...]
       await route(req, res, seg, { db, themes, prepare, rng });
     } catch (err) {
       console.error(err);
@@ -131,14 +134,17 @@ async function route(req, res, seg, ctx) {
 // ------------------------------------------------------------------ handlers
 
 async function createGame(req, res, { db, themes, prepare, rng }) {
-  const body = await readJson(req);
-  if (body === undefined) return json(res, 400, { error: 'JSON invalide' });
+  const body = await corpsJson(req, res);
+  if (body === REPONDU) return;
+  if (typeof body !== 'object' || body === null || Array.isArray(body)) {
+    return json(res, 400, { error: 'corps invalide' });
+  }
 
-  const theme = themes.get(body?.theme);
+  const theme = themes.get(body.theme);
   if (!theme) return json(res, 400, { error: 'thème inconnu' });
-  const grid = findGridSize(body?.grid);
+  const grid = findGridSize(body.grid);
   if (!grid) return json(res, 400, { error: 'taille de grille inconnue' });
-  if (!isWinRule(body?.winRule)) return json(res, 400, { error: 'règle de victoire inconnue' });
+  if (!isWinRule(body.winRule)) return json(res, 400, { error: 'règle de victoire inconnue' });
 
   const cells = grid.rows * grid.cols;
   const size = poolSize(cells);
@@ -188,8 +194,8 @@ function publicGame(res, db, themes, game) {
 }
 
 async function joinGame(req, res, { db, rng }, game) {
-  const body = await readJson(req);
-  if (body === undefined) return json(res, 400, { error: 'JSON invalide' });
+  const body = await corpsJson(req, res);
+  if (body === REPONDU) return;
   const name = cleanName(body?.name);
   if (!name) return json(res, 400, { error: 'prénom requis (24 caractères max)' });
   if (game.status === 'preparing') return json(res, 409, { error: 'partie en cours de préparation' });
@@ -232,8 +238,8 @@ function showPlayer(res, db, themes, player) {
 }
 
 async function saveChecks(req, res, db, player) {
-  const body = await readJson(req);
-  if (body === undefined) return json(res, 400, { error: 'JSON invalide' });
+  const body = await corpsJson(req, res);
+  if (body === REPONDU) return;
   const checked = body?.checked;
   if (!Array.isArray(checked) || checked.length !== player.card.length) {
     return json(res, 400, { error: 'checked invalide' });
@@ -311,17 +317,44 @@ function json(res, status, payload) {
   res.end(JSON.stringify(payload));
 }
 
+const MAX_CORPS = 262_144;
+const TROP_GROS = Symbol('corps trop volumineux');
+/** Rendu par `corpsJson` quand une réponse d'erreur a déjà été envoyée. */
+const REPONDU = Symbol('réponse déjà envoyée');
+
+/**
+ * Lit le corps JSON et répond lui-même en cas de problème.
+ * Le sentinel évite de confondre « corps invalide » avec un `null` légitime.
+ */
+async function corpsJson(req, res) {
+  const body = await readJson(req);
+  if (body === TROP_GROS) {
+    // Un 413 explicite plutôt qu'une socket coupée : couper sans répondre fait
+    // remonter un 502 par le proxy, ce qui n'apprend rien à l'appelant.
+    json(res, 413, { error: 'corps trop volumineux' });
+    return REPONDU;
+  }
+  if (body === undefined) {
+    json(res, 400, { error: 'JSON invalide' });
+    return REPONDU;
+  }
+  return body;
+}
+
 function readJson(req) {
   return new Promise((resolve) => {
     let data = '';
+    let coupe = false;
     req.on('data', (chunk) => {
+      if (coupe) return;
       data += chunk;
-      if (data.length > 262144) {
-        resolve(undefined);
-        req.destroy();
+      if (data.length > MAX_CORPS) {
+        coupe = true;
+        resolve(TROP_GROS);
       }
     });
     req.on('end', () => {
+      if (coupe) return;
       if (data.length === 0) return resolve({});
       try {
         resolve(JSON.parse(data));
@@ -329,7 +362,7 @@ function readJson(req) {
         resolve(undefined);
       }
     });
-    req.on('error', () => resolve(undefined));
+    req.on('error', () => resolve(coupe ? TROP_GROS : undefined));
   });
 }
 

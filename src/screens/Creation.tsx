@@ -49,19 +49,25 @@ export function Creation() {
       ) : (
         <div className="mt-5 space-y-5">
           <Bloc titre="Thème" indice={`${refs.themes.find((t) => t.id === choix.theme)?.bands ?? 0} groupes`}>
-            <div className="flex flex-wrap gap-2">
-              {refs.themes.map((theme) => (
-                <button
-                  key={theme.id}
-                  type="button"
-                  className="choix"
-                  aria-pressed={choix.theme === theme.id}
-                  onClick={() => setChoix((c) => ({ ...c, theme: theme.id }))}
-                >
-                  <span className="choix-titre">{theme.name}</span>
-                </button>
-              ))}
-            </div>
+            {refs.themes.length === 1 ? (
+              // Un seul thème : c'est une information, pas un choix. Un bouton
+              // « sélectionné » tout seul fait croire à une option qui n'existe pas.
+              <p className="titre-affiche text-2xl text-texte">{refs.themes[0].name}</p>
+            ) : (
+              <div className="flex flex-wrap gap-2">
+                {refs.themes.map((theme) => (
+                  <button
+                    key={theme.id}
+                    type="button"
+                    className="choix"
+                    aria-pressed={choix.theme === theme.id}
+                    onClick={() => setChoix((c) => ({ ...c, theme: theme.id }))}
+                  >
+                    <span className="choix-titre">{theme.name}</span>
+                  </button>
+                ))}
+              </div>
+            )}
           </Bloc>
 
           <Bloc titre="Grille">
@@ -144,8 +150,14 @@ function Bloc({ titre, indice, children }: { titre: string; indice?: string; chi
  * en pleine soirée.
  */
 function Preparation({ code }: { code: string }) {
-  const { donnees } = useSondage(() => api.partie(code), 700)
-  const prete = donnees?.status === 'ready'
+  const [prete, setPrete] = useState(false)
+  // On arrête de sonder dès que c'est prêt : inutile de marteler l'API pendant
+  // que le présentateur montre le QR code.
+  const { donnees, erreur } = useSondage(() => api.partie(code), 700, !prete)
+  useEffect(() => {
+    if (donnees?.status === 'ready') setPrete(true)
+  }, [donnees?.status])
+
   const total = donnees?.poolSize ?? 0
   const faits = donnees?.verified ?? 0
   const pourcent = total > 0 ? Math.round((faits / total) * 100) : 0
@@ -169,6 +181,11 @@ function Preparation({ code }: { code: string }) {
           <p className="mt-1 text-xs text-doux">
             On s'assure que chaque vidéo se lance vraiment avant de commencer.
           </p>
+          {erreur && !prete && (
+            <p className="mt-2 text-xs font-bold text-neon">
+              Connexion difficile — on continue d'essayer. Note le code&nbsp;: {code}
+            </p>
+          )}
         </div>
 
         <button

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { api, ErreurApi, type Cellule } from '../api'
 import { Grille } from '../components/Grille'
 import { useSondage } from '../lib/poll'
@@ -118,6 +118,7 @@ function Partie({
   const [cols, setCols] = useState(4)
   const [meta, setMeta] = useState<{ themeName: string; winRule: string; status: string } | null>(null)
   const [reclame, setReclame] = useState(false)
+  const [fete, setFete] = useState(false)
   const [desynchronise, setDesynchronise] = useState(false)
   const chargeInitiale = useRef(false)
 
@@ -143,17 +144,16 @@ function Partie({
     }
   }, [donnees])
 
-  // Session invalide (partie purgée, token périmé) : on repart du prénom plutôt
-  // que de laisser un écran mort.
+  // Session réellement invalide (partie purgée après 24 h, token périmé) : on
+  // repart du prénom plutôt que de laisser un écran mort.
+  //
+  // Uniquement sur un verdict ferme du serveur — jamais sur une coupure réseau.
+  // Effacer la session d'un joueur parce que le wifi a hoqueté, ce serait lui
+  // faire perdre sa grille en pleine soirée pour rien.
   useEffect(() => {
-    if (erreur && donnees === null && chargeInitiale.current === false) {
-      // 403/404 remontent ici ; une coupure réseau aussi, d'où le délai.
-      const id = window.setTimeout(() => {
-        if (!chargeInitiale.current) onSessionPerdue()
-      }, 4000)
-      return () => window.clearTimeout(id)
-    }
-  }, [erreur, donnees, onSessionPerdue])
+    const ferme = erreur instanceof ErreurApi && (erreur.status === 403 || erreur.status === 404)
+    if (ferme && !chargeInitiale.current) onSessionPerdue()
+  }, [erreur, onSessionPerdue])
 
   const envoyer = useCallback(
     async (etat: boolean[]) => {
@@ -169,12 +169,18 @@ function Partie({
 
   // Cochage optimiste : l'affichage change instantanément, la synchronisation
   // se fait derrière. Personne n'attend le réseau pour cocher une case.
+  //
+  // La ref porte l'état courant pour que deux taps dans la même frame ne se
+  // recouvrent pas — quelqu'un qui coche vingt cases à toute vitesse ne doit
+  // pas en perdre une en route.
+  const cochesRef = useRef<boolean[]>(coches)
+  cochesRef.current = coches
+
   const basculer = (index: number) => {
-    setCoches((precedent) => {
-      const suivant = precedent.map((v, i) => (i === index ? !v : v))
-      void envoyer(suivant)
-      return suivant
-    })
+    const suivant = cochesRef.current.map((v, i) => (i === index ? !v : v))
+    cochesRef.current = suivant
+    setCoches(suivant)
+    void envoyer(suivant)
     if (navigator.vibrate) navigator.vibrate(12)
   }
 
@@ -192,6 +198,9 @@ function Partie({
 
   const crierBingo = async () => {
     setReclame(true)
+    setFete(true)
+    window.setTimeout(() => setFete(false), 2600)
+    if (navigator.vibrate) navigator.vibrate([25, 40, 25, 40, 60])
     try {
       await api.crierBingo(session.playerId, session.token)
     } catch {
@@ -202,8 +211,13 @@ function Partie({
 
   if (!cases) {
     return (
-      <div className="ecran flex min-h-dvh items-center justify-center">
+      <div className="ecran flex min-h-dvh flex-col items-center justify-center gap-2 text-center">
         <p className="text-sm font-semibold text-doux">Récupération de ta grille…</p>
+        {erreur && (
+          <p className="text-xs font-semibold text-neon">
+            Connexion difficile — on réessaie tout seul, ne recharge pas.
+          </p>
+        )}
       </div>
     )
   }
@@ -242,17 +256,13 @@ function Partie({
         </p>
       )}
 
-      <Grille cases={cases} coches={coches} cols={cols} onBasculer={finie ? undefined : basculer} />
-
-      <p className="mt-3 text-center text-xs text-doux">
-        Coche librement — c'est ton carton, personne ne vérifie à ta place.
-      </p>
+      <Grille cases={cases} coches={coches} cols={cols} onBasculer={finie ? undefined : basculer} plein />
 
       {!finie && (
-        <div className="barre-basse mt-auto">
+        <div className="barre-basse">
           {reclame ? (
-            <div className="carte border-stabilo bg-stabilo/10 text-center">
-              <p className="titre-affiche text-lg text-stabilo">Bingo réclamé !</p>
+            <div className="carte fete-bingo border-stabilo bg-stabilo/10 text-center">
+              <p className="titre-affiche text-xl text-stabilo">Bingo réclamé !</p>
               <p className="mt-1 text-xs font-semibold text-doux">
                 Le présentateur vérifie. Continue de cocher en attendant.
               </p>
@@ -264,6 +274,42 @@ function Partie({
           )}
         </div>
       )}
+
+      {fete && <Confettis />}
+    </div>
+  )
+}
+
+/** Crier BINGO est le sommet émotionnel du jeu : il doit s'y passer quelque
+ *  chose. Pur CSS, aucune dépendance, et désactivé si l'utilisateur a demandé
+ *  moins d'animations. */
+function Confettis() {
+  const morceaux = useMemo(
+    () =>
+      Array.from({ length: 44 }, (_, i) => ({
+        gauche: (i * 37) % 100,
+        delai: (i % 11) * 90,
+        duree: 1500 + ((i * 137) % 900),
+        couleur: ['#ffd83d', '#ff2e88', '#34e0a1', '#f6f2ff'][i % 4],
+        largeur: 5 + (i % 3) * 3,
+      })),
+    [],
+  )
+
+  return (
+    <div className="confetti" aria-hidden="true">
+      {morceaux.map((m, i) => (
+        <span
+          key={i}
+          style={{
+            left: `${m.gauche}%`,
+            width: `${m.largeur}px`,
+            background: m.couleur,
+            animationDelay: `${m.delai}ms`,
+            animationDuration: `${m.duree}ms`,
+          }}
+        />
+      ))}
     </div>
   )
 }

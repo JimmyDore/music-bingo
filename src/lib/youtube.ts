@@ -64,7 +64,13 @@ export function useLecteurYouTube() {
     chargerApiYouTube()
       .then((YT) => {
         if (!vivant || !conteneur.current || !YT) return
-        lecteur.current = new YT.Player(conteneur.current, {
+        // L'API remplace l'élément qu'on lui donne par son iframe. On lui livre
+        // donc un div créé à la main : React ne connaît que le conteneur, et ne
+        // tentera pas de démonter un nœud que YouTube a fait disparaître.
+        const cible = document.createElement('div')
+        cible.className = 'h-full w-full'
+        conteneur.current.replaceChildren(cible)
+        lecteur.current = new YT.Player(cible, {
           host: 'https://www.youtube.com',
           playerVars: {
             playsinline: 1, // sans ça, iOS part en plein écran
@@ -87,6 +93,7 @@ export function useLecteurYouTube() {
       })
       .catch((err: Error) => vivant && setEtat((e) => ({ ...e, erreur: err.message })))
 
+    const racine = conteneur.current
     return () => {
       vivant = false
       try {
@@ -95,6 +102,7 @@ export function useLecteurYouTube() {
         /* le lecteur n'était pas encore prêt */
       }
       lecteur.current = null
+      racine?.replaceChildren()
     }
   }, [])
 
