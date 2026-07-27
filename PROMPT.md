@@ -304,25 +304,30 @@ RaveTycoon effacera ces routes** et fera tomber les deux sites — plus celui-ci
 Ajoute donc la route `bingo` **sur le serveur ET dans le dépôt RaveTycoon**, en
 y reportant au passage les routes manquantes. Sinon tu poses une bombe à retardement.
 
-**2. DNS : `bingo.jimmydore.fr` existe déjà et pointe ailleurs.** Zone gérée chez
-IONOS (`ns*.ui-dns.*`). État actuel :
+**2. DNS : déjà fait et vérifié — n'y touche pas.** La zone est gérée chez IONOS
+(`ns*.ui-dns.*`). L'enregistrement `bingo` pointait à l'origine sur le parking
+IONOS ; il a été corrigé et l'état est désormais le bon :
 
 ```
-bingo.jimmydore.fr.  3600  IN  A     217.160.0.50             ← parking IONOS
-bingo.jimmydore.fr.        IN  AAAA  2001:8d8:100f:f000::200  ← parking IONOS
+bingo.jimmydore.fr.  3600  IN  A     77.42.23.215   ✅ le VPS
+bingo.jimmydore.fr.              (pas d'AAAA)       ✅ voulu
 ```
 
-Il ne s'agit donc pas d'*ajouter* un enregistrement mais d'en **modifier deux** :
-le `A` doit passer à `77.42.23.215`, et l'`AAAA` doit être **supprimé** (ou pointé
-sur `2a01:4f9:c012:5404::1`, l'IPv6 réelle du VPS). **Ne pas laisser l'AAAA
-périmé** : les clients double-pile préfèrent l'IPv6, donc les invités en 4G
-atterriraient sur la page de parking IONOS pendant que le site paraît parfaitement
-fonctionnel en wifi — et le challenge Let's Encrypt échouerait par intermittence.
+Vérifié sur les serveurs autoritatifs, sur `1.1.1.1` et en local : c'est propagé.
+`http://bingo.jimmydore.fr/` renvoie déjà `308` **depuis `77.42.23.215`** — le
+trafic atteint bien Caddy.
 
-C'est **une action manuelle du commanditaire**, chez IONOS. Tu ne peux pas la
-faire. Rappelle-la explicitement, vérifie avec `dig +short bingo.jimmydore.fr A
-AAAA`, et **ne conclus pas que le déploiement a échoué** si le DNS n'a pas encore
-été basculé — distingue les deux causes dans ton rapport.
+**Ne recrée jamais d'enregistrement `AAAA` sur ce nom.** L'ancien pointait sur le
+parking IONOS : les clients double-pile préférant l'IPv6, les invités en 4G
+atterrissaient sur la page de parking pendant que le site paraissait parfaitement
+fonctionnel en wifi, et le challenge Let's Encrypt échouait par intermittence.
+
+**Conséquence pour toi :** tant que la route Caddy n'existe pas, `https://` échoue
+sur un `tlsv1 alert internal error`. **Ce n'est pas un problème de DNS ni de
+réseau** — c'est simplement Caddy qui n'a aucun certificat à présenter pour un
+hostname qu'il ne connaît pas. Ajoute le bloc `bingo.jimmydore.fr`, recharge
+Caddy, et le certificat est émis dans la foulée. Témoin utile pour distinguer les
+causes : `https://socialcircle.jimmydore.fr/` renvoie `200`, donc Caddy est sain.
 
 ---
 
