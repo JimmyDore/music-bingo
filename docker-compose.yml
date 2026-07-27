@@ -1,0 +1,40 @@
+# Stack bingo.jimmydore.fr — nginx (SPA + proxy /api) + API node.
+# Pas de ports publiés : le trafic arrive via le Caddy partagé (stack ravetycoon)
+# qui fait le TLS et reverse-proxy vers musicbingo-web sur le réseau Docker
+# `ravetycoon_default`.
+#
+# ATTENTION : les noms de services sont préfixés `musicbingo-` à dessein.
+# Le réseau est partagé avec la stack ravetycoon, qui expose déjà les alias DNS
+# `web` et `api` ; un service nommé `web` ou `api` ici capterait le trafic de
+# l'autre stack. Le piège a déjà été rencontré (cf. compose de social-circle).
+services:
+  musicbingo-web:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.web
+    image: musicbingo-web
+    container_name: musicbingo-web
+    restart: unless-stopped
+    depends_on:
+      - musicbingo-api
+    networks:
+      - ravetycoon_default
+
+  musicbingo-api:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.api
+    image: musicbingo-api
+    container_name: musicbingo-api
+    restart: unless-stopped
+    volumes:
+      - musicbingo-data:/data
+    networks:
+      - ravetycoon_default
+
+volumes:
+  musicbingo-data:
+
+networks:
+  ravetycoon_default:
+    external: true

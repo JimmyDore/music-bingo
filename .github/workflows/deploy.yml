@@ -1,0 +1,86 @@
+name: Deploy to Hetzner
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-musicbingo
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Tests front (vitest)
+        run: npm test
+      - name: Tests serveur (node --test)
+        run: cd server && node --test "test/*.test.mjs"
+      - run: npm run build
+
+  # Le catalogue pourrit tout seul : une chaîne ferme, un clip est retiré.
+  # Ce job le sonde à chaque push. Il n'est volontairement PAS une dépendance de
+  # `deploy` : un catalogue abîmé doit se voir (pipeline rouge) sans empêcher de
+  # livrer un correctif en urgence un soir de soirée.
+  catalog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Vérification du catalogue (oEmbed)
+        run: node tools/verify-catalog.mjs
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          echo "${{ secrets.DEPLOY_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Deploy on server
+        run: |
+          ssh -i ~/.ssh/id_ed25519 root@77.42.23.215 'bash -s' <<'EOF'
+          set -euo pipefail
+          REPO=https://github.com/JimmyDore/music-bingo.git
+          DIR=/root/musicbingo
+          if [ -d "$DIR/.git" ]; then
+            cd "$DIR"
+            git fetch --prune origin
+            git checkout -B main origin/main
+          else
+            git clone "$REPO" "$DIR"
+            cd "$DIR"
+          fi
+          docker compose up -d --build
+          docker image prune -f
+          EOF
+
+      - name: Health check
+        run: |
+          for i in $(seq 1 30); do
+            page=$(curl -fsS -o /dev/null -w '%{http_code}' https://bingo.jimmydore.fr/ || true)
+            api=$(curl -fsS -o /dev/null -w '%{http_code}' https://bingo.jimmydore.fr/api/health || true)
+            if [ "$page" = "200" ] && [ "$api" = "200" ]; then
+              echo "Health check passed on attempt $i"
+              curl -fsS https://bingo.jimmydore.fr/api/health
+              exit 0
+            fi
+            echo "Attempt $i: page='$page' api='$api', retrying in 5s..."
+            sleep 5
+          done
+          echo "Health check failed after 30 attempts"
+          exit 1

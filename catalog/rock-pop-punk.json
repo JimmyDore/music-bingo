@@ -1,0 +1,1392 @@
+{
+  "id": "rock-pop-punk",
+  "name": "Rock / Pop-punk",
+  "bands": [
+    {
+      "slug": "acdc",
+      "name": "AC/DC",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Thunderstruck",
+          "youtubeId": "v2AC41dglnM",
+          "startAt": 22
+        },
+        {
+          "title": "Back in Black",
+          "youtubeId": "pAgnJDJN4VA",
+          "startAt": 15
+        },
+        {
+          "title": "Highway to Hell",
+          "youtubeId": "l482T0yNkeo",
+          "startAt": 18
+        }
+      ]
+    },
+    {
+      "slug": "scorpions",
+      "name": "Scorpions",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Wind of Change",
+          "youtubeId": "n4RjJKxsamQ",
+          "startAt": 12
+        },
+        {
+          "title": "Rock You Like a Hurricane",
+          "youtubeId": "6yP1tcy9a10",
+          "startAt": 20
+        },
+        {
+          "title": "Still Loving You",
+          "youtubeId": "7pOr3dBFAeY",
+          "startAt": 48
+        }
+      ]
+    },
+    {
+      "slug": "queen",
+      "name": "Queen",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Bohemian Rhapsody",
+          "youtubeId": "fJ9rUzIMcZQ",
+          "startAt": 20
+        },
+        {
+          "title": "Another One Bites the Dust",
+          "youtubeId": "rY0WxgSXdEE",
+          "startAt": 30
+        },
+        {
+          "title": "Don't Stop Me Now",
+          "youtubeId": "HgzGwKwLmgM",
+          "startAt": 25
+        }
+      ]
+    },
+    {
+      "slug": "guns-n-roses",
+      "name": "Guns N' Roses",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Sweet Child O' Mine",
+          "youtubeId": "1w7OgIMMRc4",
+          "startAt": 15
+        },
+        {
+          "title": "Welcome to the Jungle",
+          "youtubeId": "o1tj2zJ2Wvg",
+          "startAt": 45
+        },
+        {
+          "title": "Paradise City",
+          "youtubeId": "Rbm6GXllBiw",
+          "startAt": 45
+        }
+      ]
+    },
+    {
+      "slug": "metallica",
+      "name": "Metallica",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Enter Sandman",
+          "youtubeId": "CD-E-LDc384",
+          "startAt": 40
+        },
+        {
+          "title": "Nothing Else Matters",
+          "youtubeId": "tAGnKpE4NCI",
+          "startAt": 45
+        },
+        {
+          "title": "One",
+          "youtubeId": "WM8bTdBs-cw",
+          "startAt": 105
+        }
+      ]
+    },
+    {
+      "slug": "nirvana",
+      "name": "Nirvana",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Smells Like Teen Spirit",
+          "youtubeId": "hTWKbfoikeg",
+          "startAt": 5
+        },
+        {
+          "title": "Come As You Are",
+          "youtubeId": "vabnZ9-ex7o",
+          "startAt": 8
+        },
+        {
+          "title": "Lithium",
+          "youtubeId": "pkcJEvMcnEg",
+          "startAt": 18
+        }
+      ]
+    },
+    {
+      "slug": "the-rolling-stones",
+      "name": "The Rolling Stones",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Paint It, Black",
+          "youtubeId": "O4irXQhgMqg",
+          "startAt": 45
+        },
+        {
+          "title": "(I Can't Get No) Satisfaction",
+          "youtubeId": "nrIPxlFzDi0",
+          "startAt": 30
+        },
+        {
+          "title": "Start Me Up",
+          "youtubeId": "SGyOaCXr8Lw",
+          "startAt": 25
+        }
+      ]
+    },
+    {
+      "slug": "led-zeppelin",
+      "name": "Led Zeppelin",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Immigrant Song",
+          "youtubeId": "P3Y8OWkiUts",
+          "startAt": 20
+        },
+        {
+          "title": "Whole Lotta Love",
+          "youtubeId": "HibBnC6SVk8",
+          "startAt": 25
+        },
+        {
+          "title": "Black Dog",
+          "youtubeId": "2KPEHohJMuw",
+          "startAt": 25
+        }
+      ]
+    },
+    {
+      "slug": "aerosmith",
+      "name": "Aerosmith",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Dream On",
+          "youtubeId": "89dGC8de0CA",
+          "startAt": 40
+        },
+        {
+          "title": "Walk This Way",
+          "youtubeId": "4c8O2n1Gfto",
+          "startAt": 25
+        },
+        {
+          "title": "I Don't Want to Miss a Thing",
+          "youtubeId": "JkK8g6FMEXE",
+          "startAt": 60
+        }
+      ]
+    },
+    {
+      "slug": "red-hot-chili-peppers",
+      "name": "Red Hot Chili Peppers",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Californication",
+          "youtubeId": "YlUKcNNmywk",
+          "startAt": 22
+        },
+        {
+          "title": "Under the Bridge",
+          "youtubeId": "GLvohMXgcBo",
+          "startAt": 18
+        },
+        {
+          "title": "Can't Stop",
+          "youtubeId": "8DyziWtkfBw",
+          "startAt": 20
+        }
+      ]
+    },
+    {
+      "slug": "rage-against-the-machine",
+      "name": "Rage Against the Machine",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Killing in the Name",
+          "youtubeId": "bWXazVhlyxQ",
+          "startAt": 55
+        },
+        {
+          "title": "Bulls on Parade",
+          "youtubeId": "3L4YrGaR8E4",
+          "startAt": 25
+        },
+        {
+          "title": "Guerrilla Radio",
+          "youtubeId": "Rm1nCYOZB-s",
+          "startAt": 35
+        }
+      ]
+    },
+    {
+      "slug": "foo-fighters",
+      "name": "Foo Fighters",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Everlong",
+          "youtubeId": "eBG7P-K-r1Y",
+          "startAt": 45
+        },
+        {
+          "title": "The Pretender",
+          "youtubeId": "SBjQ9tuuTJQ",
+          "startAt": 50
+        },
+        {
+          "title": "Learn to Fly",
+          "youtubeId": "1VQ_3sBZEm0",
+          "startAt": 90
+        }
+      ]
+    },
+    {
+      "slug": "pearl-jam",
+      "name": "Pearl Jam",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Alive",
+          "youtubeId": "qM0zINtulhM",
+          "startAt": 30
+        },
+        {
+          "title": "Even Flow",
+          "youtubeId": "CxKWTzr-k6s",
+          "startAt": 70
+        },
+        {
+          "title": "Black",
+          "youtubeId": "qgaRVvAKoqQ",
+          "startAt": 45
+        }
+      ]
+    },
+    {
+      "slug": "the-smashing-pumpkins",
+      "name": "The Smashing Pumpkins",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "1979",
+          "youtubeId": "4aeETEoNfOg",
+          "startAt": 30
+        },
+        {
+          "title": "Bullet with Butterfly Wings",
+          "youtubeId": "8-r-V0uK4u0",
+          "startAt": 45
+        },
+        {
+          "title": "Tonight, Tonight",
+          "youtubeId": "NOG3eus4ZSo",
+          "startAt": 35
+        }
+      ]
+    },
+    {
+      "slug": "weezer",
+      "name": "Weezer",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Buddy Holly",
+          "youtubeId": "SiJie3Z7DG8",
+          "startAt": 35
+        },
+        {
+          "title": "Say It Ain't So",
+          "youtubeId": "ENXvZ9YRjbo",
+          "startAt": 30
+        },
+        {
+          "title": "Island in the Sun",
+          "youtubeId": "erG5rgNYSdk",
+          "startAt": 45
+        }
+      ]
+    },
+    {
+      "slug": "the-cranberries",
+      "name": "The Cranberries",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Zombie",
+          "youtubeId": "6Ejga4kJUts",
+          "startAt": 30
+        },
+        {
+          "title": "Linger",
+          "youtubeId": "G6Kspj3OO0s",
+          "startAt": 40
+        },
+        {
+          "title": "Dreams",
+          "youtubeId": "Yam5uK6e-bQ",
+          "startAt": 25
+        }
+      ]
+    },
+    {
+      "slug": "radiohead",
+      "name": "Radiohead",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Creep",
+          "youtubeId": "XFkzRNyygfk",
+          "startAt": 30
+        },
+        {
+          "title": "Karma Police",
+          "youtubeId": "1uYWYWPc9HU",
+          "startAt": 20
+        },
+        {
+          "title": "No Surprises",
+          "youtubeId": "u5CVsCnxyXg",
+          "startAt": 35
+        }
+      ]
+    },
+    {
+      "slug": "oasis",
+      "name": "Oasis",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Wonderwall",
+          "youtubeId": "bx1Bh8ZvH84",
+          "startAt": 50
+        },
+        {
+          "title": "Don't Look Back in Anger",
+          "youtubeId": "r8OipmKFDeM",
+          "startAt": 35
+        },
+        {
+          "title": "Champagne Supernova",
+          "youtubeId": "tI-5uv4wryI",
+          "startAt": 60
+        }
+      ]
+    },
+    {
+      "slug": "linkin-park",
+      "name": "Linkin Park",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "In the End",
+          "youtubeId": "eVTXPUF4Oz4",
+          "startAt": 42
+        },
+        {
+          "title": "Numb",
+          "youtubeId": "kXYiU_JCYtU",
+          "startAt": 55
+        },
+        {
+          "title": "Faint",
+          "youtubeId": "LYU-8IFcDPw",
+          "startAt": 40
+        }
+      ]
+    },
+    {
+      "slug": "system-of-a-down",
+      "name": "System of a Down",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Chop Suey!",
+          "youtubeId": "CSvFpBOe8eY",
+          "startAt": 16
+        },
+        {
+          "title": "Toxicity",
+          "youtubeId": "iywaBOMvYLI",
+          "startAt": 58
+        },
+        {
+          "title": "B.Y.O.B.",
+          "youtubeId": "zUzd9KyIDrM",
+          "startAt": 46
+        }
+      ]
+    },
+    {
+      "slug": "limp-bizkit",
+      "name": "Limp Bizkit",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Rollin' (Air Raid Vehicle)",
+          "youtubeId": "RYnFIRc0k6E",
+          "startAt": 52
+        },
+        {
+          "title": "Break Stuff",
+          "youtubeId": "ZpUYjpKg9KY",
+          "startAt": 20
+        },
+        {
+          "title": "Nookie",
+          "youtubeId": "JTMVOzPPtiw",
+          "startAt": 55
+        }
+      ]
+    },
+    {
+      "slug": "korn",
+      "name": "Korn",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Freak on a Leash",
+          "youtubeId": "jRGrNDV2mKc",
+          "startAt": 30
+        },
+        {
+          "title": "Blind",
+          "youtubeId": "SGK00Q7xx-s",
+          "startAt": 55
+        },
+        {
+          "title": "Got the Life",
+          "youtubeId": "VAWjsVoDpm0",
+          "startAt": 45
+        }
+      ]
+    },
+    {
+      "slug": "slipknot",
+      "name": "Slipknot",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Duality",
+          "youtubeId": "6fVE8kSM43I",
+          "startAt": 18
+        },
+        {
+          "title": "Psychosocial",
+          "youtubeId": "5abamRO41fE",
+          "startAt": 60
+        },
+        {
+          "title": "Before I Forget",
+          "youtubeId": "qw2LU1yS7aw",
+          "startAt": 45
+        }
+      ]
+    },
+    {
+      "slug": "papa-roach",
+      "name": "Papa Roach",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Last Resort",
+          "youtubeId": "j0lSpNtjPM8",
+          "startAt": 15
+        },
+        {
+          "title": "Scars",
+          "youtubeId": "eHbNU9WuVgw",
+          "startAt": 45
+        },
+        {
+          "title": "Getting Away with Murder",
+          "youtubeId": "-rdmG0k8S8k",
+          "startAt": 45
+        }
+      ]
+    },
+    {
+      "slug": "evanescence",
+      "name": "Evanescence",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Bring Me to Life",
+          "youtubeId": "3YxaaGgTQYM",
+          "startAt": 50
+        },
+        {
+          "title": "My Immortal",
+          "youtubeId": "5anLPw0Efmo",
+          "startAt": 60
+        },
+        {
+          "title": "Going Under",
+          "youtubeId": "CdhqVtpR2ts",
+          "startAt": 52
+        }
+      ]
+    },
+    {
+      "slug": "disturbed",
+      "name": "Disturbed",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Down with the Sickness",
+          "youtubeId": "09LTT0xwdfw",
+          "startAt": 20
+        },
+        {
+          "title": "Stricken",
+          "youtubeId": "I77mjesUbkw",
+          "startAt": 45
+        },
+        {
+          "title": "Indestructible",
+          "youtubeId": "aWxBrI0g1kE",
+          "startAt": 60
+        }
+      ]
+    },
+    {
+      "slug": "three-days-grace",
+      "name": "Three Days Grace",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "I Hate Everything About You",
+          "youtubeId": "d8ekz_CSBVg",
+          "startAt": 50
+        },
+        {
+          "title": "Animal I Have Become",
+          "youtubeId": "xqds0B_meys",
+          "startAt": 48
+        },
+        {
+          "title": "Never Too Late",
+          "youtubeId": "lL2ZwXj1tXM",
+          "startAt": 42
+        }
+      ]
+    },
+    {
+      "slug": "green-day",
+      "name": "Green Day",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Basket Case",
+          "youtubeId": "NUTGr5t3MoY",
+          "startAt": 15
+        },
+        {
+          "title": "American Idiot",
+          "youtubeId": "Ee_uujKuJMI",
+          "startAt": 16
+        },
+        {
+          "title": "Boulevard of Broken Dreams",
+          "youtubeId": "Soa3gO7tL-c",
+          "startAt": 38
+        }
+      ]
+    },
+    {
+      "slug": "blink-182",
+      "name": "Blink-182",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "All the Small Things",
+          "youtubeId": "9Ht5RZpzPqw",
+          "startAt": 12
+        },
+        {
+          "title": "What's My Age Again?",
+          "youtubeId": "K7l5ZeVVoCA",
+          "startAt": 25
+        },
+        {
+          "title": "I Miss You",
+          "youtubeId": "s1tAYmMjLdY",
+          "startAt": 78
+        }
+      ]
+    },
+    {
+      "slug": "sum-41",
+      "name": "Sum 41",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Fat Lip",
+          "youtubeId": "CMX2lPum_pg",
+          "startAt": 55
+        },
+        {
+          "title": "In Too Deep",
+          "youtubeId": "emGri7i8Y2Y",
+          "startAt": 38
+        },
+        {
+          "title": "Still Waiting",
+          "youtubeId": "qO-mSLxih-c",
+          "startAt": 65
+        }
+      ]
+    },
+    {
+      "slug": "the-offspring",
+      "name": "The Offspring",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Self Esteem",
+          "youtubeId": "Abrn8aVQ76Q",
+          "startAt": 50
+        },
+        {
+          "title": "Pretty Fly (For a White Guy)",
+          "youtubeId": "QtTR-_Klcq8",
+          "startAt": 20
+        },
+        {
+          "title": "The Kids Aren't Alright",
+          "youtubeId": "7iNbnineUCI",
+          "startAt": 40
+        }
+      ]
+    },
+    {
+      "slug": "simple-plan",
+      "name": "Simple Plan",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Welcome to My Life",
+          "youtubeId": "r0U0AlLVqpk",
+          "startAt": 55
+        },
+        {
+          "title": "Perfect",
+          "youtubeId": "RUi54JTgL5s",
+          "startAt": 60
+        },
+        {
+          "title": "I'm Just a Kid",
+          "youtubeId": "_GOR5gvQwDI",
+          "startAt": 35
+        }
+      ]
+    },
+    {
+      "slug": "good-charlotte",
+      "name": "Good Charlotte",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "The Anthem",
+          "youtubeId": "desJKYvdq9A",
+          "startAt": 45
+        },
+        {
+          "title": "Lifestyles of the Rich & Famous",
+          "youtubeId": "y-jC3H_8Dk4",
+          "startAt": 50
+        },
+        {
+          "title": "I Just Wanna Live",
+          "youtubeId": "rISYCquFeI8",
+          "startAt": 40
+        }
+      ]
+    },
+    {
+      "slug": "my-chemical-romance",
+      "name": "My Chemical Romance",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Welcome to the Black Parade",
+          "youtubeId": "RRKJiM9Njr8",
+          "startAt": 25
+        },
+        {
+          "title": "Helena",
+          "youtubeId": "UCCyoocDxBA",
+          "startAt": 45
+        },
+        {
+          "title": "I'm Not Okay (I Promise)",
+          "youtubeId": "dhZTNgAs4Fc",
+          "startAt": 60
+        }
+      ]
+    },
+    {
+      "slug": "fall-out-boy",
+      "name": "Fall Out Boy",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Sugar, We're Goin Down",
+          "youtubeId": "uhG-vLZrb-g",
+          "startAt": 40
+        },
+        {
+          "title": "Thnks fr th Mmrs",
+          "youtubeId": "onzL0EM1pKY",
+          "startAt": 55
+        },
+        {
+          "title": "Dance, Dance",
+          "youtubeId": "C6MOKXm8x50",
+          "startAt": 60
+        }
+      ]
+    },
+    {
+      "slug": "paramore",
+      "name": "Paramore",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Misery Business",
+          "youtubeId": "aCyGvGEtOwc",
+          "startAt": 25
+        },
+        {
+          "title": "Still Into You",
+          "youtubeId": "OblL026SvD4",
+          "startAt": 50
+        },
+        {
+          "title": "Ain't It Fun",
+          "youtubeId": "EFEmTsfFL5A",
+          "startAt": 55
+        }
+      ]
+    },
+    {
+      "slug": "avril-lavigne",
+      "name": "Avril Lavigne",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Complicated",
+          "youtubeId": "5NPBIwQyPWE",
+          "startAt": 55
+        },
+        {
+          "title": "Sk8er Boi",
+          "youtubeId": "TIy3n2b7V9k",
+          "startAt": 45
+        },
+        {
+          "title": "Girlfriend",
+          "youtubeId": "Bg59q4puhmg",
+          "startAt": 50
+        }
+      ]
+    },
+    {
+      "slug": "panic-at-the-disco",
+      "name": "Panic! At The Disco",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "I Write Sins Not Tragedies",
+          "youtubeId": "vc6vs-l5dkc",
+          "startAt": 47
+        },
+        {
+          "title": "High Hopes",
+          "youtubeId": "IPXIgEAGe4U",
+          "startAt": 48
+        },
+        {
+          "title": "Death of a Bachelor",
+          "youtubeId": "R03cqGg40GU",
+          "startAt": 55
+        }
+      ]
+    },
+    {
+      "slug": "jimmy-eat-world",
+      "name": "Jimmy Eat World",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "The Middle",
+          "youtubeId": "oKsxPW6i3pM",
+          "startAt": 45
+        },
+        {
+          "title": "Sweetness",
+          "youtubeId": "ROatPGGMvXg",
+          "startAt": 55
+        },
+        {
+          "title": "Pain",
+          "youtubeId": "uaP6KgwbOvo",
+          "startAt": 45
+        }
+      ]
+    },
+    {
+      "slug": "bowling-for-soup",
+      "name": "Bowling for Soup",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "1985",
+          "youtubeId": "K38xNqZvBJI",
+          "startAt": 60
+        },
+        {
+          "title": "Girl All the Bad Guys Want",
+          "youtubeId": "VGRxmYXi4Io",
+          "startAt": 60
+        },
+        {
+          "title": "High School Never Ends",
+          "youtubeId": "jrxI_euTX4A",
+          "startAt": 70
+        }
+      ]
+    },
+    {
+      "slug": "yellowcard",
+      "name": "Yellowcard",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Ocean Avenue",
+          "youtubeId": "X9fLbfzCqWw",
+          "startAt": 47
+        },
+        {
+          "title": "Only One",
+          "youtubeId": "RJLkcPhVi9w",
+          "startAt": 58
+        },
+        {
+          "title": "Lights and Sounds",
+          "youtubeId": "7a9wJIhq2J8",
+          "startAt": 50
+        }
+      ]
+    },
+    {
+      "slug": "muse",
+      "name": "Muse",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Uprising",
+          "youtubeId": "w8KQmps-Sog",
+          "startAt": 55
+        },
+        {
+          "title": "Supermassive Black Hole",
+          "youtubeId": "Xsp3_a-PMTw",
+          "startAt": 40
+        },
+        {
+          "title": "Hysteria",
+          "youtubeId": "3dm_5qWWDV8",
+          "startAt": 40
+        }
+      ]
+    },
+    {
+      "slug": "the-killers",
+      "name": "The Killers",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Mr. Brightside",
+          "youtubeId": "gGdGFtwCNBE",
+          "startAt": 22
+        },
+        {
+          "title": "Somebody Told Me",
+          "youtubeId": "Y5fBdpreJiU",
+          "startAt": 45
+        },
+        {
+          "title": "Human",
+          "youtubeId": "RIZdjT1472Y",
+          "startAt": 60
+        }
+      ]
+    },
+    {
+      "slug": "arctic-monkeys",
+      "name": "Arctic Monkeys",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Do I Wanna Know?",
+          "youtubeId": "bpOSxM0rNPM",
+          "startAt": 20
+        },
+        {
+          "title": "R U Mine?",
+          "youtubeId": "VQH8ZTgna3Q",
+          "startAt": 45
+        },
+        {
+          "title": "I Bet You Look Good on the Dancefloor",
+          "youtubeId": "pK7egZaT3hs",
+          "startAt": 15
+        }
+      ]
+    },
+    {
+      "slug": "franz-ferdinand",
+      "name": "Franz Ferdinand",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Take Me Out",
+          "youtubeId": "Ijk4j-r7qPA",
+          "startAt": 60
+        },
+        {
+          "title": "Do You Want To",
+          "youtubeId": "1OJRRUnY--A",
+          "startAt": 45
+        },
+        {
+          "title": "No You Girls",
+          "youtubeId": "j-5L5McaBAY",
+          "startAt": 45
+        }
+      ]
+    },
+    {
+      "slug": "kings-of-leon",
+      "name": "Kings of Leon",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Sex on Fire",
+          "youtubeId": "RF0HhrwIwp0",
+          "startAt": 18
+        },
+        {
+          "title": "Use Somebody",
+          "youtubeId": "gnhXHvRoUd0",
+          "startAt": 50
+        },
+        {
+          "title": "Pyro",
+          "youtubeId": "gFp7q-IJqno",
+          "startAt": 60
+        }
+      ]
+    },
+    {
+      "slug": "the-white-stripes",
+      "name": "The White Stripes",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Seven Nation Army",
+          "youtubeId": "0J2QdDbelmY",
+          "startAt": 15
+        },
+        {
+          "title": "Fell in Love with a Girl",
+          "youtubeId": "fTH71AAxXmM",
+          "startAt": 15
+        },
+        {
+          "title": "Icky Thump",
+          "youtubeId": "1OjTspCqvk8",
+          "startAt": 30
+        }
+      ]
+    },
+    {
+      "slug": "the-strokes",
+      "name": "The Strokes",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Last Nite",
+          "youtubeId": "TOypSnKFHrE",
+          "startAt": 35
+        },
+        {
+          "title": "Reptilia",
+          "youtubeId": "b8-tXG8KrWs",
+          "startAt": 35
+        },
+        {
+          "title": "Someday",
+          "youtubeId": "knU9gRUWCno",
+          "startAt": 30
+        }
+      ]
+    },
+    {
+      "slug": "placebo",
+      "name": "Placebo",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Pure Morning",
+          "youtubeId": "LIxx2NZUUco",
+          "startAt": 45
+        },
+        {
+          "title": "Every You Every Me",
+          "youtubeId": "OMaycNcPsHI",
+          "startAt": 55
+        },
+        {
+          "title": "The Bitter End",
+          "youtubeId": "-JJAXwAaA2w",
+          "startAt": 45
+        }
+      ]
+    },
+    {
+      "slug": "imagine-dragons",
+      "name": "Imagine Dragons",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Radioactive",
+          "youtubeId": "ktvTqknDobU",
+          "startAt": 50
+        },
+        {
+          "title": "Believer",
+          "youtubeId": "7wtfhZwyrcc",
+          "startAt": 50
+        },
+        {
+          "title": "Demons",
+          "youtubeId": "mWRsgZuwf_8",
+          "startAt": 55
+        }
+      ]
+    },
+    {
+      "slug": "twenty-one-pilots",
+      "name": "Twenty One Pilots",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Stressed Out",
+          "youtubeId": "pXRviuL6vMY",
+          "startAt": 70
+        },
+        {
+          "title": "Ride",
+          "youtubeId": "Pw-0pbY9JeU",
+          "startAt": 60
+        },
+        {
+          "title": "Heathens",
+          "youtubeId": "UprcpdwuwCg",
+          "startAt": 50
+        }
+      ]
+    },
+    {
+      "slug": "mgmt",
+      "name": "MGMT",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Kids",
+          "youtubeId": "fe4EK4HSPkI",
+          "startAt": 70
+        },
+        {
+          "title": "Electric Feel",
+          "youtubeId": "MmZexg8sxyk",
+          "startAt": 45
+        },
+        {
+          "title": "Time to Pretend",
+          "youtubeId": "B9dSYgd5Elk",
+          "startAt": 45
+        }
+      ]
+    },
+    {
+      "slug": "phoenix",
+      "name": "Phoenix",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "1901",
+          "youtubeId": "36_4xjLFjM0",
+          "startAt": 45
+        },
+        {
+          "title": "Lisztomania",
+          "youtubeId": "4BJDNw7o6so",
+          "startAt": 50
+        },
+        {
+          "title": "If I Ever Feel Better",
+          "youtubeId": "ub36ffWAqgQ",
+          "startAt": 45
+        }
+      ]
+    },
+    {
+      "slug": "shaka-ponk",
+      "name": "Shaka Ponk",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "My Name Is Stain",
+          "youtubeId": "EF2PGnZmXCI",
+          "startAt": 45
+        },
+        {
+          "title": "I'm Picky",
+          "youtubeId": "-LVWXQ2F3KI",
+          "startAt": 45
+        },
+        {
+          "title": "Wanna Get Free",
+          "youtubeId": "aRljVackZ08",
+          "startAt": 45
+        }
+      ]
+    },
+    {
+      "slug": "noir-desir",
+      "name": "Noir Désir",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Le Vent Nous Portera",
+          "youtubeId": "NrgcRvBJYBE",
+          "startAt": 30
+        },
+        {
+          "title": "L'Homme Pressé",
+          "youtubeId": "by1RRP9wa_Y",
+          "startAt": 40
+        },
+        {
+          "title": "Un Jour en France",
+          "youtubeId": "LzHoZYextb8",
+          "startAt": 35
+        }
+      ]
+    },
+    {
+      "slug": "telephone",
+      "name": "Téléphone",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Ça (C'est vraiment toi)",
+          "youtubeId": "YP-P6tBexhk",
+          "startAt": 55
+        },
+        {
+          "title": "Cendrillon",
+          "youtubeId": "_tHbSMQeCdk",
+          "startAt": 30
+        },
+        {
+          "title": "Un autre monde",
+          "youtubeId": "xqnZPHo6qx4",
+          "startAt": 50
+        }
+      ]
+    },
+    {
+      "slug": "indochine",
+      "name": "Indochine",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "L'Aventurier",
+          "youtubeId": "M7X6oYg6iro",
+          "startAt": 30
+        },
+        {
+          "title": "J'ai demandé à la lune",
+          "youtubeId": "KAOmC5qT02w",
+          "startAt": 25
+        },
+        {
+          "title": "3e sexe",
+          "youtubeId": "SWtiCRntA-E",
+          "startAt": 45
+        }
+      ]
+    },
+    {
+      "slug": "superbus",
+      "name": "Superbus",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Lova Lova",
+          "youtubeId": "6XiCNrWIOt0",
+          "startAt": 45
+        },
+        {
+          "title": "Butterfly",
+          "youtubeId": "CQPNj38WscM",
+          "startAt": 50
+        },
+        {
+          "title": "Radio Song",
+          "youtubeId": "jtakiu1WPTc",
+          "startAt": 40
+        }
+      ]
+    },
+    {
+      "slug": "kyo",
+      "name": "Kyo",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Le Chemin",
+          "youtubeId": "CLuOd8xMRRo",
+          "startAt": 35
+        },
+        {
+          "title": "Dernière Danse",
+          "youtubeId": "aU_TQcyGkvY",
+          "startAt": 40
+        },
+        {
+          "title": "Je cours",
+          "youtubeId": "zSpLOlxy9nI",
+          "startAt": 40
+        }
+      ]
+    },
+    {
+      "slug": "pleymo",
+      "name": "Pleymo",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Rock",
+          "youtubeId": "H_X56xaRVlo",
+          "startAt": 45
+        },
+        {
+          "title": "New Wave",
+          "youtubeId": "UJYFZnPPr-Q",
+          "startAt": 45
+        },
+        {
+          "title": "Adrénaline",
+          "youtubeId": "v6TVxf4AD5w",
+          "startAt": 45
+        }
+      ]
+    },
+    {
+      "slug": "mass-hysteria",
+      "name": "Mass Hysteria",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Furia",
+          "youtubeId": "CDAjU6ffOK8",
+          "startAt": 45
+        },
+        {
+          "title": "Knowledge Is Power",
+          "youtubeId": "4ChyKx_hpEc",
+          "startAt": 35
+        },
+        {
+          "title": "Positif à bloc",
+          "youtubeId": "TqF16f57VKo",
+          "startAt": 40
+        }
+      ]
+    },
+    {
+      "slug": "skip-the-use",
+      "name": "Skip the Use",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Ghost",
+          "youtubeId": "-rblfEWp-0c",
+          "startAt": 45
+        },
+        {
+          "title": "Give Me Your Life",
+          "youtubeId": "3LZu9uMttDA",
+          "startAt": 40
+        },
+        {
+          "title": "Nameless World",
+          "youtubeId": "OHXf7wEpBPI",
+          "startAt": 50
+        }
+      ]
+    },
+    {
+      "slug": "gojira",
+      "name": "Gojira",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Stranded",
+          "youtubeId": "FNdC_3LR2AI",
+          "startAt": 30
+        },
+        {
+          "title": "Silvera",
+          "youtubeId": "iVvXB-Vwnco",
+          "startAt": 25
+        },
+        {
+          "title": "L'Enfant Sauvage",
+          "youtubeId": "BGHlZwMYO9g",
+          "startAt": 35
+        }
+      ]
+    }
+  ]
+}
