@@ -99,9 +99,14 @@ async function oembed(id, essais = 3) {
 const CHAMPS = '%(duration)s|%(album)s|%(release_year)s|%(playable_in_embed)s|%(age_limit)s|%(availability)s|%(live_status)s';
 
 /** Métadonnées yt-dlp. Rend `null` en cas d'échec — que l'appelant DOIT
- *  traiter comme une erreur, jamais comme un contrôle réussi. */
-async function metadonnees(id, essais = 2) {
+ *  traiter comme une erreur, jamais comme un contrôle réussi.
+ *
+ *  YouTube throttle volontiers une rafale de requêtes (« Please sign in »),
+ *  d'où les reprises espacées : sans elles, un catalogue sain rendrait un
+ *  rapport rouge une fois sur deux. */
+async function metadonnees(id, essais = 4) {
   for (let i = 0; i < essais; i++) {
+    if (i > 0) await new Promise((r) => setTimeout(r, 1500 * i));
     try {
       const { stdout } = await run(
         'yt-dlp',
@@ -314,7 +319,10 @@ for (const chemin of chemins) {
     if (avecDurees) {
       if (meta === null) {
         // Une métadonnée manquante n'est PAS un contrôle réussi.
-        defauts.push('métadonnées yt-dlp indisponibles — contrôle de durée impossible');
+        defauts.push(
+          'métadonnées yt-dlp indisponibles après plusieurs reprises — contrôle de durée impossible ' +
+            '(souvent un throttling YouTube : relancer avant de conclure que la vidéo est morte)',
+        );
       } else {
         if (meta.duree < DUREE_MIN || meta.duree > DUREE_MAX) {
           defauts.push(`durée ${meta.duree}s hors plage ${DUREE_MIN}-${DUREE_MAX}s`);
