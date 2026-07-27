@@ -27,11 +27,12 @@ test('une partie se crée, se prépare, puis passe à ready', async (t) => {
 
   const { code } = created.body;
   let game;
-  for (let i = 0; i < 200; i++) {
+  const limite = Date.now() + 30_000;
+  do {
     game = (await app.call('GET', `/api/games/${code}`)).body;
     if (game.status === 'ready') break;
     await new Promise((r) => setTimeout(r, 10));
-  }
+  } while (Date.now() < limite);
   assert.equal(game.status, 'ready');
   assert.equal(game.poolSize, 40, 'pool = 2 × 20 cases');
   assert.equal(game.verified, 40, 'toutes les vidéos vérifiées avant de débloquer Démarrer');
@@ -346,7 +347,8 @@ test('on ne rejoint pas une partie en préparation ni une partie terminée', asy
   const tooEarly = await join(app, code, 'Pressé');
   assert.ok([201, 409].includes(tooEarly.status));
 
-  for (let i = 0; i < 200; i++) {
+  const limite = Date.now() + 30_000;
+  while (Date.now() < limite) {
     if ((await app.call('GET', `/api/games/${code}`)).body.status === 'ready') break;
     await new Promise((r) => setTimeout(r, 10));
   }

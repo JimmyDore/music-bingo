@@ -155,13 +155,34 @@ function Partie({
     if (ferme && !chargeInitiale.current) onSessionPerdue()
   }, [erreur, onSessionPerdue])
 
+  // Les PUT sont sérialisés : chacun porte le tableau complet, donc deux
+  // requêtes en vol peuvent se doubler et laisser le serveur sur une version
+  // périmée — c'est cette copie-là que le présentateur lit pour arbitrer.
+  // Une seule requête à la fois, et seul le dernier état posté part ensuite.
+  const enVol = useRef(false)
+  const enAttente = useRef<boolean[] | null>(null)
+
   const envoyer = useCallback(
     async (etat: boolean[]) => {
+      enAttente.current = etat
+      if (enVol.current) return
+      enVol.current = true
       try {
-        await api.enregistrerCoches(session.playerId, session.token, etat)
-        setDesynchronise(false)
-      } catch {
-        setDesynchronise(true)
+        while (enAttente.current) {
+          const charge = enAttente.current
+          enAttente.current = null
+          try {
+            await api.enregistrerCoches(session.playerId, session.token, charge)
+            setDesynchronise(false)
+          } catch {
+            // On remet la charge en file : la reprise périodique la repostera.
+            if (!enAttente.current) enAttente.current = charge
+            setDesynchronise(true)
+            return
+          }
+        }
+      } finally {
+        enVol.current = false
       }
     },
     [session],

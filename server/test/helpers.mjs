@@ -70,16 +70,29 @@ export async function startApp({ themes = fakeThemes(), broken = new Set(), rng 
     base,
     call,
     close: () => new Promise((resolve) => server.close(resolve)),
-    /** Crée une partie et attend la fin de la vérification des vidéos. */
+    /**
+     * Crée une partie et attend la fin de la vérification des vidéos.
+     *
+     * Le budget d'attente est large et l'échec est explicite : sur une machine
+     * chargée (CI, build docker en parallèle), une attente trop courte rendait
+     * une partie encore en préparation et faisait échouer les assertions
+     * suivantes de façon incompréhensible.
+     */
     async createGame({ grid = '4x5', winRule = 'carton-plein', theme = 'test' } = {}) {
       const created = await call('POST', '/api/games', { body: { theme, grid, winRule } });
+      if (created.status !== 201) {
+        throw new Error(`création impossible : ${created.status} ${JSON.stringify(created.body)}`);
+      }
       const { code, masterToken } = created.body;
-      for (let i = 0; i < 200; i++) {
+      const limite = Date.now() + 30_000;
+      for (;;) {
         const state = await call('GET', `/api/games/${code}`);
-        if (state.body.status === 'ready') break;
+        if (state.body.status === 'ready') return { code, masterToken };
+        if (Date.now() > limite) {
+          throw new Error(`partie ${code} toujours ${state.body.status} après 30 s`);
+        }
         await new Promise((r) => setTimeout(r, 10));
       }
-      return { code, masterToken };
     },
   };
 }

@@ -152,18 +152,22 @@
     @apply grid gap-1.5;
   }
 
-  /* Sur l'écran joueur, la grille mange toute la hauteur disponible au lieu de
-     laisser un tiers d'écran vide sous elle : les cases grandissent, et les
-     noms longs gagnent les lignes dont ils ont besoin. */
+  /* Sur l'écran joueur, la grille prend la hauteur disponible au lieu de
+     laisser un tiers d'écran vide sous elle. Sa hauteur reste bornée (voir
+     Grille.tsx) pour que les cases ne s'étirent pas en dominos, et les marges
+     automatiques la recentrent dans ce qui reste. */
   .grille--plein {
-    @apply min-h-0 flex-1;
+    @apply my-auto min-h-0 flex-1;
     grid-auto-rows: 1fr;
   }
 
   .cellule {
     container-type: inline-size;
+    /* La bande haute est réservée aux pastilles « ✓ » et « ! » : sans elle,
+       elles s'écrivent par-dessus le nom du groupe dès que le texte grandit —
+       exactement l'écran où le présentateur doit lire pour arbitrer. */
     @apply relative flex aspect-square items-center justify-center overflow-hidden
-           rounded-xl border-2 border-bord bg-carte p-1 text-center
+           rounded-xl border-2 border-bord bg-carte pb-1 pl-1 pr-1 pt-[1.15rem] text-center
            transition-[transform,background-color,border-color] duration-100
            active:scale-95;
   }
@@ -210,7 +214,7 @@
   }
 
   .cellule-coche {
-    @apply pointer-events-none absolute right-1 top-1 text-nuit opacity-90;
+    @apply pointer-events-none absolute right-1 top-0.5 h-3.5 w-3.5 text-nuit opacity-90;
   }
 
   /* Arbitrage : cochée alors que le groupe n'est jamais passé. */
@@ -222,8 +226,8 @@
   /* Pastille sur fond nuit : en magenta directement sur le jaune stabilo, le
      contraste tombait à 2,5:1 et le repère était invisible. */
   .cellule-alerte {
-    @apply pointer-events-none absolute left-1 top-1 flex h-4 w-4 items-center justify-center
-           rounded-full bg-nuit font-titre text-[0.7rem] leading-none text-neon;
+    @apply pointer-events-none absolute left-1 top-0.5 flex h-3.5 w-3.5 items-center justify-center
+           rounded-full bg-nuit font-titre text-[0.65rem] leading-none text-neon;
   }
 
   /* --- Divers ------------------------------------------------------------ */
@@ -247,6 +251,14 @@
   .bandeau-alerte {
     @apply flex items-start gap-2 rounded-xl border border-stabilo/40 bg-stabilo/10
            px-3 py-2 text-[0.8rem] font-semibold leading-snug text-stabilo;
+  }
+
+  /* La contrainte iOS vaut pour toute la partie, pas seulement en haut de page :
+     la console dépasse 1300 px dès quelques titres joués, et l'avertissement
+     sortait de l'écran au premier défilement. Fond opaque, sinon l'historique
+     se lit au travers. */
+  .bandeau-alerte--colle {
+    @apply sticky top-0 z-20 border-stabilo/50 bg-[#231b13];
   }
 
   .barre-basse {

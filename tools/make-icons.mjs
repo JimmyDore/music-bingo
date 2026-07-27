@@ -8,7 +8,15 @@
 import { deflateSync } from 'node:zlib';
 import { writeFileSync } from 'node:fs';
 
-const TAILLE = 180;
+// `maskable` : Android rogne l'icône dans une forme variable (cercle, goutte…).
+// Les icônes prévues pour ça gardent une marge de sécurité de 20 % au bord.
+const SORTIES = [
+  { fichier: 'apple-touch-icon.png', taille: 180, marge: 0.1 },
+  { fichier: 'icon-192.png', taille: 192, marge: 0.1 },
+  { fichier: 'icon-512.png', taille: 512, marge: 0.1 },
+  { fichier: 'icon-512-maskable.png', taille: 512, marge: 0.2 },
+];
+
 const NUIT = [0x0d, 0x07, 0x16];
 const CARTE = [0x1d, 0x15, 0x39];
 const BORD = [0x3b, 0x2d, 0x67];
@@ -18,14 +26,6 @@ const NEON = [0xff, 0x2e, 0x88];
 // Un carton de bingo : 3 × 3, quatre cases tamponnées au stabilo.
 const COCHEES = new Set([0, 2, 4, 6]);
 
-const pixels = Buffer.alloc(TAILLE * TAILLE * 3);
-const poser = (x, y, [r, v, b]) => {
-  const i = (y * TAILLE + x) * 3;
-  pixels[i] = r;
-  pixels[i + 1] = v;
-  pixels[i + 2] = b;
-};
-
 /** Distance au bord d'un rectangle à coins arrondis (négatif = dedans). */
 function dansArrondi(x, y, x0, y0, larg, haut, rayon) {
   const dx = Math.max(x0 + rayon - x, 0, x - (x0 + larg - 1 - rayon));
@@ -33,34 +33,46 @@ function dansArrondi(x, y, x0, y0, larg, haut, rayon) {
   return Math.hypot(dx, dy) - rayon;
 }
 
-for (let y = 0; y < TAILLE; y++) {
-  for (let x = 0; x < TAILLE; x++) {
-    // Fond nuit avec un halo néon en haut, comme la page.
-    const halo = Math.max(0, 1 - Math.hypot(x - TAILLE / 2, y + 30) / 150);
-    poser(x, y, NUIT.map((c, i) => Math.round(c + (NEON[i] - c) * halo * 0.28)));
+function dessiner(taille, marge) {
+  const pixels = Buffer.alloc(taille * taille * 3);
+  const poser = (x, y, [r, v, b]) => {
+    const i = (y * taille + x) * 3;
+    pixels[i] = r;
+    pixels[i + 1] = v;
+    pixels[i + 2] = b;
+  };
+
+  for (let y = 0; y < taille; y++) {
+    for (let x = 0; x < taille; x++) {
+      // Fond nuit avec un halo néon en haut, comme la page.
+      const halo = Math.max(0, 1 - Math.hypot(x - taille / 2, y + taille / 6) / (taille * 0.85));
+      poser(x, y, NUIT.map((c, i) => Math.round(c + (NEON[i] - c) * halo * 0.28)));
+    }
   }
-}
 
-const MARGE = 18;
-const ECART = 6;
-const COTE = Math.floor((TAILLE - MARGE * 2 - ECART * 2) / 3);
+  const MARGE = Math.round(taille * marge);
+  const ECART = Math.max(2, Math.round(taille * 0.033));
+  const COTE = Math.floor((taille - MARGE * 2 - ECART * 2) / 3);
+  const RAYON = Math.max(2, Math.round(COTE * 0.22));
+  const TRAIT = Math.max(1.5, taille * 0.014);
 
-for (let ligne = 0; ligne < 3; ligne++) {
-  for (let col = 0; col < 3; col++) {
-    const index = ligne * 3 + col;
-    const x0 = MARGE + col * (COTE + ECART);
-    const y0 = MARGE + ligne * (COTE + ECART);
-    const cochee = COCHEES.has(index);
-    for (let y = y0 - 2; y < y0 + COTE + 2; y++) {
-      for (let x = x0 - 2; x < x0 + COTE + 2; x++) {
-        if (x < 0 || y < 0 || x >= TAILLE || y >= TAILLE) continue;
-        const d = dansArrondi(x, y, x0, y0, COTE, COTE, 9);
-        if (d > 0.5) continue;
-        if (d > -2.5) poser(x, y, cochee ? STABILO : BORD);
-        else poser(x, y, cochee ? STABILO : CARTE);
+  for (let ligne = 0; ligne < 3; ligne++) {
+    for (let col = 0; col < 3; col++) {
+      const x0 = MARGE + col * (COTE + ECART);
+      const y0 = MARGE + ligne * (COTE + ECART);
+      const cochee = COCHEES.has(ligne * 3 + col);
+      for (let y = y0 - 2; y < y0 + COTE + 2; y++) {
+        for (let x = x0 - 2; x < x0 + COTE + 2; x++) {
+          if (x < 0 || y < 0 || x >= taille || y >= taille) continue;
+          const d = dansArrondi(x, y, x0, y0, COTE, COTE, RAYON);
+          if (d > 0.5) continue;
+          if (d > -TRAIT) poser(x, y, cochee ? STABILO : BORD);
+          else poser(x, y, cochee ? STABILO : CARTE);
+        }
       }
     }
   }
+  return pixels;
 }
 
 // --- encodage PNG ---------------------------------------------------------
@@ -86,25 +98,31 @@ function chunk(type, data) {
   return Buffer.concat([longueur, corps, crc]);
 }
 
-const ihdr = Buffer.alloc(13);
-ihdr.writeUInt32BE(TAILLE, 0);
-ihdr.writeUInt32BE(TAILLE, 4);
-ihdr[8] = 8; // 8 bits par canal
-ihdr[9] = 2; // couleur vraie (RGB)
+function encoderPng(pixels, taille) {
+  const ihdr = Buffer.alloc(13);
+  ihdr.writeUInt32BE(taille, 0);
+  ihdr.writeUInt32BE(taille, 4);
+  ihdr[8] = 8; // 8 bits par canal
+  ihdr[9] = 2; // couleur vraie (RGB)
 
-// Chaque ligne est préfixée de son octet de filtre (0 = aucun).
-const brut = Buffer.alloc(TAILLE * (TAILLE * 3 + 1));
-for (let y = 0; y < TAILLE; y++) {
-  brut[y * (TAILLE * 3 + 1)] = 0;
-  pixels.copy(brut, y * (TAILLE * 3 + 1) + 1, y * TAILLE * 3, (y + 1) * TAILLE * 3);
+  // Chaque ligne est préfixée de son octet de filtre (0 = aucun).
+  const largeurLigne = taille * 3 + 1;
+  const brut = Buffer.alloc(taille * largeurLigne);
+  for (let y = 0; y < taille; y++) {
+    brut[y * largeurLigne] = 0;
+    pixels.copy(brut, y * largeurLigne + 1, y * taille * 3, (y + 1) * taille * 3);
+  }
+
+  return Buffer.concat([
+    Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+    chunk('IHDR', ihdr),
+    chunk('IDAT', deflateSync(brut, { level: 9 })),
+    chunk('IEND', Buffer.alloc(0)),
+  ]);
 }
 
-const png = Buffer.concat([
-  Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
-  chunk('IHDR', ihdr),
-  chunk('IDAT', deflateSync(brut, { level: 9 })),
-  chunk('IEND', Buffer.alloc(0)),
-]);
-
-writeFileSync('public/apple-touch-icon.png', png);
-console.log(`public/apple-touch-icon.png — ${TAILLE}×${TAILLE}, ${png.length} octets`);
+for (const { fichier, taille, marge } of SORTIES) {
+  const png = encoderPng(dessiner(taille, marge), taille);
+  writeFileSync(`public/${fichier}`, png);
+  console.log(`public/${fichier} — ${taille}×${taille}, ${png.length} octets`);
+}

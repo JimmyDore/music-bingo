@@ -116,8 +116,9 @@ function Console({ code, token }: { code: string; token: string }) {
         </div>
       </header>
 
-      {/* Contrainte iOS qu'on ne peut pas contourner : autant la dire. */}
-      <p className="bandeau-alerte mb-3">
+      {/* Contrainte iOS qu'on ne peut pas contourner : autant la dire, et la
+          garder sous les yeux pendant toute la partie. */}
+      <p className="bandeau-alerte bandeau-alerte--colle mb-3">
         <span aria-hidden="true">⚠</span>
         Ne quitte pas l'app et ne verrouille pas l'écran&nbsp;: la musique s'arrête.
       </p>
@@ -284,6 +285,8 @@ function Console({ code, token }: { code: string; token: string }) {
         </p>
       )}
 
+      {etat?.status === 'preparing' && <Preparation code={code} etat={etat} />}
+
       {arbitreVif && etat && (
         <Arbitrage
           joueur={arbitreVif}
@@ -301,6 +304,51 @@ function Console({ code, token }: { code: string; token: string }) {
           }}
         />
       )}
+    </div>
+  )
+}
+
+/**
+ * Le serveur vérifie chaque vidéo du pool avant qu'on puisse commencer : une
+ * vidéo morte se découvre ici, pas en pleine soirée. « Démarrer » reste
+ * verrouillé tant que ce n'est pas fini.
+ *
+ * C'est une surcouche et non un écran à part : la console reste montée
+ * derrière, donc le lecteur YouTube s'initialise pendant l'attente.
+ */
+function Preparation({ code, etat }: { code: string; etat: EtatPartie }) {
+  const total = etat.poolSize
+  const faits = etat.verified
+  const pourcent = total > 0 ? Math.round((faits / total) * 100) : 0
+
+  return (
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-nuit px-4">
+      <div className="carte w-full max-w-sm text-center">
+        <p className="titre-affiche text-sm tracking-widest text-doux">Partie</p>
+        <p className="code-partie mt-1">{code}</p>
+
+        <div className="mt-6">
+          <div className="h-3 w-full overflow-hidden rounded-full border-2 border-bord bg-nuit">
+            <div
+              className="h-full rounded-full bg-menthe transition-[width] duration-300"
+              style={{ width: `${pourcent}%` }}
+            />
+          </div>
+          <p className="mt-3 text-sm font-bold text-texte" aria-live="polite">
+            {faits} / {total || '…'} titres vérifiés
+          </p>
+          <p className="mt-1 text-xs text-doux">
+            On s'assure que chaque vidéo se lance vraiment avant de commencer.
+          </p>
+        </div>
+
+        <button type="button" className="bouton bouton--neon mt-6" disabled>
+          Vérification…
+        </button>
+        <p className="mt-3 text-xs text-doux">
+          Tu peux rafraîchir cette page sans rien perdre&nbsp;: le code est dans l'adresse.
+        </p>
+      </div>
     </div>
   )
 }

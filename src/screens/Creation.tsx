@@ -2,14 +2,12 @@ import { useEffect, useState } from 'react'
 import { api, ErreurApi, type Referentiels } from '../api'
 import { navigate } from '../router'
 import { ecrireTokenPresentateur } from '../storage'
-import { useSondage } from '../lib/poll'
 
 type Brouillon = { theme: string; grid: string; winRule: string }
 
 export function Creation() {
   const [refs, setRefs] = useState<Referentiels | null>(null)
   const [choix, setChoix] = useState<Brouillon>({ theme: '', grid: '4x5', winRule: 'carton-plein' })
-  const [code, setCode] = useState<string | null>(null)
   const [enCours, setEnCours] = useState(false)
   const [erreur, setErreur] = useState<string | null>(null)
 
@@ -29,14 +27,16 @@ export function Creation() {
     try {
       const partie = await api.creerPartie(choix)
       ecrireTokenPresentateur(partie.code, partie.masterToken)
-      setCode(partie.code)
+      // On part tout de suite sur /m/:code, y compris pendant la vérification
+      // des vidéos : le code doit être dans l'URL, sinon un rafraîchissement
+      // sur l'écran d'attente renvoie le présentateur au formulaire et la
+      // partie est perdue.
+      navigate(`/m/${partie.code}`)
     } catch (err) {
       setErreur(err instanceof ErreurApi ? err.message : 'Création impossible')
       setEnCours(false)
     }
   }
-
-  if (code) return <Preparation code={code} />
 
   return (
     <div className="ecran">
@@ -141,62 +141,5 @@ function Bloc({ titre, indice, children }: { titre: string; indice?: string; chi
       </div>
       {children}
     </section>
-  )
-}
-
-/**
- * Écran d'attente : le serveur vérifie chaque vidéo du pool. « Démarrer » reste
- * verrouillé tant que ce n'est pas fini — une vidéo morte se découvre ici, pas
- * en pleine soirée.
- */
-function Preparation({ code }: { code: string }) {
-  const [prete, setPrete] = useState(false)
-  // On arrête de sonder dès que c'est prêt : inutile de marteler l'API pendant
-  // que le présentateur montre le QR code.
-  const { donnees, erreur } = useSondage(() => api.partie(code), 700, !prete)
-  useEffect(() => {
-    if (donnees?.status === 'ready') setPrete(true)
-  }, [donnees?.status])
-
-  const total = donnees?.poolSize ?? 0
-  const faits = donnees?.verified ?? 0
-  const pourcent = total > 0 ? Math.round((faits / total) * 100) : 0
-
-  return (
-    <div className="ecran flex min-h-dvh flex-col justify-center">
-      <div className="carte text-center">
-        <p className="titre-affiche text-sm tracking-widest text-doux">Partie</p>
-        <p className="code-partie mt-1">{code}</p>
-
-        <div className="mt-6">
-          <div className="h-3 w-full overflow-hidden rounded-full border-2 border-bord bg-nuit">
-            <div
-              className="h-full rounded-full bg-menthe transition-[width] duration-300"
-              style={{ width: `${pourcent}%` }}
-            />
-          </div>
-          <p className="mt-3 text-sm font-bold text-texte" aria-live="polite">
-            {prete ? `${total} titres vérifiés` : `${faits} / ${total || '…'} titres vérifiés`}
-          </p>
-          <p className="mt-1 text-xs text-doux">
-            On s'assure que chaque vidéo se lance vraiment avant de commencer.
-          </p>
-          {erreur && !prete && (
-            <p className="mt-2 text-xs font-bold text-neon">
-              Connexion difficile — on continue d'essayer. Note le code&nbsp;: {code}
-            </p>
-          )}
-        </div>
-
-        <button
-          type="button"
-          className="bouton bouton--neon mt-6"
-          disabled={!prete}
-          onClick={() => navigate(`/m/${code}`)}
-        >
-          {prete ? 'Démarrer' : 'Vérification…'}
-        </button>
-      </div>
-    </div>
   )
 }
