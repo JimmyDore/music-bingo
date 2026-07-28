@@ -1,0 +1,459 @@
+{
+  "id": "musiques-de-films",
+  "name": "Musiques de films",
+  "bands": [
+    {
+      "slug": "star-wars",
+      "name": "Star Wars",
+      "logo": null,
+      "tracks": [
+        { "title": "The Imperial March", "youtubeId": "-bzWSJG93P8", "startAt": 14 },
+        { "title": "Star Wars Main Theme", "youtubeId": "_D0ZQPqeJkk", "startAt": 9 },
+        { "title": "Duel of the Fates", "youtubeId": "xlYCxbBZUCY", "startAt": 24 }
+      ]
+    },
+    {
+      "slug": "james-bond",
+      "name": "James Bond",
+      "alias": ["Adele", "Sam Smith", "Billie Eilish"],
+      "logo": null,
+      "tracks": [
+        { "title": "Skyfall", "youtubeId": "DeumyOzKqgI", "startAt": 62 },
+        { "title": "Writing's On The Wall", "youtubeId": "8jzDnsjYv9A", "startAt": 75 },
+        { "title": "No Time To Die", "youtubeId": "BboMpayJomw", "startAt": 68 }
+      ]
+    },
+    {
+      "slug": "top-gun",
+      "name": "Top Gun",
+      "logo": null,
+      "tracks": [
+        { "title": "Danger Zone", "youtubeId": "siwpn14IE7E", "startAt": 21 },
+        { "title": "Take My Breath Away", "youtubeId": "Bx51eegLTY8", "startAt": 33 },
+        { "title": "Hold My Hand", "youtubeId": "O2CIAKVTOrc", "startAt": 55 }
+      ]
+    },
+    {
+      "slug": "rocky",
+      "name": "Rocky",
+      "alias": ["Survivor", "Bill Conti"],
+      "logo": null,
+      "tracks": [
+        { "title": "Eye Of The Tiger", "youtubeId": "btPJPFnesV4", "startAt": 47 },
+        { "title": "Burning Heart", "youtubeId": "Kc71KZG87X4", "startAt": 28 },
+        { "title": "Gonna Fly Now", "youtubeId": "AxWejrVYcCg", "startAt": 12 }
+      ]
+    },
+    {
+      "slug": "dirty-dancing",
+      "name": "Dirty Dancing",
+      "alias": ["Bill Medley", "Eric Carmen", "Patrick Swayze"],
+      "logo": null,
+      "tracks": [
+        { "title": "(I've Had) The Time Of My Life", "youtubeId": "4BQLE_RrTSU", "startAt": 18 },
+        { "title": "Hungry Eyes", "youtubeId": "2ssCL292DQA", "startAt": 25 },
+        { "title": "She's Like The Wind", "youtubeId": "lU9p1WRfA9w", "startAt": 34 }
+      ]
+    },
+    {
+      "slug": "footloose",
+      "name": "Footloose",
+      "alias": ["Bonnie Tyler", "Deniece Williams"],
+      "logo": null,
+      "tracks": [
+        { "title": "Footloose", "youtubeId": "ltrMfT4Qz5Y", "startAt": 11 },
+        { "title": "Holding Out For A Hero", "youtubeId": "bWcASV2sey0", "startAt": 72 },
+        { "title": "Let's Hear It for the Boy", "youtubeId": "gI7YHZVc7mM", "startAt": 17 }
+      ]
+    },
+    {
+      "slug": "grease",
+      "name": "Grease",
+      "logo": null,
+      "tracks": [
+        { "title": "You're The One That I Want", "youtubeId": "e__Pp4FxsjU", "startAt": 9 },
+        { "title": "Summer Nights", "youtubeId": "A_J2bcNx3Gw", "startAt": 13 },
+        { "title": "Hopelessly Devoted To You", "youtubeId": "r-3NvDp28U4", "startAt": 23 }
+      ]
+    },
+    {
+      "slug": "saturday-night-fever",
+      "name": "Saturday Night Fever",
+      "alias": ["Bee Gees"],
+      "logo": null,
+      "tracks": [
+        { "title": "Stayin' Alive", "youtubeId": "fNFzfwLM72c", "startAt": 16 },
+        { "title": "Night Fever", "youtubeId": "-ihs-vT9T3Q", "startAt": 33 },
+        { "title": "How Deep Is Your Love", "youtubeId": "XpqqjU7u5Yc", "startAt": 14 }
+      ]
+    },
+    {
+      "slug": "bodyguard",
+      "name": "Bodyguard",
+      "alias": ["Whitney Houston"],
+      "logo": null,
+      "tracks": [
+        { "title": "I Will Always Love You", "youtubeId": "3JWTaaS7LdU", "startAt": 112 },
+        { "title": "I'm Every Woman", "youtubeId": "H7_sqdkaAfo", "startAt": 22 },
+        { "title": "Run To You", "youtubeId": "h9rCobRl-ng", "startAt": 62 }
+      ]
+    },
+    {
+      "slug": "sister-act",
+      "name": "Sister Act",
+      "logo": null,
+      "tracks": [
+        { "title": "I Will Follow Him", "youtubeId": "VPpd-6X3tEo", "startAt": 38 },
+        { "title": "Oh Happy Day", "youtubeId": "mXPoRnY3r10", "startAt": 45 },
+        { "title": "Hail Holy Queen", "youtubeId": "VKi0MV0ZVVo", "startAt": 55 }
+      ]
+    },
+    {
+      "slug": "the-blues-brothers",
+      "name": "The Blues Brothers",
+      "logo": null,
+      "tracks": [
+        { "title": "Everybody Needs Somebody to Love", "youtubeId": "EHV0zs0kVGg", "startAt": 30 },
+        { "title": "Shake a Tail Feather", "youtubeId": "qdbrIrFxas0", "startAt": 25 },
+        { "title": "Think", "youtubeId": "RTXszRHc0qs", "startAt": 70 }
+      ]
+    },
+    {
+      "slug": "shrek",
+      "name": "Shrek",
+      "alias": ["Smash Mouth", "Rufus Wainwright"],
+      "logo": null,
+      "tracks": [
+        { "title": "All Star", "youtubeId": "L_jWHffIx5E", "startAt": 9 },
+        { "title": "I'm A Believer", "youtubeId": "0mYBSayCsH0", "startAt": 10 },
+        { "title": "Hallelujah", "youtubeId": "7iDfvoqOhD8", "startAt": 52 }
+      ]
+    },
+    {
+      "slug": "le-roi-lion",
+      "name": "Le Roi Lion",
+      "alias": ["The Lion King"],
+      "logo": null,
+      "tracks": [
+        { "title": "Circle of Life", "youtubeId": "GibiNy4d4gc", "startAt": 12 },
+        { "title": "Hakuna Matata", "youtubeId": "0MxulhivCvI", "startAt": 28 },
+        { "title": "Can You Feel The Love Tonight", "youtubeId": "25QyCxVkXwQ", "startAt": 30 }
+      ]
+    },
+    {
+      "slug": "la-reine-des-neiges",
+      "name": "La Reine des Neiges",
+      "alias": ["Frozen"],
+      "logo": null,
+      "tracks": [
+        { "title": "Let It Go", "youtubeId": "YVVTZgwYwVo", "startAt": 57 },
+        { "title": "Do You Want to Build a Snowman?", "youtubeId": "TeQ_TTyLGMs", "startAt": 10 },
+        { "title": "Love Is an Open Door", "youtubeId": "kQDw88hEr2c", "startAt": 16 }
+      ]
+    },
+    {
+      "slug": "encanto",
+      "name": "Encanto",
+      "logo": null,
+      "tracks": [
+        { "title": "We Don't Talk About Bruno", "youtubeId": "bvWRMAU6V-c", "startAt": 22 },
+        { "title": "Surface Pressure", "youtubeId": "tQwVKr8rCYw", "startAt": 47 },
+        { "title": "The Family Madrigal", "youtubeId": "Yp5nPGWWMh4", "startAt": 15 }
+      ]
+    },
+    {
+      "slug": "moana",
+      "name": "Moana",
+      "logo": null,
+      "tracks": [
+        { "title": "How Far I'll Go", "youtubeId": "cPAbx5kgCJo", "startAt": 52 },
+        { "title": "You're Welcome", "youtubeId": "79DijItQXMM", "startAt": 14 },
+        { "title": "Shiny", "youtubeId": "93lrosBEW-Q", "startAt": 40 }
+      ]
+    },
+    {
+      "slug": "aladdin",
+      "name": "Aladdin",
+      "logo": null,
+      "tracks": [
+        { "title": "A Whole New World", "youtubeId": "eitDnP0_83k", "startAt": 25 },
+        { "title": "Friend Like Me", "youtubeId": "1at7kKzBYxI", "startAt": 20 },
+        { "title": "Speechless", "youtubeId": "mw5VIEIvuMI", "startAt": 72 }
+      ]
+    },
+    {
+      "slug": "la-belle-et-la-bete",
+      "name": "La Belle et la Bête",
+      "alias": ["Beauty and the Beast"],
+      "logo": null,
+      "tracks": [
+        { "title": "Beauty and the Beast", "youtubeId": "axySrE0Kg6k", "startAt": 34 },
+        { "title": "Belle", "youtubeId": "egQbaDRMxGI", "startAt": 12 },
+        { "title": "Gaston", "youtubeId": "F16O5OAK2K8", "startAt": 40 }
+      ]
+    },
+    {
+      "slug": "la-petite-sirene",
+      "name": "La Petite Sirène",
+      "alias": ["The Little Mermaid"],
+      "logo": null,
+      "tracks": [
+        { "title": "Under the Sea", "youtubeId": "GC_mV1IpjWA", "startAt": 27 },
+        { "title": "Part of Your World", "youtubeId": "SXKlJuO07eM", "startAt": 30 },
+        { "title": "Poor Unfortunate Souls", "youtubeId": "YxrTRc0P_xs", "startAt": 35 }
+      ]
+    },
+    {
+      "slug": "coco",
+      "name": "Coco",
+      "logo": null,
+      "tracks": [
+        { "title": "Un Poco Loco", "youtubeId": "yg8116aeD7E", "startAt": 18 },
+        { "title": "Remember Me", "youtubeId": "E7VPdpEV1m0", "startAt": 20 },
+        { "title": "Proud Corazón", "youtubeId": "sLkDCF_EbqI", "startAt": 14 }
+      ]
+    },
+    {
+      "slug": "mulan",
+      "name": "Mulan",
+      "alias": ["Lea Salonga"],
+      "logo": null,
+      "tracks": [
+        { "title": "I'll Make a Man Out of You", "youtubeId": "vGfJeW_CcFY", "startAt": 30 },
+        { "title": "Reflection", "youtubeId": "RNprQYHenNI", "startAt": 55 },
+        { "title": "Honor To Us All", "youtubeId": "-1S9pYmpkG8", "startAt": 25 }
+      ]
+    },
+    {
+      "slug": "raiponce",
+      "name": "Raiponce",
+      "alias": ["Tangled"],
+      "logo": null,
+      "tracks": [
+        { "title": "I See the Light", "youtubeId": "ILRs2r6lcHY", "startAt": 62 },
+        { "title": "When Will My Life Begin?", "youtubeId": "kRXmAIHYQR4", "startAt": 12 },
+        { "title": "Mother Knows Best", "youtubeId": "-7jWt3JvJto", "startAt": 20 }
+      ]
+    },
+    {
+      "slug": "tarzan",
+      "name": "Tarzan",
+      "alias": ["Phil Collins"],
+      "logo": null,
+      "tracks": [
+        { "title": "You'll Be In My Heart", "youtubeId": "EfHLHdSxQA0", "startAt": 63 },
+        { "title": "Son of Man", "youtubeId": "tiBaBca7-rY", "startAt": 22 },
+        { "title": "Two Worlds", "youtubeId": "wb5keTpC4WU", "startAt": 30 }
+      ]
+    },
+    {
+      "slug": "descendants",
+      "name": "Descendants",
+      "logo": null,
+      "tracks": [
+        { "title": "Rotten to the Core", "youtubeId": "zGlLe1w3DJM", "startAt": 25 },
+        { "title": "Ways to Be Wicked", "youtubeId": "lX6g_cm2rM4", "startAt": 30 },
+        { "title": "Queen of Mean", "youtubeId": "r9o1QS-itsU", "startAt": 52 }
+      ]
+    },
+    {
+      "slug": "high-school-musical",
+      "name": "High School Musical",
+      "logo": null,
+      "tracks": [
+        { "title": "We're All In This Together", "youtubeId": "DykVJl6wr_4", "startAt": 25 },
+        { "title": "Breaking Free", "youtubeId": "0qj67KE5VXI", "startAt": 68 },
+        { "title": "Start of Something New", "youtubeId": "zBG-sEGlULs", "startAt": 30 }
+      ]
+    },
+    {
+      "slug": "trolls",
+      "name": "Trolls",
+      "logo": null,
+      "tracks": [
+        { "title": "CAN'T STOP THE FEELING!", "youtubeId": "ru0K8uYEZWw", "startAt": 45 },
+        { "title": "True Colors", "youtubeId": "3JIpIsgHqV0", "startAt": 20 },
+        { "title": "Get Back Up Again", "youtubeId": "IFuFm0m2wj0", "startAt": 18 }
+      ]
+    },
+    {
+      "slug": "the-greatest-showman",
+      "name": "The Greatest Showman",
+      "logo": null,
+      "tracks": [
+        { "title": "This Is Me", "youtubeId": "CjxugyZCfuw", "startAt": 63 },
+        { "title": "A Million Dreams", "youtubeId": "pSQk-4fddDI", "startAt": 68 },
+        { "title": "Rewrite The Stars", "youtubeId": "gdjR2lvIfJ4", "startAt": 25 }
+      ]
+    },
+    {
+      "slug": "a-star-is-born",
+      "name": "A Star Is Born",
+      "logo": null,
+      "tracks": [
+        { "title": "Shallow", "youtubeId": "bo_efYhYU2A", "startAt": 63 },
+        { "title": "Always Remember Us This Way", "youtubeId": "5vheNbQlsyU", "startAt": 58 },
+        { "title": "I'll Never Love Again", "youtubeId": "52nfjRzIaj8", "startAt": 60 }
+      ]
+    },
+    {
+      "slug": "mamma-mia",
+      "name": "Mamma Mia",
+      "logo": null,
+      "tracks": [
+        { "title": "Dancing Queen", "youtubeId": "Do8oqR2TR1M", "startAt": 28 },
+        { "title": "Mamma Mia", "youtubeId": "MFKqiFG6HVs", "startAt": 12 },
+        { "title": "Money, Money, Money", "youtubeId": "y6h5BUSo9Vw", "startAt": 16 }
+      ]
+    },
+    {
+      "slug": "le-fantome-de-l-opera",
+      "name": "Le Fantôme de l'Opéra",
+      "alias": ["The Phantom of the Opera"],
+      "logo": null,
+      "tracks": [
+        { "title": "The Phantom of the Opera", "youtubeId": "pgz6PnHkmpY", "startAt": 25 },
+        { "title": "The Music of the Night", "youtubeId": "77umP7IRxD4", "startAt": 35 },
+        { "title": "The Point of No Return", "youtubeId": "AyyCz9z1s_M", "startAt": 30 }
+      ]
+    },
+    {
+      "slug": "les-miserables",
+      "name": "Les Misérables",
+      "logo": null,
+      "tracks": [
+        { "title": "Do You Hear the People Sing?", "youtubeId": "1q82twrdr0U", "startAt": 12 },
+        { "title": "I Dreamed A Dream", "youtubeId": "ulJXiB5i_q0", "startAt": 30 },
+        { "title": "One Day More", "youtubeId": "Sv-BxH3SVS8", "startAt": 20 }
+      ]
+    },
+    {
+      "slug": "hunger-games",
+      "name": "Hunger Games",
+      "logo": null,
+      "tracks": [
+        { "title": "Safe & Sound", "youtubeId": "RzhAS_GnJIc", "startAt": 30 },
+        { "title": "Yellow Flicker Beat", "youtubeId": "3PdILZ_1P74", "startAt": 55 },
+        { "title": "Atlas", "youtubeId": "Lh3TokLzzmw", "startAt": 45 }
+      ]
+    },
+    {
+      "slug": "twilight",
+      "name": "Twilight",
+      "alias": ["Christina Perri", "Paramore", "Muse"],
+      "logo": null,
+      "tracks": [
+        { "title": "A Thousand Years", "youtubeId": "rtOvBOTyX00", "startAt": 65 },
+        { "title": "Decode", "youtubeId": "RvnkAtWcKYg", "startAt": 55 },
+        { "title": "Supermassive Black Hole", "youtubeId": "Xsp3_a-PMTw", "startAt": 26 }
+      ]
+    },
+    {
+      "slug": "fifty-shades",
+      "name": "Fifty Shades",
+      "alias": ["Ellie Goulding"],
+      "logo": null,
+      "tracks": [
+        { "title": "Love Me Like You Do", "youtubeId": "AJtDXIazrMo", "startAt": 58 },
+        { "title": "Earned It", "youtubeId": "waU75jdUnYw", "startAt": 30 },
+        { "title": "For You", "youtubeId": "RQUuqbzQVsY", "startAt": 57 }
+      ]
+    },
+    {
+      "slug": "barbie",
+      "name": "Barbie",
+      "logo": null,
+      "tracks": [
+        { "title": "Dance The Night", "youtubeId": "OiC1rgCPmUQ", "startAt": 50 },
+        { "title": "I'm Just Ken", "youtubeId": "ru1LC9lW20Q", "startAt": 30 },
+        { "title": "What Was I Made For?", "youtubeId": "ML0zd8UAuq8", "startAt": 35 }
+      ]
+    },
+    {
+      "slug": "suicide-squad",
+      "name": "Suicide Squad",
+      "alias": ["Lil Wayne", "Skrillex"],
+      "logo": null,
+      "tracks": [
+        { "title": "Heathens", "youtubeId": "UprcpdwuwCg", "startAt": 38 },
+        { "title": "Sucker for Pain", "youtubeId": "-59jGD4WrmE", "startAt": 25 },
+        { "title": "Purple Lamborghini", "youtubeId": "ZkqyIoYAXV8", "startAt": 40 }
+      ]
+    },
+    {
+      "slug": "fast-and-furious",
+      "name": "Fast & Furious",
+      "alias": ["Furious 7"],
+      "logo": null,
+      "tracks": [
+        { "title": "See You Again", "youtubeId": "RgKAFK5djSk", "startAt": 47 },
+        { "title": "Go Hard or Go Home", "youtubeId": "D_VRSFpUcp0", "startAt": 30 },
+        { "title": "Get Low", "youtubeId": "5x4Lwdkxu0c", "startAt": 42 }
+      ]
+    },
+    {
+      "slug": "purple-rain",
+      "name": "Purple Rain",
+      "alias": ["Prince"],
+      "logo": null,
+      "tracks": [
+        { "title": "Purple Rain", "youtubeId": "TvnYmWpD_T8", "startAt": 75 },
+        { "title": "When Doves Cry", "youtubeId": "UG3VcCAlUgE", "startAt": 38 },
+        { "title": "Let's Go Crazy", "youtubeId": "aXJhDltzYVQ", "startAt": 45 }
+      ]
+    },
+    {
+      "slug": "pirates-des-caraibes",
+      "name": "Pirates des Caraïbes",
+      "alias": ["Hans Zimmer", "Klaus Badelt", "Pirates of the Caribbean"],
+      "logo": null,
+      "tracks": [
+        { "title": "He's a Pirate", "youtubeId": "BuYf0taXoNw", "startAt": 12 },
+        { "title": "Jack Sparrow", "youtubeId": "JZeNYaTmVP4", "startAt": 60 },
+        { "title": "Davy Jones", "youtubeId": "Tjp8cj8Vzyo", "startAt": 20 }
+      ]
+    },
+    {
+      "slug": "les-gardiens-de-la-galaxie",
+      "name": "Les Gardiens de la Galaxie",
+      "alias": ["Blue Swede", "Redbone", "Electric Light Orchestra"],
+      "logo": null,
+      "tracks": [
+        { "title": "Hooked on a Feeling", "youtubeId": "NrI-UBIB8Jk", "startAt": 16 },
+        { "title": "Come and Get Your Love", "youtubeId": "BA4rSO-h9Io", "startAt": 22 },
+        { "title": "Mr. Blue Sky", "youtubeId": "aQUlA8Hcv4s", "startAt": 28 }
+      ]
+    },
+    {
+      "slug": "black-panther",
+      "name": "Black Panther",
+      "alias": ["Kendrick Lamar"],
+      "logo": null,
+      "tracks": [
+        { "title": "All The Stars", "youtubeId": "JQbjS0_ZfJ0", "startAt": 22 },
+        { "title": "Pray For Me", "youtubeId": "XR7Ev14vUh8", "startAt": 25 },
+        { "title": "King's Dead", "youtubeId": "VwAnsAUYnw4", "startAt": 40 }
+      ]
+    },
+    {
+      "slug": "spider-man",
+      "name": "Spider-Man",
+      "logo": null,
+      "tracks": [
+        { "title": "Sunflower", "youtubeId": "ApXoWvfEYVU", "startAt": 21 },
+        { "title": "What's Up Danger", "youtubeId": "nZFNut0RGlQ", "startAt": 35 },
+        { "title": "Annihilate", "youtubeId": "e7RvFZ6XtkI", "startAt": 25 }
+      ]
+    },
+    {
+      "slug": "zombies",
+      "name": "Zombies",
+      "logo": null,
+      "tracks": [
+        { "title": "Someday", "youtubeId": "3yy-dKTmyOo", "startAt": 30 },
+        { "title": "Fired Up", "youtubeId": "tHjuEF4Q3qU", "startAt": 25 },
+        { "title": "BAMM", "youtubeId": "PmWORPV7fKk", "startAt": 28 }
+      ]
+    }
+  ]
+}

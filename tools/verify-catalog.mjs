@@ -9,10 +9,12 @@
 //   node tools/verify-catalog.mjs                  # structure + oEmbed
 //   node tools/verify-catalog.mjs --durations      # + yt-dlp : durée, album,
 //                                                  #   embarquabilité réelle
+//   node tools/verify-catalog.mjs --views          # + yt-dlp : audit des vues
+//                                                  #   (sous la cible = alerte)
 //   node tools/verify-catalog.mjs catalog/x.json   # un seul fichier
 
 import { execFile } from 'node:child_process';
-import { readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { promisify } from 'node:util';
 
@@ -22,6 +24,14 @@ const CONCURRENCE = 6;
 const DUREE_MIN = 90;
 const DUREE_MAX = 480;
 const TITRES_PAR_GROUPE = 3;
+
+// Le commanditaire veut un catalogue que tout le monde reconnaît : sous cette
+// barre, la case est un trou noir pour la moitié de la salle.
+const VUES_MIN = 10_000_000;
+const VUES_PALMARES = 20;
+
+// Les logos vivent là, servis au front sous /logos/<slug>.png.
+const DOSSIER_LOGOS = join('public', 'logos');
 
 // Marqueurs qui disqualifient : ce n'est pas la version studio originale.
 // Recherche par mot entier, après retrait du nom du groupe et du morceau —
@@ -49,6 +59,9 @@ const SUSPECTS = [
 
 const args = process.argv.slice(2);
 const avecDurees = args.includes('--durations');
+const avecVues = args.includes('--views');
+// Les deux drapeaux passent par yt-dlp : une seule sonde, deux lectures.
+const avecMeta = avecDurees || avecVues;
 const fichiers = args.filter((a) => !a.startsWith('--'));
 
 // ------------------------------------------------------------ normalisation
@@ -96,7 +109,10 @@ async function oembed(id, essais = 3) {
   return { code: 0, title: '', author: '', reseau: true };
 }
 
-const CHAMPS = '%(duration)s|%(album)s|%(release_year)s|%(playable_in_embed)s|%(age_limit)s|%(availability)s|%(live_status)s';
+// Une colonne de plus coûte zéro : c'est la négociation avec YouTube qui coûte,
+// et le throttling est déjà la première cause de rapport rouge. `--views` lit
+// donc cette sortie plutôt que de lancer un second yt-dlp par vidéo.
+const CHAMPS = '%(duration)s|%(album)s|%(release_year)s|%(playable_in_embed)s|%(age_limit)s|%(availability)s|%(live_status)s|%(view_count)s';
 
 /** Métadonnées yt-dlp. Rend `null` en cas d'échec — que l'appelant DOIT
  *  traiter comme une erreur, jamais comme un contrôle réussi.
@@ -113,7 +129,7 @@ async function metadonnees(id, essais = 4) {
         [`https://www.youtube.com/watch?v=${id}`, '--print', CHAMPS, '--skip-download', '--no-warnings'],
         { timeout: 90_000 },
       );
-      const [duree, album, annee, embed, age, dispo, direct] = stdout.trim().split('|');
+      const [duree, album, annee, embed, age, dispo, direct, vues] = stdout.trim().split('|');
       const d = Number(duree);
       if (!Number.isFinite(d)) return null;
       const na = (v) => (v === 'NA' || v === undefined ? null : v);
@@ -125,6 +141,8 @@ async function metadonnees(id, essais = 4) {
         ageLimite: Number(age) || 0,
         disponibilite: na(dispo),
         direct: na(direct),
+        // Un compteur absent n'est pas un compteur à zéro : on le dira.
+        vues: na(vues) === null || !Number.isFinite(Number(vues)) ? null : Number(vues),
       };
     } catch {
       /* throttling, réseau : on retente une fois */
@@ -144,23 +162,42 @@ async function ytDlpPresent() {
 
 // ----------------------------------------------------------------- contrôles
 
-/** Le groupe annoncé doit apparaître dans le titre de la vidéo ou dans le nom
- *  de la chaîne. Sinon l'id pointe ailleurs. */
-function groupeReconnu(nomGroupe, titreVideo, chaine) {
-  const cible = `${aplatir(titreVideo)}|${aplatir(chaine)}`;
-  const candidats = new Set([aplatir(nomGroupe)]);
-  const sansThe = aplatir(nomGroupe).replace(/^the/, '');
+/** Les alias déclarés, nettoyés des valeurs que la structure a déjà refusées. */
+const aliasDe = (band) =>
+  (Array.isArray(band?.alias) ? band.alias : []).filter((a) => typeof a === 'string' && a.trim() !== '');
+
+/** Un nom (ou un alias) est reconnu s'il apparaît dans le titre de la vidéo ou
+ *  dans le nom de la chaîne. Sinon l'id pointe ailleurs. */
+function nomReconnu(nom, cible) {
+  const candidats = new Set([aplatir(nom)]);
+  const sansThe = aplatir(nom).replace(/^the/, '');
   if (sansThe.length >= 3) candidats.add(sansThe);
   return [...candidats].some((c) => c.length > 0 && cible.includes(c));
+}
+
+/** Le nom d'abord, les alias en secours. C'est le prix à payer pour qu'une case
+ *  puisse porter le nom d'un film pendant que la vidéo porte celui du
+ *  compositeur : sur un thème « musiques de films », la case « Titanic » pointe
+ *  sur « Céline Dion - My Heart Will Go On » et l'entrée est pourtant juste.
+ *
+ *  Rend l'alias qui a sauvé la mise, pour pouvoir dire plus tard lesquels ne
+ *  servent à rien. */
+function groupeReconnu(band, titreVideo, chaine) {
+  const cible = `${aplatir(titreVideo)}|${aplatir(chaine)}`;
+  if (nomReconnu(band.name, cible)) return { reconnu: true, parAlias: null };
+  const alias = aliasDe(band).find((a) => nomReconnu(a, cible)) ?? null;
+  return { reconnu: alias !== null, parAlias: alias };
 }
 
 const titreReconnu = (titreMorceau, titreVideo) => aplatir(titreVideo).includes(aplatir(titreMorceau));
 
 /** Cherche un marqueur dans le titre, après retrait du nom du groupe et du
- *  morceau : « I Just Wanna Live » de Good Charlotte n'est pas un live. */
-function marqueur(liste, titreVideo, titreMorceau, nomGroupe) {
+ *  morceau : « I Just Wanna Live » de Good Charlotte n'est pas un live.
+ *  L'alias qui a servi est un nom propre comme les autres : sans lui, un
+ *  compositeur qui s'appelle « Live » condamnerait l'entrée. */
+function marqueur(liste, titreVideo, titreMorceau, ...noms) {
   let mots = enMots(titreVideo);
-  for (const propre of [enMots(titreMorceau), enMots(nomGroupe)]) {
+  for (const propre of [enMots(titreMorceau), ...noms.map(enMots)]) {
     if (propre.trim().length > 0) mots = mots.split(propre).join(' ');
   }
   return liste.find((m) => contientMot(mots, m)) ?? null;
@@ -177,6 +214,9 @@ function albumSuspect(album) {
 
 const erreurs = [];
 const alertes = [];
+const palmares = [];
+
+const enMillions = (vues) => `${(vues / 1_000_000).toFixed(1)} M`;
 
 function chargerThemes() {
   if (fichiers.length > 0) return fichiers;
@@ -208,10 +248,11 @@ if (chemins.length === 0) {
   process.exit(1);
 }
 
-if (avecDurees && !(await ytDlpPresent())) {
+if (avecMeta && !(await ytDlpPresent())) {
   // Sans ça, l'absence de yt-dlp faisait sauter tous les contrôles de durée
   // en silence, et la CI passait au vert en affirmant le contraire.
-  console.error('--durations demandé mais yt-dlp est introuvable. Installe-le ou retire le drapeau.');
+  const demandes = [avecDurees && '--durations', avecVues && '--views'].filter(Boolean).join(' et ');
+  console.error(`${demandes} demandé mais yt-dlp est introuvable. Installe-le ou retire le drapeau.`);
   process.exit(1);
 }
 
@@ -228,12 +269,44 @@ for (const chemin of chemins) {
   const slugs = new Set();
   const idsVus = new Map();
   const entrees = [];
+  const sansLogo = [];
+  let avecLogo = 0;
+  // Un alias oublié après un changement d'id est du bruit qu'on veut voir. On
+  // ne peut le constater qu'après la sonde : ici on ouvre juste le compteur.
+  const aliasBilan = new Map();
 
   for (const band of bands) {
     if (slugs.has(band.slug)) erreurs.push(`slug en double : ${band.slug}`);
     slugs.add(band.slug);
     if (!/^[a-z0-9-]+$/.test(band.slug)) erreurs.push(`slug non conforme : ${band.slug}`);
-    if (band.logo !== null && typeof band.logo !== 'string') erreurs.push(`logo invalide : ${band.slug}`);
+    // Une chaîne vide passerait le test de type et pointerait sur le dossier.
+    if (band.logo !== null && (typeof band.logo !== 'string' || band.logo.trim() === '')) {
+      erreurs.push(`logo invalide : ${band.slug}`);
+    }
+    if (typeof band.logo === 'string' && band.logo.trim() !== '') {
+      avecLogo++;
+      // Un logo déclaré mais absent tombe en repli silencieux côté front :
+      // personne ne s'en aperçoit avant la soirée.
+      if (!existsSync(join(DOSSIER_LOGOS, band.logo))) {
+        erreurs.push(`${band.slug} : logo « ${band.logo} » introuvable dans ${DOSSIER_LOGOS}/`);
+      }
+      // Le front sert /logos/<slug>.png sans lire la valeur déclarée : un nom
+      // qui s'en écarte marchera ici et nulle part ailleurs.
+      if (band.logo !== `${band.slug}.png`) {
+        alertes.push(`${band.slug} : logo « ${band.logo} » — le front ira chercher ${band.slug}.png`);
+      }
+    } else {
+      sansLogo.push(band.slug);
+    }
+
+    // `null` vaut absence, par symétrie avec `logo` : inutile de rougir sur un
+    // champ laissé vide par mimétisme.
+    if (band.alias != null) {
+      const valide =
+        Array.isArray(band.alias) && band.alias.every((a) => typeof a === 'string' && a.trim() !== '');
+      if (!valide) erreurs.push(`alias invalide : ${band.slug} — attendu un tableau de chaînes non vides`);
+    }
+    if (aliasDe(band).length > 0) aliasBilan.set(band.slug, { band, sondes: 0, secours: 0 });
 
     if (band.tracks?.length !== TITRES_PAR_GROUPE) {
       erreurs.push(`${band.slug} : ${band.tracks?.length ?? 0} titres au lieu de ${TITRES_PAR_GROUPE}`);
@@ -251,6 +324,15 @@ for (const chemin of chemins) {
       else idsVus.set(track.youtubeId, `${band.slug}/${track.title}`);
       entrees.push({ band, track });
     }
+  }
+
+  // Tout ou rien : une grille où six cases portent un logo et quatorze un nom
+  // ressemble à un bug, pas à un choix.
+  if (avecLogo > 0 && sansLogo.length > 0) {
+    erreurs.push(
+      `${chemin} : ${avecLogo} entrée(s) avec logo mais ${sansLogo.length} sans — ` +
+        `compléter ou tout retirer : ${sansLogo.join(', ')}`,
+    );
   }
 
   // --- collisions internes au catalogue -----------------------------------
@@ -284,7 +366,7 @@ for (const chemin of chemins) {
   // --- contrôles réseau ---------------------------------------------------
   const resultats = await enParallele(entrees, CONCURRENCE, async ({ band, track }) => {
     const emb = await oembed(track.youtubeId);
-    const meta = avecDurees ? await metadonnees(track.youtubeId) : undefined;
+    const meta = avecMeta ? await metadonnees(track.youtubeId) : undefined;
     return { band, track, emb, meta };
   });
 
@@ -304,46 +386,78 @@ for (const chemin of chemins) {
 
     // On collecte tous les défauts de l'entrée, pas seulement le premier :
     // sinon le compte d'erreurs sous-estime le travail restant.
-    if (!groupeReconnu(band.name, emb.title, emb.author)) {
-      defauts.push(`la vidéo ne mentionne pas le groupe — « ${emb.title} » / chaîne « ${emb.author} »`);
+    const identite = groupeReconnu(band, emb.title, emb.author);
+    const bilan = aliasBilan.get(band.slug);
+    if (bilan) {
+      bilan.sondes++;
+      if (identite.parAlias) bilan.secours++;
+    }
+    if (!identite.reconnu) {
+      const attendu = aliasDe(band).length > 0 ? 'ni le groupe ni ses alias' : 'pas le groupe';
+      defauts.push(`la vidéo ne mentionne ${attendu} — « ${emb.title} » / chaîne « ${emb.author} »`);
     }
     if (!titreReconnu(track.title, emb.title)) {
       defauts.push(`le titre ne correspond pas — vidéo « ${emb.title} »`);
     }
-    const interdit = marqueur(INTERDITS, emb.title, track.title, band.name);
+    const interdit = marqueur(INTERDITS, emb.title, track.title, band.name, identite.parAlias);
     if (interdit) defauts.push(`« ${interdit} » dans le titre — « ${emb.title} »`);
 
-    const suspect = marqueur(SUSPECTS, emb.title, track.title, band.name);
+    const suspect = marqueur(SUSPECTS, emb.title, track.title, band.name, identite.parAlias);
     if (suspect) alertes.push(`${ref} : version alternative (« ${suspect} ») — « ${emb.title} »`);
 
-    if (avecDurees) {
-      if (meta === null) {
-        // Une métadonnée manquante n'est PAS un contrôle réussi.
-        defauts.push(
-          'métadonnées yt-dlp indisponibles après plusieurs reprises — contrôle de durée impossible ' +
-            '(souvent un throttling YouTube : relancer avant de conclure que la vidéo est morte)',
-        );
-      } else {
-        if (meta.duree < DUREE_MIN || meta.duree > DUREE_MAX) {
-          defauts.push(`durée ${meta.duree}s hors plage ${DUREE_MIN}-${DUREE_MAX}s`);
+    if (avecMeta && meta === null) {
+      const panne =
+        'métadonnées yt-dlp indisponibles après plusieurs reprises ' +
+        '(souvent un throttling YouTube : relancer avant de conclure que la vidéo est morte)';
+      // Une métadonnée manquante n'est PAS un contrôle réussi. Mais un audit de
+      // vues seul ne doit pas rougir la CI : c'est déjà la règle des vues.
+      if (avecDurees) defauts.push(`${panne} — contrôle de durée impossible`);
+      else alertes.push(`${ref} : ${panne} — vues non auditées`);
+    }
+
+    if (avecDurees && meta) {
+      if (meta.duree < DUREE_MIN || meta.duree > DUREE_MAX) {
+        defauts.push(`durée ${meta.duree}s hors plage ${DUREE_MIN}-${DUREE_MAX}s`);
+      }
+      if (track.startAt > meta.duree - 30) {
+        defauts.push(`startAt ${track.startAt}s trop proche de la fin (durée ${meta.duree}s)`);
+      }
+      // L'embarquabilité réelle, plutôt que déduite du seul code oEmbed.
+      if (!meta.embarquable) defauts.push('playable_in_embed = False');
+      if (meta.ageLimite > 0) defauts.push(`age_limit = ${meta.ageLimite} — refusera de jouer en iframe`);
+      if (meta.disponibilite && meta.disponibilite !== 'public') {
+        defauts.push(`availability = ${meta.disponibilite}`);
+      }
+      if (meta.direct && meta.direct !== 'not_live') defauts.push(`live_status = ${meta.direct}`);
+      const album = albumSuspect(meta.album);
+      if (album) defauts.push(`album « ${meta.album} » sent la captation (« ${album} »)`);
+    }
+
+    // Un clip confidentiel n'est pas une erreur de catalogue : on veut pouvoir
+    // auditer la notoriété à la demande sans que la CI en dépende.
+    if (avecVues && meta) {
+      if (meta.vues === null) alertes.push(`${ref} : view_count indisponible — notoriété non vérifiable`);
+      else {
+        palmares.push({ ref, vues: meta.vues });
+        if (meta.vues < VUES_MIN) {
+          alertes.push(`${ref} : ${enMillions(meta.vues)} de vues — sous la cible de ${enMillions(VUES_MIN)}`);
         }
-        if (track.startAt > meta.duree - 30) {
-          defauts.push(`startAt ${track.startAt}s trop proche de la fin (durée ${meta.duree}s)`);
-        }
-        // L'embarquabilité réelle, plutôt que déduite du seul code oEmbed.
-        if (!meta.embarquable) defauts.push('playable_in_embed = False');
-        if (meta.ageLimite > 0) defauts.push(`age_limit = ${meta.ageLimite} — refusera de jouer en iframe`);
-        if (meta.disponibilite && meta.disponibilite !== 'public') {
-          defauts.push(`availability = ${meta.disponibilite}`);
-        }
-        if (meta.direct && meta.direct !== 'not_live') defauts.push(`live_status = ${meta.direct}`);
-        const album = albumSuspect(meta.album);
-        if (album) defauts.push(`album « ${meta.album} » sent la captation (« ${album} »)`);
       }
     }
 
     if (defauts.length === 0) totalOk++;
     else for (const d of defauts) erreurs.push(`${ref} : ${d}`);
+  }
+
+  // Alias jamais sollicité : l'entrée passe déjà par son nom. Sans blocage —
+  // c'est du bruit, pas une faute — mais du bruit qu'on veut voir partir.
+  for (const { band, sondes, secours } of aliasBilan.values()) {
+    if (sondes > 0 && secours === 0) {
+      alertes.push(
+        `${band.name} : alias inutile(s) (${aliasDe(band).join(', ')}) — ` +
+          `le nom suffit sur les ${sondes} titres sondés`,
+      );
+    }
   }
 }
 
@@ -351,6 +465,14 @@ console.log('\n--------------------------------------------------');
 console.log(`${totalOk}/${totalTitres} titres valides`);
 if (!avecDurees) {
   console.log('(durées et albums non contrôlés — relancer avec --durations pour le contrôle complet)');
+}
+if (palmares.length > 0) {
+  // Le bas du classement d'abord : c'est là que se cachent les cases devant
+  // lesquelles la salle restera muette.
+  palmares.sort((a, b) => a.vues - b.vues);
+  const queue = palmares.slice(0, VUES_PALMARES);
+  console.log(`\nLes ${queue.length} titres les moins vus (cible ${enMillions(VUES_MIN)}) :`);
+  for (const { ref, vues } of queue) console.log(`  ${enMillions(vues).padStart(9)} — ${ref}`);
 }
 if (alertes.length > 0) {
   console.log(`\n${alertes.length} alerte(s) — à relire, sans blocage :`);

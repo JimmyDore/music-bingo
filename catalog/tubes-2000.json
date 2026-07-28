@@ -1,0 +1,446 @@
+{
+  "id": "tubes-2000",
+  "name": "Tubes des années 2000",
+  "bands": [
+    {
+      "slug": "rihanna",
+      "name": "Rihanna",
+      "logo": null,
+      "tracks": [
+        { "title": "Umbrella", "youtubeId": "CvBfHwUxHIk", "startAt": 76 },
+        { "title": "Diamonds", "youtubeId": "lWA2pjMjpBs", "startAt": 58 },
+        { "title": "Only Girl (In The World)", "youtubeId": "pa14VNsdSYM", "startAt": 61 }
+      ]
+    },
+    {
+      "slug": "beyonce",
+      "name": "Beyoncé",
+      "logo": null,
+      "tracks": [
+        { "title": "Single Ladies (Put a Ring on It)", "youtubeId": "4m1EFMoRFvY", "startAt": 15 },
+        { "title": "Halo", "youtubeId": "bnVUHWCynig", "startAt": 66 },
+        { "title": "Crazy In Love", "youtubeId": "ViwtNLUqkMY", "startAt": 21 }
+      ]
+    },
+    {
+      "slug": "eminem",
+      "name": "Eminem",
+      "logo": null,
+      "tracks": [
+        { "title": "Without Me", "youtubeId": "YVkUvmDQ3HY", "startAt": 56 },
+        { "title": "The Real Slim Shady", "youtubeId": "eJO5HU_7_1w", "startAt": 39 },
+        { "title": "Not Afraid", "youtubeId": "j5-yKhDd64s", "startAt": 33 }
+      ]
+    },
+    {
+      "slug": "katy-perry",
+      "name": "Katy Perry",
+      "logo": null,
+      "tracks": [
+        { "title": "Roar", "youtubeId": "CevxZvSJLk8", "startAt": 99 },
+        { "title": "Firework", "youtubeId": "QGJuMBdaqIw", "startAt": 63 },
+        { "title": "Dark Horse", "youtubeId": "0KSOMA3QBU0", "startAt": 54 }
+      ]
+    },
+    {
+      "slug": "lady-gaga",
+      "name": "Lady Gaga",
+      "logo": null,
+      "tracks": [
+        { "title": "Bad Romance", "youtubeId": "qrO4YZeyl0I", "startAt": 32 },
+        { "title": "Poker Face", "youtubeId": "bESGLojNYSo", "startAt": 68 },
+        { "title": "Just Dance", "youtubeId": "2Abk1jAONjw", "startAt": 57 }
+      ]
+    },
+    {
+      "slug": "britney-spears",
+      "name": "Britney Spears",
+      "logo": null,
+      "tracks": [
+        { "title": "Toxic", "youtubeId": "LOZuxwVk7TU", "startAt": 47 },
+        { "title": "Womanizer", "youtubeId": "rMqayQ-U74s", "startAt": 51 },
+        { "title": "Oops!...I Did It Again", "youtubeId": "CduA0TULnow", "startAt": 53 }
+      ]
+    },
+    {
+      "slug": "shakira",
+      "name": "Shakira",
+      "logo": null,
+      "tracks": [
+        { "title": "Hips Don't Lie", "youtubeId": "DUT5rEU6pqM", "startAt": 29 },
+        { "title": "Waka Waka (This Time for Africa)", "youtubeId": "pRpeEdMmmQ0", "startAt": 56 },
+        { "title": "Whenever, Wherever", "youtubeId": "weRHyjj34ZE", "startAt": 44 }
+      ]
+    },
+    {
+      "slug": "coldplay",
+      "name": "Coldplay",
+      "logo": null,
+      "tracks": [
+        { "title": "Viva La Vida", "youtubeId": "dvgZkm1xWPE", "startAt": 24 },
+        { "title": "The Scientist", "youtubeId": "RB-RcX5DS5A", "startAt": 22 },
+        { "title": "Paradise", "youtubeId": "1G4isv_Fylg", "startAt": 96 }
+      ]
+    },
+    {
+      "slug": "adele",
+      "name": "Adele",
+      "logo": null,
+      "tracks": [
+        { "title": "Rolling in the Deep", "youtubeId": "rYEDA3JcQqw", "startAt": 11 },
+        { "title": "Someone Like You", "youtubeId": "hLQl3WQQoQ0", "startAt": 69 },
+        { "title": "Hello", "youtubeId": "YQHsXMglC9A", "startAt": 62 }
+      ]
+    },
+    {
+      "slug": "bruno-mars",
+      "name": "Bruno Mars",
+      "logo": null,
+      "tracks": [
+        { "title": "Just The Way You Are", "youtubeId": "LjhCEhWiKXk", "startAt": 13 },
+        { "title": "Grenade", "youtubeId": "SR6iYWJxHqs", "startAt": 58 },
+        { "title": "Locked Out Of Heaven", "youtubeId": "e-fA-gBCkj0", "startAt": 46 }
+      ]
+    },
+    {
+      "slug": "ed-sheeran",
+      "name": "Ed Sheeran",
+      "logo": null,
+      "tracks": [
+        { "title": "Shape of You", "youtubeId": "JGwWNGJdvx8", "startAt": 67 },
+        { "title": "Thinking Out Loud", "youtubeId": "lp-EO5I60KA", "startAt": 59 },
+        { "title": "Photograph", "youtubeId": "nSDgHBxUbVQ", "startAt": 54 }
+      ]
+    },
+    {
+      "slug": "justin-timberlake",
+      "name": "Justin Timberlake",
+      "logo": null,
+      "tracks": [
+        { "title": "CAN'T STOP THE FEELING!", "youtubeId": "ru0K8uYEZWw", "startAt": 60 },
+        { "title": "Cry Me A River", "youtubeId": "DksSPZTZES0", "startAt": 97 },
+        { "title": "SexyBack", "youtubeId": "3gOHvDP_vCs", "startAt": 34 }
+      ]
+    },
+    {
+      "slug": "black-eyed-peas",
+      "name": "The Black Eyed Peas",
+      "logo": null,
+      "tracks": [
+        { "title": "I Gotta Feeling", "youtubeId": "uSD4vsh1zDA", "startAt": 31 },
+        { "title": "Where Is The Love?", "youtubeId": "WpYeekQkAdc", "startAt": 51 },
+        { "title": "Boom Boom Pow", "youtubeId": "4m48GqaOz90", "startAt": 26 }
+      ]
+    },
+    {
+      "slug": "maroon-5",
+      "name": "Maroon 5",
+      "logo": null,
+      "tracks": [
+        { "title": "Moves Like Jagger", "youtubeId": "iEPTlhBmwRg", "startAt": 71 },
+        { "title": "She Will Be Loved", "youtubeId": "nIjVuRTm-dc", "startAt": 56 },
+        { "title": "Sugar", "youtubeId": "09R8_2nJtjg", "startAt": 82 }
+      ]
+    },
+    {
+      "slug": "sia",
+      "name": "Sia",
+      "logo": null,
+      "tracks": [
+        { "title": "Chandelier", "youtubeId": "2vjPBrBU-TM", "startAt": 58 },
+        { "title": "Cheap Thrills", "youtubeId": "31crA53Dgu0", "startAt": 46 },
+        { "title": "Elastic Heart", "youtubeId": "KWZGAExj-es", "startAt": 64 }
+      ]
+    },
+    {
+      "slug": "david-guetta",
+      "name": "David Guetta",
+      "logo": null,
+      "tracks": [
+        { "title": "Titanium", "youtubeId": "JRfuAukYTKg", "startAt": 62 },
+        { "title": "Hey Mama", "youtubeId": "uO59tfQ2TbA", "startAt": 29 },
+        { "title": "Memories", "youtubeId": "NUVCQXMUVnI", "startAt": 49 }
+      ]
+    },
+    {
+      "slug": "avicii",
+      "name": "Avicii",
+      "logo": null,
+      "tracks": [
+        { "title": "Wake Me Up", "youtubeId": "IcrbM1l_BoI", "startAt": 19 },
+        { "title": "Levels", "youtubeId": "_ovdm2yX4MA", "startAt": 57 },
+        { "title": "Hey Brother", "youtubeId": "6Cp6mKbRTQY", "startAt": 14 }
+      ]
+    },
+    {
+      "slug": "daft-punk",
+      "name": "Daft Punk",
+      "logo": null,
+      "tracks": [
+        { "title": "Get Lucky", "youtubeId": "5NV6Rdv1a3I", "startAt": 56 },
+        { "title": "One More Time", "youtubeId": "FGBhQbmPwH8", "startAt": 27 },
+        { "title": "Around The World", "youtubeId": "K0HSD_i2DvA", "startAt": 41 }
+      ]
+    },
+    {
+      "slug": "usher",
+      "name": "Usher",
+      "logo": null,
+      "tracks": [
+        { "title": "Yeah!", "youtubeId": "GxBSyx85Kp8", "startAt": 26 },
+        { "title": "DJ Got Us Fallin' In Love", "youtubeId": "C-dvTjK_07c", "startAt": 43 },
+        { "title": "OMG", "youtubeId": "1RnPB76mjxI", "startAt": 47 }
+      ]
+    },
+    {
+      "slug": "nelly-furtado",
+      "name": "Nelly Furtado",
+      "logo": null,
+      "tracks": [
+        { "title": "Say It Right", "youtubeId": "6JnGBs88sL0", "startAt": 52 },
+        { "title": "Promiscuous", "youtubeId": "0J3vgcE5i2o", "startAt": 27 },
+        { "title": "Maneater", "youtubeId": "PLolag3YSYU", "startAt": 54 }
+      ]
+    },
+    {
+      "slug": "alicia-keys",
+      "name": "Alicia Keys",
+      "logo": null,
+      "tracks": [
+        { "title": "No One", "youtubeId": "rywUS-ohqeE", "startAt": 49 },
+        { "title": "Girl on Fire", "youtubeId": "J91ti_MpdHA", "startAt": 24 },
+        { "title": "If I Ain't Got You", "youtubeId": "Ju8Hr50Ckwk", "startAt": 56 }
+      ]
+    },
+    {
+      "slug": "christina-aguilera",
+      "name": "Christina Aguilera",
+      "logo": null,
+      "tracks": [
+        { "title": "Beautiful", "youtubeId": "eAfyFTzZDMM", "startAt": 59 },
+        { "title": "Ain't No Other Man", "youtubeId": "8x7Ta89QLo4", "startAt": 63 },
+        { "title": "Genie In A Bottle", "youtubeId": "kIDWgqDBNXA", "startAt": 47 }
+      ]
+    },
+    {
+      "slug": "outkast",
+      "name": "OutKast",
+      "logo": null,
+      "tracks": [
+        { "title": "Hey Ya!", "youtubeId": "PWgvGjAhvIw", "startAt": 43 },
+        { "title": "Ms. Jackson", "youtubeId": "MYxAiK6VnXw", "startAt": 18 },
+        { "title": "Roses", "youtubeId": "gWju37TZfo0", "startAt": 64 }
+      ]
+    },
+    {
+      "slug": "50-cent",
+      "name": "50 Cent",
+      "logo": null,
+      "tracks": [
+        { "title": "In Da Club", "youtubeId": "5qm8PH4xAss", "startAt": 33 },
+        { "title": "Candy Shop", "youtubeId": "SRcnnId15BA", "startAt": 29 },
+        { "title": "21 Questions", "youtubeId": "cDMhlvbOFaM", "startAt": 41 }
+      ]
+    },
+    {
+      "slug": "snoop-dogg",
+      "name": "Snoop Dogg",
+      "logo": null,
+      "tracks": [
+        { "title": "Drop It Like It's Hot", "youtubeId": "GtUVQei3nX4", "startAt": 28 },
+        { "title": "Young, Wild and Free", "youtubeId": "Wa5B22KAkEk", "startAt": 39 },
+        { "title": "Sensual Seduction", "youtubeId": "Y1PVmANeyAg", "startAt": 44 }
+      ]
+    },
+    {
+      "slug": "kanye-west",
+      "name": "Kanye West",
+      "logo": null,
+      "tracks": [
+        { "title": "Stronger", "youtubeId": "PsO6ZnUZI0g", "startAt": 38 },
+        { "title": "Gold Digger", "youtubeId": "6vwNcNOTVzY", "startAt": 16 },
+        { "title": "Heartless", "youtubeId": "Co0tTeuUVhU", "startAt": 29 }
+      ]
+    },
+    {
+      "slug": "gorillaz",
+      "name": "Gorillaz",
+      "logo": null,
+      "tracks": [
+        { "title": "Feel Good Inc.", "youtubeId": "HyHNuVaZJ-k", "startAt": 23 },
+        { "title": "Clint Eastwood", "youtubeId": "1V_xRb0x9aw", "startAt": 31 },
+        { "title": "On Melancholy Hill", "youtubeId": "04mfKJWDSzI", "startAt": 36 }
+      ]
+    },
+    {
+      "slug": "amy-winehouse",
+      "name": "Amy Winehouse",
+      "logo": null,
+      "tracks": [
+        { "title": "Rehab", "youtubeId": "KUmZp8pR1uc", "startAt": 12 },
+        { "title": "Back To Black", "youtubeId": "TJAfLE39ZZ8", "startAt": 57 },
+        { "title": "You Know I'm No Good", "youtubeId": "b-I2s5zRbHg", "startAt": 26 }
+      ]
+    },
+    {
+      "slug": "justin-bieber",
+      "name": "Justin Bieber",
+      "logo": null,
+      "tracks": [
+        { "title": "Baby", "youtubeId": "kffacxfA7G4", "startAt": 37 },
+        { "title": "Sorry", "youtubeId": "fRh_vgS2dFE", "startAt": 49 },
+        { "title": "Love Yourself", "youtubeId": "oyEuk8j8imI", "startAt": 53 }
+      ]
+    },
+    {
+      "slug": "taylor-swift",
+      "name": "Taylor Swift",
+      "logo": null,
+      "tracks": [
+        { "title": "Shake It Off", "youtubeId": "nfWlot6h_JM", "startAt": 52 },
+        { "title": "Blank Space", "youtubeId": "e-ORhEE9VVg", "startAt": 66 },
+        { "title": "You Belong With Me", "youtubeId": "VuNIsY6JdUw", "startAt": 58 }
+      ]
+    },
+    {
+      "slug": "akon",
+      "name": "Akon",
+      "logo": null,
+      "tracks": [
+        { "title": "Lonely", "youtubeId": "6EEW-9NDM5k", "startAt": 13 },
+        { "title": "Smack That", "youtubeId": "bKDdT_nyP54", "startAt": 36 },
+        { "title": "Right Now (Na Na Na)", "youtubeId": "vIaH35-MLsk", "startAt": 54 }
+      ]
+    },
+    {
+      "slug": "chris-brown",
+      "name": "Chris Brown",
+      "logo": null,
+      "tracks": [
+        { "title": "With You", "youtubeId": "nmjdaBaZe8Y", "startAt": 44 },
+        { "title": "Forever", "youtubeId": "5sMKX22BHeE", "startAt": 46 },
+        { "title": "Yeah 3x", "youtubeId": "3mC2ixOAivA", "startAt": 42 }
+      ]
+    },
+    {
+      "slug": "pitbull",
+      "name": "Pitbull",
+      "logo": null,
+      "tracks": [
+        { "title": "Give Me Everything", "youtubeId": "EPo5wWmKEaI", "startAt": 51 },
+        { "title": "I Know You Want Me (Calle Ocho)", "youtubeId": "E2tMV96xULk", "startAt": 39 },
+        { "title": "Rain Over Me", "youtubeId": "SmM0653YvXU", "startAt": 48 }
+      ]
+    },
+    {
+      "slug": "flo-rida",
+      "name": "Flo Rida",
+      "logo": null,
+      "tracks": [
+        { "title": "Low", "youtubeId": "U2waT9TxPU0", "startAt": 34 },
+        { "title": "Whistle", "youtubeId": "cSnkWzZ7ZAA", "startAt": 21 },
+        { "title": "Good Feeling", "youtubeId": "3OnnDqH6Wj8", "startAt": 63 }
+      ]
+    },
+    {
+      "slug": "kesha",
+      "name": "Kesha",
+      "logo": null,
+      "tracks": [
+        { "title": "TiK ToK", "youtubeId": "iP6XpLQM2Cs", "startAt": 17 },
+        { "title": "Die Young", "youtubeId": "NOubzHCUt48", "startAt": 46 },
+        { "title": "We R Who We R", "youtubeId": "mXvmSaE0JXA", "startAt": 49 }
+      ]
+    },
+    {
+      "slug": "jason-derulo",
+      "name": "Jason Derulo",
+      "logo": null,
+      "tracks": [
+        { "title": "Whatcha Say", "youtubeId": "pBI3lc18k8Q", "startAt": 15 },
+        { "title": "Talk Dirty", "youtubeId": "RbtPXFlZlHg", "startAt": 43 },
+        { "title": "Want To Want Me", "youtubeId": "rClUOdS5Zyw", "startAt": 47 }
+      ]
+    },
+    {
+      "slug": "onerepublic",
+      "name": "OneRepublic",
+      "logo": null,
+      "tracks": [
+        { "title": "Counting Stars", "youtubeId": "hT_nvWreIhg", "startAt": 18 },
+        { "title": "Apologize", "youtubeId": "-rKUT6zugJ0", "startAt": 51 },
+        { "title": "Secrets", "youtubeId": "qHm9MG9xw1o", "startAt": 53 }
+      ]
+    },
+    {
+      "slug": "calvin-harris",
+      "name": "Calvin Harris",
+      "logo": null,
+      "tracks": [
+        { "title": "Summer", "youtubeId": "ebXbLfLACGM", "startAt": 27 },
+        { "title": "Outside", "youtubeId": "J9NQFACZYEU", "startAt": 48 },
+        { "title": "Feel So Close", "youtubeId": "dGghkjpNCQ8", "startAt": 37 }
+      ]
+    },
+    {
+      "slug": "sean-paul",
+      "name": "Sean Paul",
+      "logo": null,
+      "tracks": [
+        { "title": "Temperature", "youtubeId": "dW2MmuA1nI4", "startAt": 32 },
+        { "title": "Get Busy", "youtubeId": "oPQ3o14ksaM", "startAt": 22 },
+        { "title": "Give It Up To Me", "youtubeId": "bMoNV9oWs2E", "startAt": 41 }
+      ]
+    },
+    {
+      "slug": "mark-ronson",
+      "name": "Mark Ronson",
+      "logo": null,
+      "tracks": [
+        { "title": "Uptown Funk", "youtubeId": "OPf0YbXqDm0", "startAt": 40 },
+        { "title": "Valerie", "youtubeId": "bixuI_GV5I0", "startAt": 52 },
+        { "title": "Nothing Breaks Like a Heart", "youtubeId": "A9hcJgtnm6Q", "startAt": 57 }
+      ]
+    },
+    {
+      "slug": "nickelback",
+      "name": "Nickelback",
+      "logo": null,
+      "tracks": [
+        { "title": "How You Remind Me", "youtubeId": "Aiay8I5IPB8", "startAt": 57 },
+        { "title": "Rockstar", "youtubeId": "DmeUuoxyt_E", "startAt": 61 },
+        { "title": "Far Away", "youtubeId": "j4y-RzVGrHg", "startAt": 66 }
+      ]
+    },
+    {
+      "slug": "pink",
+      "name": "P!nk",
+      "logo": null,
+      "tracks": [
+        { "title": "So What", "youtubeId": "FJfFZqTlWrQ", "startAt": 45 },
+        { "title": "Just Give Me A Reason", "youtubeId": "OpQFFLBMEPI", "startAt": 59 },
+        { "title": "Raise Your Glass", "youtubeId": "XjVNlG5cZyQ", "startAt": 48 }
+      ]
+    },
+    {
+      "slug": "miley-cyrus",
+      "name": "Miley Cyrus",
+      "logo": null,
+      "tracks": [
+        { "title": "Wrecking Ball", "youtubeId": "My2FRPA3Gf8", "startAt": 56 },
+        { "title": "Party In The U.S.A.", "youtubeId": "M11SvDtPBhA", "startAt": 44 },
+        { "title": "We Can't Stop", "youtubeId": "LrUvu1mlWco", "startAt": 38 }
+      ]
+    },
+    {
+      "slug": "lana-del-rey",
+      "name": "Lana Del Rey",
+      "logo": null,
+      "tracks": [
+        { "title": "Summertime Sadness", "youtubeId": "TdrL3QxjyVw", "startAt": 63 },
+        { "title": "Young and Beautiful", "youtubeId": "o_1aF54DO60", "startAt": 54 },
+        { "title": "Born To Die", "youtubeId": "Bag1gUxuU0g", "startAt": 73 }
+      ]
+    }
+  ]
+}

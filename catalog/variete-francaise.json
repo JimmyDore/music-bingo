@@ -1,0 +1,446 @@
+{
+  "id": "variete-francaise",
+  "name": "Variété française",
+  "bands": [
+    {
+      "slug": "stromae",
+      "name": "Stromae",
+      "logo": null,
+      "tracks": [
+        { "title": "Papaoutai", "youtubeId": "oiKj0Z_Xnjc", "startAt": 55 },
+        { "title": "Alors on danse", "youtubeId": "VHoT4N43jK8", "startAt": 14 },
+        { "title": "Formidable", "youtubeId": "S_xH7noaqTA", "startAt": 24 }
+      ]
+    },
+    {
+      "slug": "indila",
+      "name": "Indila",
+      "logo": null,
+      "tracks": [
+        { "title": "Dernière Danse", "youtubeId": "K5KAc5CoCuk", "startAt": 38 },
+        { "title": "Love Story", "youtubeId": "DF3XjEhJ40Y", "startAt": 30 },
+        { "title": "Tourner Dans Le Vide", "youtubeId": "vtNJMAyeP0s", "startAt": 68 }
+      ]
+    },
+    {
+      "slug": "gims",
+      "name": "Gims",
+      "logo": null,
+      "tracks": [
+        { "title": "Bella", "youtubeId": "rMltoD1jCGI", "startAt": 40 },
+        { "title": "Sapés comme jamais", "youtubeId": "4bPGxLxogvw", "startAt": 28 },
+        { "title": "Est-ce que tu m'aimes ?", "youtubeId": "6TpyRE_juyA", "startAt": 52 }
+      ]
+    },
+    {
+      "slug": "aya-nakamura",
+      "name": "Aya Nakamura",
+      "logo": null,
+      "tracks": [
+        { "title": "Djadja", "youtubeId": "iPGgnzc34tY", "startAt": 20 },
+        { "title": "Copines", "youtubeId": "EkGiGf8utCM", "startAt": 36 },
+        { "title": "Pookie", "youtubeId": "_bPa-VG0AWo", "startAt": 18 }
+      ]
+    },
+    {
+      "slug": "angele",
+      "name": "Angèle",
+      "logo": null,
+      "tracks": [
+        { "title": "Balance Ton Quoi", "youtubeId": "Hi7Rx3En7-k", "startAt": 62 },
+        { "title": "Tout Oublier", "youtubeId": "Fy1xQSiLx8U", "startAt": 48 },
+        { "title": "La Loi de Murphy", "youtubeId": "zGyThu7EAHQ", "startAt": 52 }
+      ]
+    },
+    {
+      "slug": "louane",
+      "name": "Louane",
+      "logo": null,
+      "tracks": [
+        { "title": "Avenir", "youtubeId": "niyGWxVE-e4", "startAt": 58 },
+        { "title": "Jour 1", "youtubeId": "yleB8fUXudw", "startAt": 55 },
+        { "title": "Si t'étais là", "youtubeId": "yo-CCYzm_SQ", "startAt": 50 }
+      ]
+    },
+    {
+      "slug": "vianney",
+      "name": "Vianney",
+      "logo": null,
+      "tracks": [
+        { "title": "Je m'en vais", "youtubeId": "eLYyCFuPCX8", "startAt": 33 },
+        { "title": "Pas là", "youtubeId": "nBI0bDH8W28", "startAt": 44 },
+        { "title": "Moi aimer toi", "youtubeId": "wmCeAmBpWoY", "startAt": 46 }
+      ]
+    },
+    {
+      "slug": "kendji-girac",
+      "name": "Kendji Girac",
+      "logo": null,
+      "tracks": [
+        { "title": "Andalouse", "youtubeId": "FndmvPkI1Ms", "startAt": 27 },
+        { "title": "Color Gitano", "youtubeId": "63K5VMx2BZM", "startAt": 42 },
+        { "title": "Conmigo", "youtubeId": "7uG6E6bVKU0", "startAt": 36 }
+      ]
+    },
+    {
+      "slug": "soprano",
+      "name": "Soprano",
+      "logo": null,
+      "tracks": [
+        { "title": "Cosmo", "youtubeId": "3-IUHJdiE5Q", "startAt": 54 },
+        { "title": "Clown", "youtubeId": "k1niwMJLFP4", "startAt": 64 },
+        { "title": "Roule", "youtubeId": "ne9Qa1x8_rE", "startAt": 58 }
+      ]
+    },
+    {
+      "slug": "bigflo-et-oli",
+      "name": "Bigflo & Oli",
+      "logo": null,
+      "tracks": [
+        { "title": "Dommage", "youtubeId": "8AF-Sm8d8yk", "startAt": 36 },
+        { "title": "Sur la lune", "youtubeId": "wv7yHnwQMPc", "startAt": 52 },
+        { "title": "Papa", "youtubeId": "dMIPaab43Hw", "startAt": 70 }
+      ]
+    },
+    {
+      "slug": "orelsan",
+      "name": "Orelsan",
+      "logo": null,
+      "tracks": [
+        { "title": "Basique", "youtubeId": "2bjk26RwjyU", "startAt": 22 },
+        { "title": "La pluie", "youtubeId": "37StRy0LEbI", "startAt": 32 },
+        { "title": "Défaite de famille", "youtubeId": "wRQEfN8PGYI", "startAt": 42 }
+      ]
+    },
+    {
+      "slug": "slimane",
+      "name": "Slimane",
+      "logo": null,
+      "tracks": [
+        { "title": "Paname", "youtubeId": "Xs90a3K9aIU", "startAt": 42 },
+        { "title": "Adieu", "youtubeId": "fBZ0SAs8m_Q", "startAt": 62 },
+        { "title": "Des milliers de je t'aime", "youtubeId": "LZRnvEEgAW0", "startAt": 52 }
+      ]
+    },
+    {
+      "slug": "vitaa",
+      "name": "Vitaa",
+      "logo": null,
+      "tracks": [
+        { "title": "Ça va ça vient", "youtubeId": "Wz86pFtHZqI", "startAt": 46 },
+        { "title": "Avant toi", "youtubeId": "d6BzCEkGd3I", "startAt": 57 },
+        { "title": "Je te le donne", "youtubeId": "yH-6SoFYkLg", "startAt": 63 }
+      ]
+    },
+    {
+      "slug": "amir",
+      "name": "Amir",
+      "logo": null,
+      "tracks": [
+        { "title": "J'ai cherché", "youtubeId": "kQysGibXphE", "startAt": 53 },
+        { "title": "On dirait", "youtubeId": "MBFQ0NK-xF8", "startAt": 47 },
+        { "title": "États d'amour", "youtubeId": "UKcWushnRpQ", "startAt": 56 }
+      ]
+    },
+    {
+      "slug": "dadju",
+      "name": "Dadju",
+      "logo": null,
+      "tracks": [
+        { "title": "Reine", "youtubeId": "tVKaN_H35xs", "startAt": 38 },
+        { "title": "Bob Marley", "youtubeId": "hQU_pgyCL6k", "startAt": 43 },
+        { "title": "Jaloux", "youtubeId": "254EHfv9RvM", "startAt": 51 }
+      ]
+    },
+    {
+      "slug": "black-m",
+      "name": "Black M",
+      "logo": null,
+      "tracks": [
+        { "title": "Sur ma route", "youtubeId": "U-Z_bZS8t3M", "startAt": 57 },
+        { "title": "Mme Pavoshko", "youtubeId": "zxdA9XnC120", "startAt": 68 },
+        { "title": "Je ne dirai rien", "youtubeId": "IMDTr8d8ZVE", "startAt": 54 }
+      ]
+    },
+    {
+      "slug": "christophe-mae",
+      "name": "Christophe Maé",
+      "logo": null,
+      "tracks": [
+        { "title": "Il est où le bonheur", "youtubeId": "m5qXr9lLdwA", "startAt": 47 },
+        { "title": "On s'attache", "youtubeId": "rjsG_WGzgTA", "startAt": 51 },
+        { "title": "Dingue, Dingue, Dingue", "youtubeId": "Rwv1djaV6Fc", "startAt": 43 }
+      ]
+    },
+    {
+      "slug": "m-pokora",
+      "name": "M. Pokora",
+      "logo": null,
+      "tracks": [
+        { "title": "Belinda", "youtubeId": "H93wmV82FwE", "startAt": 41 },
+        { "title": "Juste un instant", "youtubeId": "IJ-uPxVYsbA", "startAt": 57 },
+        { "title": "Cette année là", "youtubeId": "6SgnOYK9HuI", "startAt": 29 }
+      ]
+    },
+    {
+      "slug": "julien-dore",
+      "name": "Julien Doré",
+      "logo": null,
+      "tracks": [
+        { "title": "Le lac", "youtubeId": "9UXSWGsjAUQ", "startAt": 66 },
+        { "title": "Coco Câline", "youtubeId": "Zqn41lMIGg8", "startAt": 54 },
+        { "title": "Paris-Seychelles", "youtubeId": "cmE_aahc448", "startAt": 59 }
+      ]
+    },
+    {
+      "slug": "clara-luciani",
+      "name": "Clara Luciani",
+      "logo": null,
+      "tracks": [
+        { "title": "La grenade", "youtubeId": "85m-Qgo9_nE", "startAt": 51 },
+        { "title": "Respire encore", "youtubeId": "uWH00ehhLP8", "startAt": 56 },
+        { "title": "Ma soeur", "youtubeId": "mU63HJ3NYTM", "startAt": 61 }
+      ]
+    },
+    {
+      "slug": "zaz",
+      "name": "Zaz",
+      "logo": null,
+      "tracks": [
+        { "title": "Je veux", "youtubeId": "0TFNGRYMz1U", "startAt": 17 },
+        { "title": "On ira", "youtubeId": "8IjWHBGzsu4", "startAt": 46 },
+        { "title": "Eblouie par la nuit", "youtubeId": "KDcgOpUp2nc", "startAt": 23 }
+      ]
+    },
+    {
+      "slug": "celine-dion",
+      "name": "Céline Dion",
+      "logo": null,
+      "tracks": [
+        { "title": "Pour que tu m'aimes encore", "youtubeId": "AzaTyxMduH4", "startAt": 68 },
+        { "title": "Je sais pas", "youtubeId": "zCsuKp9ewLY", "startAt": 72 },
+        { "title": "Encore un soir", "youtubeId": "9bLD0tVep9M", "startAt": 65 }
+      ]
+    },
+    {
+      "slug": "mylene-farmer",
+      "name": "Mylène Farmer",
+      "logo": null,
+      "tracks": [
+        { "title": "California", "youtubeId": "JAS2XAvINtc", "startAt": 74 },
+        { "title": "Appelle mon numéro", "youtubeId": "fdqn6JekZwc", "startAt": 59 },
+        { "title": "C'est une belle journée", "youtubeId": "huZTRymyfpU", "startAt": 55 }
+      ]
+    },
+    {
+      "slug": "calogero",
+      "name": "Calogero",
+      "logo": null,
+      "tracks": [
+        { "title": "En Apesanteur", "youtubeId": "jasIqn8IifQ", "startAt": 53 },
+        { "title": "Face à la mer", "youtubeId": "MFhKnRLEihE", "startAt": 49 },
+        { "title": "Un Jour Au Mauvais Endroit", "youtubeId": "W0xjW-e4KEg", "startAt": 69 }
+      ]
+    },
+    {
+      "slug": "florent-pagny",
+      "name": "Florent Pagny",
+      "logo": null,
+      "tracks": [
+        { "title": "Savoir Aimer", "youtubeId": "g-gh2hIRhkc", "startAt": 60 },
+        { "title": "Ma Liberté De Penser", "youtubeId": "6w5vWHqU3uM", "startAt": 52 },
+        { "title": "Et Un Jour Une Femme", "youtubeId": "bTUeD0KQc_c", "startAt": 71 }
+      ]
+    },
+    {
+      "slug": "grand-corps-malade",
+      "name": "Grand Corps Malade",
+      "logo": null,
+      "tracks": [
+        { "title": "Mesdames", "youtubeId": "TC7aA1WIkyQ", "startAt": 33 },
+        { "title": "Mais je t'aime", "youtubeId": "7ss-xmvLGFw", "startAt": 58 },
+        { "title": "Nos plus belles années", "youtubeId": "oVB92jV9za0", "startAt": 55 }
+      ]
+    },
+    {
+      "slug": "alizee",
+      "name": "Alizée",
+      "logo": null,
+      "tracks": [
+        { "title": "Moi... Lolita", "youtubeId": "QpbHdIrtpNo", "startAt": 47 },
+        { "title": "J'en ai marre !", "youtubeId": "G4LIM9VYhB0", "startAt": 51 },
+        { "title": "Gourmandises", "youtubeId": "pvh-ieuM8yg", "startAt": 57 }
+      ]
+    },
+    {
+      "slug": "sexion-dassaut",
+      "name": "Sexion d'Assaut",
+      "logo": null,
+      "tracks": [
+        { "title": "Désolé", "youtubeId": "NLAbYWKwrfk", "startAt": 43 },
+        { "title": "Avant qu'elle parte", "youtubeId": "lN2ozTZNJC0", "startAt": 54 },
+        { "title": "Ma direction", "youtubeId": "Y7-vP7TnluY", "startAt": 48 }
+      ]
+    },
+    {
+      "slug": "joe-dassin",
+      "name": "Joe Dassin",
+      "logo": null,
+      "tracks": [
+        { "title": "L'été indien", "youtubeId": "tQb4eWCAq8c", "startAt": 63 },
+        { "title": "Et si tu n'existais pas", "youtubeId": "fVCAFvIq_F8", "startAt": 18 },
+        { "title": "Les Champs-Elysées", "youtubeId": "1JhYYUWOBBs", "startAt": 12 }
+      ]
+    },
+    {
+      "slug": "edith-piaf",
+      "name": "Édith Piaf",
+      "logo": null,
+      "tracks": [
+        { "title": "Non, je ne regrette rien", "youtubeId": "4r454dad7tc", "startAt": 14 },
+        { "title": "La Vie En Rose", "youtubeId": "qPU8mENUBXk", "startAt": 28 },
+        { "title": "Hymne à l'amour", "youtubeId": "sgBldNsK-xw", "startAt": 24 }
+      ]
+    },
+    {
+      "slug": "charles-aznavour",
+      "name": "Charles Aznavour",
+      "logo": null,
+      "tracks": [
+        { "title": "La bohème", "youtubeId": "fVfnEyLOkrM", "startAt": 18 },
+        { "title": "Emmenez-moi", "youtubeId": "0OrKMaeQUx0", "startAt": 58 },
+        { "title": "Hier encore", "youtubeId": "dbxyKR1P8vA", "startAt": 12 }
+      ]
+    },
+    {
+      "slug": "jacques-brel",
+      "name": "Jacques Brel",
+      "logo": null,
+      "tracks": [
+        { "title": "Ne me quitte pas", "youtubeId": "oR_SZR_tmxM", "startAt": 20 },
+        { "title": "La chanson des vieux amants", "youtubeId": "dU-OD5_Dxrs", "startAt": 19 },
+        { "title": "Vesoul", "youtubeId": "tVKWiseNGUU", "startAt": 16 }
+      ]
+    },
+    {
+      "slug": "johnny-hallyday",
+      "name": "Johnny Hallyday",
+      "logo": null,
+      "tracks": [
+        { "title": "Allumer Le Feu", "youtubeId": "s3O1Xro7oAI", "startAt": 64 },
+        { "title": "Je te promets", "youtubeId": "-TkrMyXYbik", "startAt": 55 },
+        { "title": "Marie", "youtubeId": "2aOLW_R9-E4", "startAt": 52 }
+      ]
+    },
+    {
+      "slug": "jean-jacques-goldman",
+      "name": "Jean-Jacques Goldman",
+      "logo": null,
+      "tracks": [
+        { "title": "Je te donne", "youtubeId": "493R05ifNsI", "startAt": 54 },
+        { "title": "Envole-moi", "youtubeId": "oltptNDHocw", "startAt": 47 },
+        { "title": "Comme toi", "youtubeId": "ySZBnMukO8g", "startAt": 62 }
+      ]
+    },
+    {
+      "slug": "francis-cabrel",
+      "name": "Francis Cabrel",
+      "logo": null,
+      "tracks": [
+        { "title": "Je l'aime à mourir", "youtubeId": "MzvlalfN0Es", "startAt": 40 },
+        { "title": "Petite Marie", "youtubeId": "GV85QI6NjM0", "startAt": 24 },
+        { "title": "L'encre de tes yeux", "youtubeId": "aKkvU_NnPhg", "startAt": 18 }
+      ]
+    },
+    {
+      "slug": "michel-sardou",
+      "name": "Michel Sardou",
+      "logo": null,
+      "tracks": [
+        { "title": "Les lacs du Connemara", "youtubeId": "bpEmjxobvbY", "startAt": 82 },
+        { "title": "La maladie d'amour", "youtubeId": "6YJ_V5V9Zek", "startAt": 38 },
+        { "title": "En chantant", "youtubeId": "CHp4Z8xZpsM", "startAt": 48 }
+      ]
+    },
+    {
+      "slug": "renaud",
+      "name": "Renaud",
+      "logo": null,
+      "tracks": [
+        { "title": "Mistral gagnant", "youtubeId": "_YqzuE-5RE8", "startAt": 15 },
+        { "title": "Manhattan Kaboul", "youtubeId": "0qeV8PDBH8E", "startAt": 52 },
+        { "title": "Les Bobos", "youtubeId": "LZzR7-apnKA", "startAt": 38 }
+      ]
+    },
+    {
+      "slug": "daniel-balavoine",
+      "name": "Daniel Balavoine",
+      "logo": null,
+      "tracks": [
+        { "title": "L'Aziza", "youtubeId": "O4ACXQxCgc8", "startAt": 53 },
+        { "title": "Tous les cris les S.O.S.", "youtubeId": "urWV2OjAmUQ", "startAt": 75 },
+        { "title": "Le chanteur", "youtubeId": "HXdP15Ubu6M", "startAt": 12 }
+      ]
+    },
+    {
+      "slug": "france-gall",
+      "name": "France Gall",
+      "logo": null,
+      "tracks": [
+        { "title": "Ella, elle l'a", "youtubeId": "lgHGU8gqz9U", "startAt": 38 },
+        { "title": "Résiste", "youtubeId": "I5mlAZkibgw", "startAt": 54 },
+        { "title": "Il jouait du piano debout", "youtubeId": "7l7eXx_8DHY", "startAt": 49 }
+      ]
+    },
+    {
+      "slug": "louise-attaque",
+      "name": "Louise Attaque",
+      "logo": null,
+      "tracks": [
+        { "title": "J't'emmène au vent", "youtubeId": "BRTDC9Z5UdE", "startAt": 37 },
+        { "title": "Ton invitation", "youtubeId": "ApWnXUavKOc", "startAt": 21 },
+        { "title": "Léa", "youtubeId": "Wt6eHMIhVxI", "startAt": 26 }
+      ]
+    },
+    {
+      "slug": "nekfeu",
+      "name": "Nekfeu",
+      "logo": null,
+      "tracks": [
+        { "title": "On Verra", "youtubeId": "YltjliK0ZeA", "startAt": 46 },
+        { "title": "Ma dope", "youtubeId": "Z68u6dJqoI0", "startAt": 35 },
+        { "title": "Egérie", "youtubeId": "yEyTe-QzyfQ", "startAt": 44 }
+      ]
+    },
+    {
+      "slug": "lomepal",
+      "name": "Lomepal",
+      "logo": null,
+      "tracks": [
+        { "title": "Trop beau", "youtubeId": "Bkm03KcnKHE", "startAt": 50 },
+        { "title": "Yeux disent", "youtubeId": "FmUDe7P0fzg", "startAt": 45 },
+        { "title": "1000°C", "youtubeId": "iXp9xuNi0mU", "startAt": 31 }
+      ]
+    },
+    {
+      "slug": "hoshi",
+      "name": "Hoshi",
+      "logo": null,
+      "tracks": [
+        { "title": "Ta Marinière", "youtubeId": "DipEiYAyKxY", "startAt": 51 },
+        { "title": "Amour censure", "youtubeId": "nCKtYXIh1Ac", "startAt": 45 },
+        { "title": "Comment je vais faire", "youtubeId": "uqROarXJAHg", "startAt": 56 }
+      ]
+    },
+    {
+      "slug": "vanessa-paradis",
+      "name": "Vanessa Paradis",
+      "logo": null,
+      "tracks": [
+        { "title": "Joe Le Taxi", "youtubeId": "Ulay2FvUEd8", "startAt": 26 },
+        { "title": "La seine", "youtubeId": "9Z-NbQvhzKM", "startAt": 40 },
+        { "title": "Divine Idylle", "youtubeId": "3R_6sP_6VWE", "startAt": 43 }
+      ]
+    }
+  ]
+}
