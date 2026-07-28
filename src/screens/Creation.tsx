@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api, ErreurApi, type Referentiels } from '../api'
+import { dureeEstimee } from '../lib/duree'
 import { navigate } from '../router'
 import { ecrireTokenPresentateur } from '../storage'
 
@@ -41,6 +42,9 @@ export function Creation() {
   // Le lexique vient du serveur, déjà résolu : un thème de films annonce
   // « 42 films », le thème rock continue d'annoncer « 63 groupes ».
   const themeChoisi = refs?.themes.find((t) => t.id === choix.theme)
+  // La durée annoncée sous chaque objectif dépend de la grille choisie juste
+  // au-dessus : un carton plein en 3×3 n'est pas un carton plein en 4×5.
+  const grilleChoisie = refs?.grids.find((g) => g.id === choix.grid)
 
   return (
     <div className="ecran">
@@ -93,18 +97,23 @@ export function Creation() {
 
           <Bloc titre="Objectif">
             <div className="flex gap-2">
-              {refs.winRules.map((regle) => (
-                <button
-                  key={regle.id}
-                  type="button"
-                  className="choix"
-                  aria-pressed={choix.winRule === regle.id}
-                  onClick={() => setChoix((c) => ({ ...c, winRule: regle.id }))}
-                >
-                  <span className="choix-titre">{regle.label}</span>
-                  <span className="choix-detail">{regle.id === 'ligne' ? '~15 min' : '~35 min'}</span>
-                </button>
-              ))}
+              {refs.winRules.map((regle) => {
+                const minutes = grilleChoisie
+                  ? dureeEstimee(grilleChoisie.cols, grilleChoisie.rows, regle.id)
+                  : null
+                return (
+                  <button
+                    key={regle.id}
+                    type="button"
+                    className="choix"
+                    aria-pressed={choix.winRule === regle.id}
+                    onClick={() => setChoix((c) => ({ ...c, winRule: regle.id }))}
+                  >
+                    <span className="choix-titre">{regle.label}</span>
+                    {minutes !== null && <span className="choix-detail">~{minutes} min</span>}
+                  </button>
+                )
+              })}
             </div>
           </Bloc>
 
