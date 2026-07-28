@@ -25,15 +25,55 @@ export function tailleTexte(nom: string): number {
   return Math.min(34, Math.max(11, 175 / motLePlusLong))
 }
 
-function Case({ cellule, taille }: { cellule: Cellule; taille?: number }) {
+/**
+ * Faut-il doubler le logo d'une micro-légende portant le nom du groupe ?
+ *
+ * Un logo rend la grille plus belle, et le jeu plus dur : la moitié de la pièce
+ * ne reconnaît pas l'emblème des Scorpions, et une case illisible est une case
+ * morte. On garde donc le nom partout où il reste de la place.
+ *
+ * `cols` seul ne suffit pas à trancher : la 4×4 et la 4×5 ont toutes deux
+ * quatre colonnes. Ce qui manque sur la 4×5, c'est la hauteur — cinq rangées à
+ * caser dans un écran de téléphone. La règle se lit donc sur les deux
+ * dimensions, d'où le nombre de cases en second argument.
+ */
+export function avecLegende(cols: number, nbCases: number): boolean {
+  const lignes = Math.ceil(nbCases / cols)
+  return cols <= 4 && lignes <= 4
+}
+
+function Case({
+  cellule,
+  taille,
+  legende,
+}: {
+  cellule: Cellule
+  taille?: number
+  legende: boolean
+}) {
   // Le catalogue part sans aucun logo : le mécanisme existe pour qu'on puisse
   // en ajouter plus tard sans toucher une ligne de code. Si le fichier manque,
-  // on retombe silencieusement sur le nom typographié.
+  // on retombe silencieusement sur le nom typographié — une grille vide en
+  // pleine soirée coûte bien plus cher qu'une grille sans logos.
   const [logoCasse, setLogoCasse] = useState(false)
   const logo = cellule.logo && !logoCasse ? `/logos/${cellule.slug}.png` : null
 
   if (logo) {
-    return <img src={logo} alt={cellule.name} className="cellule-logo" onError={() => setLogoCasse(true)} />
+    return (
+      <span className="cellule-visuel">
+        {/* Pas de `loading="lazy"` : les vingt images d'une grille sont toutes
+            au-dessus de la ligne de flottaison. Les différer ne ferait que
+            retarder l'affichage de ce qu'on regarde déjà. */}
+        <img src={logo} alt={cellule.name} className="cellule-logo" onError={() => setLogoCasse(true)} />
+        {/* La légende répète l'`alt` de l'image : purement visuelle, elle est
+            masquée aux lecteurs d'écran pour ne pas dire le nom deux fois. */}
+        {legende && (
+          <span className="cellule-legende" aria-hidden="true">
+            {cellule.name}
+          </span>
+        )}
+      </span>
+    )
   }
   return (
     <span
@@ -93,6 +133,7 @@ export function Grille({
   // et les trois quarts de chacune sont vides — le vide n'a pas disparu, il a
   // seulement déménagé sous le texte.
   const lignes = Math.ceil(cases.length / cols)
+  const legende = avecLegende(cols, cases.length)
   useEffect(() => {
     const el = grille.current
     if (!el || !plein || typeof ResizeObserver === 'undefined') return
@@ -122,7 +163,7 @@ export function Grille({
                 !
               </span>
             )}
-            <Case cellule={cellule} taille={tailles?.get(cellule.name)} />
+            <Case cellule={cellule} taille={tailles?.get(cellule.name)} legende={legende} />
             {cochee && <Coche />}
           </>
         )
