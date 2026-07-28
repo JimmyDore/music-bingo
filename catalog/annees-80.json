@@ -1,6 +1,8 @@
 {
   "id": "annees-80",
   "name": "Années 80",
+  "titresMin": 1,
+  "vuesMin": 900000,
   "bands": [
     {
       "slug": "michael-jackson",
@@ -50,16 +52,6 @@
         { "title": "Africa", "youtubeId": "FTQbiNvZqaY", "startAt": 88 },
         { "title": "Hold The Line", "youtubeId": "htgr3pvBr-I", "startAt": 55 },
         { "title": "Rosanna", "youtubeId": "qmOLtTGvsbM", "startAt": 60 }
-      ]
-    },
-    {
-      "slug": "journey",
-      "name": "Journey",
-      "logo": null,
-      "tracks": [
-        { "title": "Don't Stop Believin'", "youtubeId": "1k8craCGpgs", "startAt": 22 },
-        { "title": "Separate Ways (Worlds Apart)", "youtubeId": "LatorN4P9aA", "startAt": 30 },
-        { "title": "Any Way You Want It", "youtubeId": "atxUuldUcfI", "startAt": 10 }
       ]
     },
     {
@@ -113,36 +105,6 @@
       ]
     },
     {
-      "slug": "depeche-mode",
-      "name": "Depeche Mode",
-      "logo": null,
-      "tracks": [
-        { "title": "Enjoy the Silence", "youtubeId": "aGSKrC7dGcY", "startAt": 78 },
-        { "title": "Personal Jesus", "youtubeId": "u1xrNaTO1bI", "startAt": 50 },
-        { "title": "Just Can't Get Enough", "youtubeId": "_6FBfAQ-NDE", "startAt": 16 }
-      ]
-    },
-    {
-      "slug": "the-cure",
-      "name": "The Cure",
-      "logo": null,
-      "tracks": [
-        { "title": "Boys Don't Cry", "youtubeId": "9GkVhgIeGJQ", "startAt": 42 },
-        { "title": "Friday I'm In Love", "youtubeId": "mGgMZpGYiy8", "startAt": 48 },
-        { "title": "Just Like Heaven", "youtubeId": "n3nPiBai66M", "startAt": 33 }
-      ]
-    },
-    {
-      "slug": "duran-duran",
-      "name": "Duran Duran",
-      "logo": null,
-      "tracks": [
-        { "title": "Hungry like the Wolf", "youtubeId": "oJL-lCzEXgI", "startAt": 47 },
-        { "title": "Rio", "youtubeId": "nTizYn3-QN0", "startAt": 63 },
-        { "title": "The Reflex", "youtubeId": "J5ebkj9x5Ko", "startAt": 70 }
-      ]
-    },
-    {
       "slug": "wham",
       "name": "Wham!",
       "logo": null,
@@ -150,16 +112,6 @@
         { "title": "Last Christmas", "youtubeId": "E8gmARGvPlI", "startAt": 25 },
         { "title": "Wake Me Up Before You Go-Go", "youtubeId": "pIgZ7gMze7A", "startAt": 20 },
         { "title": "Club Tropicana", "youtubeId": "WYX0sjP6Za8", "startAt": 32 }
-      ]
-    },
-    {
-      "slug": "george-michael",
-      "name": "George Michael",
-      "logo": null,
-      "tracks": [
-        { "title": "Careless Whisper", "youtubeId": "izGwDsrQ1eQ", "startAt": 12 },
-        { "title": "Faith", "youtubeId": "6Cs3Pvmmv0E", "startAt": 28 },
-        { "title": "Freedom! '90", "youtubeId": "diYAc7gB-0A", "startAt": 92 }
       ]
     },
     {
@@ -180,16 +132,6 @@
         { "title": "Dancing In the Dark", "youtubeId": "129kuDCQtHs", "startAt": 15 },
         { "title": "Born in the U.S.A.", "youtubeId": "EPhWR4d3FJQ", "startAt": 28 },
         { "title": "I'm On Fire", "youtubeId": "lrpXArn3hII", "startAt": 14 }
-      ]
-    },
-    {
-      "slug": "dire-straits",
-      "name": "Dire Straits",
-      "logo": null,
-      "tracks": [
-        { "title": "Money For Nothing", "youtubeId": "wTP2RUD_cL0", "startAt": 45 },
-        { "title": "Walk Of Life", "youtubeId": "kd9TlGDZGkI", "startAt": 12 },
-        { "title": "Brothers In Arms", "youtubeId": "jhdFe3evXpk", "startAt": 55 }
       ]
     },
     {
@@ -233,66 +175,6 @@
       ]
     },
     {
-      "slug": "simple-minds",
-      "name": "Simple Minds",
-      "logo": null,
-      "tracks": [
-        { "title": "Don't You (Forget About Me)", "youtubeId": "CdqoNKCCt7A", "startAt": 30 },
-        { "title": "Alive And Kicking", "youtubeId": "ljIQo1OHkTI", "startAt": 57 },
-        { "title": "Belfast Child", "youtubeId": "7vhhTvcLoRw", "startAt": 96 }
-      ]
-    },
-    {
-      "slug": "tears-for-fears",
-      "name": "Tears For Fears",
-      "logo": null,
-      "tracks": [
-        { "title": "Everybody Wants To Rule The World", "youtubeId": "aGCdLKXNF3w", "startAt": 25 },
-        { "title": "Shout", "youtubeId": "Ye7FKc1JQe4", "startAt": 28 },
-        { "title": "Head Over Heels", "youtubeId": "CsHiG-43Fzg", "startAt": 26 }
-      ]
-    },
-    {
-      "slug": "inxs",
-      "name": "INXS",
-      "logo": null,
-      "tracks": [
-        { "title": "Never Tear Us Apart", "youtubeId": "AIBv2GEnXlc", "startAt": 28 },
-        { "title": "Need You Tonight", "youtubeId": "w-rv2BQa2OU", "startAt": 20 },
-        { "title": "New Sensation", "youtubeId": "azfG5H-pCVg", "startAt": 18 }
-      ]
-    },
-    {
-      "slug": "van-halen",
-      "name": "Van Halen",
-      "logo": null,
-      "tracks": [
-        { "title": "Jump", "youtubeId": "SwYN7mTi6HM", "startAt": 12 },
-        { "title": "Panama", "youtubeId": "fuKDBPw8wQA", "startAt": 22 },
-        { "title": "Hot For Teacher", "youtubeId": "6M4_Ommfvv0", "startAt": 48 }
-      ]
-    },
-    {
-      "slug": "zz-top",
-      "name": "ZZ Top",
-      "logo": null,
-      "tracks": [
-        { "title": "Sharp Dressed Man", "youtubeId": "7wRHBLwpASw", "startAt": 24 },
-        { "title": "Gimme All Your Lovin'", "youtubeId": "Ae829mFAGGE", "startAt": 30 },
-        { "title": "Legs", "youtubeId": "eUDcTLaWJuo", "startAt": 32 }
-      ]
-    },
-    {
-      "slug": "billy-idol",
-      "name": "Billy Idol",
-      "logo": null,
-      "tracks": [
-        { "title": "Rebel Yell", "youtubeId": "VdphvuyaV_I", "startAt": 26 },
-        { "title": "White Wedding", "youtubeId": "AAZQaYKZMTI", "startAt": 68 },
-        { "title": "Dancing With Myself", "youtubeId": "FG1NrQYXjLU", "startAt": 52 }
-      ]
-    },
-    {
       "slug": "the-police",
       "name": "The Police",
       "logo": null,
@@ -313,26 +195,6 @@
       ]
     },
     {
-      "slug": "pet-shop-boys",
-      "name": "Pet Shop Boys",
-      "logo": null,
-      "tracks": [
-        { "title": "West End Girls", "youtubeId": "p3j2NYZ8FKs", "startAt": 55 },
-        { "title": "It's A Sin", "youtubeId": "dRHetRTOD1Q", "startAt": 70 },
-        { "title": "Always On My Mind", "youtubeId": "bDMCwSP5nf0", "startAt": 26 }
-      ]
-    },
-    {
-      "slug": "the-bangles",
-      "name": "The Bangles",
-      "logo": null,
-      "tracks": [
-        { "title": "Walk Like an Egyptian", "youtubeId": "Cv6tuzHUuuk", "startAt": 18 },
-        { "title": "Eternal Flame", "youtubeId": "PSoOFn3wQV4", "startAt": 10 },
-        { "title": "Manic Monday", "youtubeId": "SsmVgoXDq2w", "startAt": 14 }
-      ]
-    },
-    {
       "slug": "bonnie-tyler",
       "name": "Bonnie Tyler",
       "logo": null,
@@ -340,36 +202,6 @@
         { "title": "Total Eclipse of the Heart", "youtubeId": "lcOxhH8N3Bo", "startAt": 40 },
         { "title": "Holding Out For A Hero", "youtubeId": "bWcASV2sey0", "startAt": 60 },
         { "title": "It's A Heartache", "youtubeId": "bEOl38y8Nj8", "startAt": 18 }
-      ]
-    },
-    {
-      "slug": "culture-club",
-      "name": "Culture Club",
-      "logo": null,
-      "tracks": [
-        { "title": "Karma Chameleon", "youtubeId": "JmcA9LIIXWw", "startAt": 48 },
-        { "title": "Do You Really Want To Hurt Me", "youtubeId": "2nXGPZaTKik", "startAt": 58 },
-        { "title": "Time (Clock Of The Heart)", "youtubeId": "8tI1_KlO6xI", "startAt": 20 }
-      ]
-    },
-    {
-      "slug": "alphaville",
-      "name": "Alphaville",
-      "logo": null,
-      "tracks": [
-        { "title": "Forever Young", "youtubeId": "oNjQXmoxiQ8", "startAt": 65 },
-        { "title": "Big In Japan", "youtubeId": "tl6u2NASUzU", "startAt": 34 },
-        { "title": "Sounds Like A Melody", "youtubeId": "sUz2DK-ucWc", "startAt": 27 }
-      ]
-    },
-    {
-      "slug": "men-at-work",
-      "name": "Men At Work",
-      "logo": null,
-      "tracks": [
-        { "title": "Down Under", "youtubeId": "XfR9iY5y94s", "startAt": 44 },
-        { "title": "Who Can It Be Now?", "youtubeId": "SECVGN4Bsgg", "startAt": 16 },
-        { "title": "Overkill", "youtubeId": "RY7S6EgSlCI", "startAt": 26 }
       ]
     },
     {
@@ -403,16 +235,6 @@
       ]
     },
     {
-      "slug": "bryan-adams",
-      "name": "Bryan Adams",
-      "logo": null,
-      "tracks": [
-        { "title": "Summer Of 69", "youtubeId": "9f06QZCVUHg", "startAt": 18 },
-        { "title": "Heaven", "youtubeId": "3eT464L1YRA", "startAt": 74 },
-        { "title": "Run To You", "youtubeId": "nCBASt507WA", "startAt": 30 }
-      ]
-    },
-    {
       "slug": "david-bowie",
       "name": "David Bowie",
       "logo": null,
@@ -423,23 +245,237 @@
       ]
     },
     {
-      "slug": "roxette",
-      "name": "Roxette",
+      "slug": "opus",
+      "name": "Opus",
       "logo": null,
       "tracks": [
-        { "title": "It Must Have Been Love", "youtubeId": "k2C5TjS2sh4", "startAt": 55 },
-        { "title": "Listen To Your Heart", "youtubeId": "yCC_b5WHLX0", "startAt": 78 },
-        { "title": "The Look", "youtubeId": "LlVI7ZNiFlI", "startAt": 18 }
+        { "title": "Live Is Life", "youtubeId": "pATX-lV0VFk", "startAt": 45 }
       ]
     },
     {
-      "slug": "modern-talking",
-      "name": "Modern Talking",
+      "slug": "sabrina",
+      "name": "Sabrina",
       "logo": null,
       "tracks": [
-        { "title": "You're My Heart, You're My Soul", "youtubeId": "4kHl4FoK1Ys", "startAt": 48 },
-        { "title": "Cheri Cheri Lady", "youtubeId": "eNvUS-6PTbs", "startAt": 46 },
-        { "title": "Brother Louie", "youtubeId": "Lp2qcCrdBLA", "startAt": 52 }
+        { "title": "Boys (Summertime Love)", "youtubeId": "_OIPDU8kCNo", "startAt": 71 }
+      ]
+    },
+    {
+      "slug": "desireless",
+      "name": "Desireless",
+      "logo": null,
+      "tracks": [
+        { "title": "Voyage Voyage", "youtubeId": "NlgmH5q9uNk", "startAt": 42 }
+      ]
+    },
+    {
+      "slug": "cookie-dingler",
+      "name": "Cookie Dingler",
+      "logo": null,
+      "tracks": [
+        { "title": "Femme libérée", "youtubeId": "i1REpOZ8KiU", "startAt": 29 }
+      ]
+    },
+    {
+      "slug": "partenaire-particulier",
+      "name": "Partenaire Particulier",
+      "logo": null,
+      "tracks": [
+        { "title": "Partenaire particulier", "youtubeId": "ccSPZZ2AKXY", "startAt": 55 }
+      ]
+    },
+    {
+      "slug": "axel-bauer",
+      "name": "Axel Bauer",
+      "logo": null,
+      "tracks": [
+        { "title": "Cargo", "youtubeId": "Js67MmvR9Pg", "startAt": 76 }
+      ]
+    },
+    {
+      "slug": "images",
+      "name": "Images",
+      "logo": null,
+      "tracks": [
+        { "title": "Les Démons de minuit", "youtubeId": "kjVeown7umM", "startAt": 52 }
+      ]
+    },
+    {
+      "slug": "laurent-voulzy",
+      "name": "Laurent Voulzy",
+      "logo": null,
+      "tracks": [
+        { "title": "Belle-Île-en-Mer, Marie-Galante", "youtubeId": "n_i6f3q9jb8", "startAt": 30 }
+      ]
+    },
+    {
+      "slug": "elsa",
+      "name": "Elsa",
+      "logo": null,
+      "tracks": [
+        { "title": "T'en va pas", "youtubeId": "ewNHhcUcNWw", "startAt": 49 }
+      ]
+    },
+    {
+      "slug": "vanessa-paradis",
+      "name": "Vanessa Paradis",
+      "logo": null,
+      "tracks": [
+        { "title": "Joe le taxi", "youtubeId": "Ulay2FvUEd8", "startAt": 83 },
+        { "title": "Marilyn et John", "youtubeId": "gWELhB49SWc", "startAt": 69 }
+      ]
+    },
+    {
+      "slug": "debut-de-soiree",
+      "name": "Début de Soirée",
+      "logo": null,
+      "tracks": [
+        { "title": "Nuit de folie", "youtubeId": "yTzyJ7kDLL4", "startAt": 51 },
+        { "title": "Jardins d'enfants", "youtubeId": "vshvQRkgRsY", "startAt": 62 }
+      ]
+    },
+    {
+      "slug": "gilbert-montagne",
+      "name": "Gilbert Montagné",
+      "logo": null,
+      "tracks": [
+        { "title": "On va s'aimer", "youtubeId": "v0eR5lnYuqU", "startAt": 41 },
+        { "title": "Les Sunlights des tropiques", "youtubeId": "2p_AxoaHeRw", "startAt": 54 }
+      ]
+    },
+    {
+      "slug": "mylene-farmer",
+      "name": "Mylène Farmer",
+      "logo": null,
+      "tracks": [
+        { "title": "Sans contrefaçon", "youtubeId": "Jqy2FqMgcpk", "startAt": 25 },
+        { "title": "Pourvu qu'elles soient douces", "youtubeId": "BHq3nOSsTCU", "startAt": 73 }
+      ]
+    },
+    {
+      "slug": "herbert-leonard",
+      "name": "Herbert Léonard",
+      "logo": null,
+      "tracks": [
+        { "title": "Pour le plaisir", "youtubeId": "2fy-h6QcfkE", "startAt": 58 },
+        { "title": "Amoureux fous", "youtubeId": "HRwiYtL_6vo", "startAt": 44 }
+      ]
+    },
+    {
+      "slug": "patrick-bruel",
+      "name": "Patrick Bruel",
+      "logo": null,
+      "tracks": [
+        { "title": "Casser la voix", "youtubeId": "r-951A8fuoU", "startAt": 56 },
+        { "title": "Alors regarde", "youtubeId": "Cd7gBmxYAjw", "startAt": 39 }
+      ]
+    },
+    {
+      "slug": "julien-clerc",
+      "name": "Julien Clerc",
+      "logo": null,
+      "tracks": [
+        { "title": "Mélissa", "youtubeId": "ceUMkmZM09M", "startAt": 20 },
+        { "title": "Hélène", "youtubeId": "bagWWB-35oI", "startAt": 88 }
+      ]
+    },
+    {
+      "slug": "serge-gainsbourg",
+      "name": "Serge Gainsbourg",
+      "logo": null,
+      "tracks": [
+        { "title": "Lemon Incest", "youtubeId": "OzYnJO6RAnA", "startAt": 71 },
+        { "title": "Aux enfants de la chance", "youtubeId": "MmJ0q8SpTDo", "startAt": 39 }
+      ]
+    },
+    {
+      "slug": "les-rita-mitsouko",
+      "name": "Les Rita Mitsouko",
+      "logo": null,
+      "tracks": [
+        { "title": "Marcia Baila", "youtubeId": "1zWlnzFXcKY", "startAt": 42 },
+        { "title": "C'est comme ça", "youtubeId": "fGZRVGlGZ6A", "startAt": 53 },
+        { "title": "Andy", "youtubeId": "Ae-tP-rFJl0", "startAt": 31 }
+      ]
+    },
+    {
+      "slug": "jeanne-mas",
+      "name": "Jeanne Mas",
+      "logo": null,
+      "tracks": [
+        { "title": "Toute première fois", "youtubeId": "nqjGhiLYkOw", "startAt": 54 },
+        { "title": "En rouge et noir", "youtubeId": "OplDIhyp31Y", "startAt": 89 },
+        { "title": "Johnny Johnny", "youtubeId": "_Ws1wlWAZ4U", "startAt": 70 }
+      ]
+    },
+    {
+      "slug": "marc-lavoine",
+      "name": "Marc Lavoine",
+      "logo": null,
+      "tracks": [
+        { "title": "Elle a les yeux revolver", "youtubeId": "cuLZs39okbY", "startAt": 54 },
+        { "title": "Le Parking des anges", "youtubeId": "qdHeyrTq7nc", "startAt": 47 },
+        { "title": "Qu'est-ce que t'es belle", "youtubeId": "e4rgprXOHYE", "startAt": 91 }
+      ]
+    },
+    {
+      "slug": "gold",
+      "name": "Gold",
+      "logo": null,
+      "tracks": [
+        { "title": "Plus près des étoiles", "youtubeId": "mMzRtQxrR_A", "startAt": 36 },
+        { "title": "Ville de lumière", "youtubeId": "ptQT_0k2ji8", "startAt": 41 },
+        { "title": "Capitaine abandonné", "youtubeId": "4sZ7eR451Vc", "startAt": 94 }
+      ]
+    },
+    {
+      "slug": "la-compagnie-creole",
+      "name": "La Compagnie Créole",
+      "logo": null,
+      "tracks": [
+        { "title": "Le bal masqué", "youtubeId": "j-48Xg2cKyg", "startAt": 18 },
+        { "title": "C'est bon pour le moral", "youtubeId": "km6gUbW8s28", "startAt": 44 },
+        { "title": "Ça fait rire les oiseaux", "youtubeId": "wfxt1SGWAI8", "startAt": 30 }
+      ]
+    },
+    {
+      "slug": "pierre-bachelet",
+      "name": "Pierre Bachelet",
+      "logo": null,
+      "tracks": [
+        { "title": "Les Corons", "youtubeId": "r3b5W9WOy2U", "startAt": 48 },
+        { "title": "Elle est d'ailleurs", "youtubeId": "Sko7dU0qJN0", "startAt": 65 },
+        { "title": "Marionnettiste", "youtubeId": "lQM7ya1Km5U", "startAt": 18 }
+      ]
+    },
+    {
+      "slug": "michel-berger",
+      "name": "Michel Berger",
+      "logo": null,
+      "tracks": [
+        { "title": "La groupie du pianiste", "youtubeId": "_hQrpgVK-r0", "startAt": 17 },
+        { "title": "Quelques mots d'amour", "youtubeId": "3Z4hhmOtAMM", "startAt": 15 },
+        { "title": "Chanter pour ceux qui sont loin de chez eux", "youtubeId": "VbyKJ3xm1Sg", "startAt": 51 }
+      ]
+    },
+    {
+      "slug": "daniel-balavoine",
+      "name": "Daniel Balavoine",
+      "logo": null,
+      "tracks": [
+        { "title": "L'Aziza", "youtubeId": "O4ACXQxCgc8", "startAt": 130 },
+        { "title": "Mon fils ma bataille", "youtubeId": "U6HI__YOhe4", "startAt": 107 },
+        { "title": "Tous les cris les SOS", "youtubeId": "urWV2OjAmUQ", "startAt": 138 }
+      ]
+    },
+    {
+      "slug": "france-gall",
+      "name": "France Gall",
+      "logo": null,
+      "tracks": [
+        { "title": "Ella, elle l'a", "youtubeId": "lgHGU8gqz9U", "startAt": 55 },
+        { "title": "Résiste", "youtubeId": "I5mlAZkibgw", "startAt": 25 },
+        { "title": "Babacar", "youtubeId": "rvynnzt8VG4", "startAt": 87 }
       ]
     }
   ]

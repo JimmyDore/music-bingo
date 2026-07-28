@@ -28,9 +28,14 @@ const TITRES_PAR_GROUPE = 3;
 // pas le même extrait de soirée en soirée. Mais certains thèmes n'ont pas trois
 // morceaux également reconnaissables à offrir — une musique de film a un thème
 // culte et deux fonds sonores. Mieux vaut deux titres que tout le monde
-// identifie qu'un troisième devant lequel la salle reste muette. Un thème qui
-// le déclare descend à ce plancher, et pas plus bas.
-const TITRES_PLANCHER = 2;
+// identifie qu'un troisième devant lequel la salle reste muette.
+//
+// Et la variété française des années 80 est un cimetière de tubes uniques :
+// Desireless n'a que « Voyage Voyage », Cookie Dingler que « Femme libérée ».
+// Leur coller un second titre plus faible recrée exactement le défaut qu'on
+// cherche à éviter. Une case qui rejoue toujours le même morceau est un moindre
+// mal. Un thème qui le déclare descend à ce plancher, et pas plus bas.
+const TITRES_PLANCHER = 1;
 
 // Le commanditaire veut un catalogue que tout le monde reconnaît : sous cette
 // barre, la case est un trou noir pour la moitié de la salle.

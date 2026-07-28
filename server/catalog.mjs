@@ -70,8 +70,8 @@ export function parseTheme(raw, label = 'thème') {
   // Comme `alias` : deux réglages que seul `tools/verify-catalog.mjs` consomme,
   // mais qu'on valide ici pour la même raison — un champ que la CI lit et que le
   // boot ignore, c'est une faute de frappe qui ne se découvre jamais.
-  if (data.titresMin != null && ![2, 3].includes(data.titresMin)) {
-    throw new Error(`${label} : titresMin invalide (${data.titresMin}) — 2 ou 3`);
+  if (data.titresMin != null && ![1, 2, 3].includes(data.titresMin)) {
+    throw new Error(`${label} : titresMin invalide (${data.titresMin}) — 1, 2 ou 3`);
   }
   if (data.vuesMin !== undefined && data.vuesMin !== null && !(typeof data.vuesMin === 'number' && data.vuesMin >= 0)) {
     throw new Error(`${label} : vuesMin invalide (${data.vuesMin})`);
