@@ -370,7 +370,11 @@ curl -s -o /dev/null -w "%{http_code}" \
    toujours un album complet ou un extrait.
 4. **oEmbed à 200.** Non négociable, et à revérifier au moment de rendre le lot.
 5. **3 titres par groupe**, les plus reconnaissables — ceux qu'on identifie en
-   dix secondes, pas les préférés du sous-agent.
+   dix secondes, pas les préférés du sous-agent. Si le thème déclare
+   `titresMin: 2`, en rendre **deux plutôt que trois** quand le troisième ne
+   passe pas cette barre : un seul titre est tiré par partie, donc un cue que
+   personne ne place rend la case muette deux fois sur trois. Deux titres sûrs
+   valent mieux que trois dont un est un fond sonore. Jamais moins de deux.
 6. **`startAt` jamais à 0.** Vise l'endroit où le morceau devient identifiable :
    souvent le premier refrain, parfois un riff d'intro emblématique (le riff de
    *Smells Like Teen Spirit* s'identifie à 0:05, le refrain de *In the End* à

@@ -168,7 +168,11 @@ Règles :
 
 - **3 titres par groupe**, mais **un seul tiré par partie** — c'est ce qui fait
   que rejouer le même thème ne redonne pas la même bande-son. Les trois doivent
-  donc être reconnaissables : pas un tube et deux faces B.
+  donc être reconnaissables : pas un tube et deux faces B. Un thème qui déclare
+  `titresMin: 2` peut descendre à deux sur certaines entrées, quand le troisième
+  titre n'existe pas : une musique de film a souvent un thème culte et deux
+  fonds sonores, et une case muette deux parties sur trois coûte plus cher que
+  la variété gagnée. Jamais moins de deux.
 - **Une case = un groupe**, jamais un titre.
 - `startAt` = seconde à laquelle démarrer, pour tomber sur la partie
   reconnaissable et pas sur 20 secondes d'intro. **Jamais 0.**
@@ -176,9 +180,13 @@ Règles :
   double du nombre de cases, et la plus grande grille en compte 20.
 - **10 millions de vues** par titre, en cible. En dessous, la moitié de la salle
   ne reconnaît rien et la case est un trou noir. `--views` audite le catalogue
-  sur ce critère.
+  sur ce critère. Le compteur ne vaut que pour une chanson : une musique de film
+  culte est éparpillée sur cent réuploads et la version officielle n'en récolte
+  que des miettes — « My Heart Will Go On » sort à 0.8 M sur la chaîne de Céline
+  Dion. Un thème qui n'est pas fait de singles pose son propre seuil avec
+  `vuesMin`, ou se retire de l'audit avec `vuesMin: null`.
 
-### Trois champs optionnels
+### Les champs optionnels
 
 - **`kind`** : `musique` (défaut), `pub` ou `replique`. Il ne pilote que trois
   choses — le lexique, la sévérité de la vérification, et l'apparition du bouton
@@ -193,8 +201,15 @@ Règles :
 - **`alias`** sur une entrée : `["Céline Dion", "My Heart Will Go On"]`. La
   vérification exige que le nom de la case apparaisse dans le titre de la vidéo
   ou le nom de la chaîne ; une case `Titanic` pointant sur un clip de Céline
-  Dion échouerait sans cela. 16 des 43 entrées du thème « musiques de films »
+  Dion échouerait sans cela. 30 des 42 entrées du thème « musiques de films »
   en ont besoin.
+- **`titresMin`** : `2` ou `3` (défaut `3`). Le plancher de titres par entrée
+  pour ce thème. Voir plus haut : c'est un arbitrage entre variété et cases
+  reconnaissables, pas une soupape pour un lot bâclé. `verify-catalog` annonce
+  combien d'entrées sont descendues sous 3, pour qu'un thème ne glisse pas vers
+  le plancher entrée par entrée sans que personne l'ait décidé.
+- **`vuesMin`** : un nombre, ou `null` pour sortir le thème de l'audit `--views`
+  (classement compris). Défaut : 10 M.
 
 ### Vérifier le catalogue
 

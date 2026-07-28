@@ -24,6 +24,13 @@ const CONCURRENCE = 6;
 const DUREE_MIN = 90;
 const DUREE_MAX = 480;
 const TITRES_PAR_GROUPE = 3;
+// Trois titres restent la cible : c'est ce qui fait qu'une même entrée ne rejoue
+// pas le même extrait de soirée en soirée. Mais certains thèmes n'ont pas trois
+// morceaux également reconnaissables à offrir — une musique de film a un thème
+// culte et deux fonds sonores. Mieux vaut deux titres que tout le monde
+// identifie qu'un troisième devant lequel la salle reste muette. Un thème qui
+// le déclare descend à ce plancher, et pas plus bas.
+const TITRES_PLANCHER = 2;
 
 // Le commanditaire veut un catalogue que tout le monde reconnaît : sous cette
 // barre, la case est un trou noir pour la moitié de la salle.
@@ -265,6 +272,34 @@ for (const chemin of chemins) {
   const theme = JSON.parse(readFileSync(chemin, 'utf8'));
   const bands = theme.bands ?? [];
 
+  // Deux réglages qu'un thème peut assouplir pour lui seul. Ils ne sont pas là
+  // pour faire passer un lot bâclé : chacun répond à une raison précise, et le
+  // défaut reste le régime strict.
+  const titresMinDeclare = theme.titresMin ?? TITRES_PAR_GROUPE;
+  const titresMinValide =
+    Number.isInteger(titresMinDeclare) &&
+    titresMinDeclare >= TITRES_PLANCHER &&
+    titresMinDeclare <= TITRES_PAR_GROUPE;
+  if (!titresMinValide) {
+    erreurs.push(
+      `${chemin} : titresMin = ${theme.titresMin} — attendu un entier entre ` +
+        `${TITRES_PLANCHER} et ${TITRES_PAR_GROUPE}, ou le champ absent`,
+    );
+  }
+  // Un `titresMin` refusé ne doit pas continuer à assouplir le compte : sinon
+  // « titresMin: 1 » signale son erreur tout en laissant passer les entrées à un
+  // seul titre qu'il autorisait. On retombe sur le régime strict.
+  const titresMin = titresMinValide ? titresMinDeclare : TITRES_PAR_GROUPE;
+  // Les vues ne mesurent la notoriété que pour une chanson : une musique de film
+  // culte est éparpillée sur cent réuploads et l'officielle en récolte des
+  // miettes. « My Heart Will Go On » sort à 0.8 M sur la chaîne de Céline Dion —
+  // le seuil dirait « personne ne connaît », et il aurait tort. Un thème qui
+  // n'est pas fait de singles pose son propre seuil, ou le coupe avec `null`.
+  const vuesMin = theme.vuesMin === undefined ? VUES_MIN : theme.vuesMin;
+  if (vuesMin !== null && (typeof vuesMin !== 'number' || !(vuesMin >= 0))) {
+    erreurs.push(`${chemin} : vuesMin = ${theme.vuesMin} — attendu un nombre positif, null, ou absent`);
+  }
+
   // --- contrôles de structure, sans réseau -------------------------------
   const slugs = new Set();
   const idsVus = new Map();
@@ -308,8 +343,11 @@ for (const chemin of chemins) {
     }
     if (aliasDe(band).length > 0) aliasBilan.set(band.slug, { band, sondes: 0, secours: 0 });
 
-    if (band.tracks?.length !== TITRES_PAR_GROUPE) {
-      erreurs.push(`${band.slug} : ${band.tracks?.length ?? 0} titres au lieu de ${TITRES_PAR_GROUPE}`);
+    const nbTitres = band.tracks?.length ?? 0;
+    if (nbTitres < titresMin || nbTitres > TITRES_PAR_GROUPE) {
+      const attendu =
+        titresMin === TITRES_PAR_GROUPE ? `${TITRES_PAR_GROUPE}` : `${titresMin} à ${TITRES_PAR_GROUPE}`;
+      erreurs.push(`${band.slug} : ${nbTitres} titres au lieu de ${attendu}`);
     }
     for (const track of band.tracks ?? []) {
       if (!Number.isInteger(track.startAt) || track.startAt <= 0) {
@@ -332,6 +370,18 @@ for (const chemin of chemins) {
     erreurs.push(
       `${chemin} : ${avecLogo} entrée(s) avec logo mais ${sansLogo.length} sans — ` +
         `compléter ou tout retirer : ${sansLogo.join(', ')}`,
+    );
+  }
+
+  // Descendre à deux titres est un arbitrage, pas un détail : ces entrées
+  // rejoueront le même extrait plus souvent. Le dire à voix haute, sinon un
+  // thème glisse entrée par entrée vers le plancher sans que personne ne l'ait
+  // décidé.
+  const courtes = bands.filter((b) => (b.tracks?.length ?? 0) < TITRES_PAR_GROUPE);
+  if (courtes.length > 0) {
+    console.log(
+      `\n${courtes.length}/${bands.length} entrée(s) à moins de ${TITRES_PAR_GROUPE} titres ` +
+        `— moins de variété d'une soirée à l'autre : ${courtes.map((b) => b.slug).join(', ')}`,
     );
   }
 
@@ -435,12 +485,15 @@ for (const chemin of chemins) {
 
     // Un clip confidentiel n'est pas une erreur de catalogue : on veut pouvoir
     // auditer la notoriété à la demande sans que la CI en dépende.
-    if (avecVues && meta) {
+    // `vuesMin: null` retire le thème de l'audit — classement compris. L'y
+    // laisser reviendrait à noyer sous des musiques de film le bas de tableau,
+    // qui n'existe que pour faire remonter les chansons vraiment confidentielles.
+    if (avecVues && meta && vuesMin !== null) {
       if (meta.vues === null) alertes.push(`${ref} : view_count indisponible — notoriété non vérifiable`);
       else {
         palmares.push({ ref, vues: meta.vues });
-        if (meta.vues < VUES_MIN) {
-          alertes.push(`${ref} : ${enMillions(meta.vues)} de vues — sous la cible de ${enMillions(VUES_MIN)}`);
+        if (meta.vues < vuesMin) {
+          alertes.push(`${ref} : ${enMillions(meta.vues)} de vues — sous la cible de ${enMillions(vuesMin)}`);
         }
       }
     }
