@@ -55,7 +55,7 @@ const DOSSIER_LOGOS = join('public', 'logos');
 const INTERDITS = [
   'live', 'en concert', 'concert', 'unplugged', 'acoustic', 'acoustique',
   'cover', 'reprise', 'remix', 'rmx', 'mashup', 'karaoke', 'karaoké',
-  '8 bit', '8bit', 'instrumental', 'sped up', 'slowed', 'reverb',
+  '8 bit', '8bit', 'instrumental', 'instrumentale', 'sped up', 'slowed', 'reverb',
   'demo', 'rehearsal', 'session', 'sessions', 'taylors version', 'rerecorded',
   'tribute', 'parody', 'parodie', 'reaction', 'fan made',
   // Lieux de captation : un Art Track live ne dit jamais « live » dans son

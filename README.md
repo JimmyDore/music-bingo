@@ -150,7 +150,8 @@ suivant — c'est le prix d'entrée d'une famille de thèmes, pas d'un thème.
 | `annees-80` — Années 80 | 50 | 124 |
 | `tubes-2000` — Tubes des années 2000 | 44 | 132 |
 | `variete-francaise` — Variété française | 44 | 132 |
-| `musiques-de-films` — Musiques de films | 42 | 114 |
+| `musiques-de-films` — Musiques de films | 41 | 110 |
+| `dessins-animes` — Dessins animés | 40 | 101 |
 | `generiques-tv` — Génériques TV | 55 | 60 |
 
 ```json
@@ -214,13 +215,17 @@ Règles :
 - **`lexique`** : `{ "case": "film", "cases": "films", "titre": "réplique" }`.
   Sans lui, l'interface parle de « groupes » — ce qui est absurde quand la case
   porte une marque ou un film. Défauts appliqués côté serveur, jamais côté
-  front. ⚠️ Le lexique ne porte pas le genre grammatical : `case: "marque"`
-  donnerait « le marque ».
+  front. Ce n'est plus un exemple théorique : « musiques de films » et « dessins
+  animés » le déclarent, et l'écran de création annonce « 41 films » et « 40
+  dessins animés » au lieu de deux fois « groupes ». ⚠️ Le lexique ne porte pas
+  le genre grammatical : `case: "marque"` donnerait « le marque ».
 - **`alias`** sur une entrée : `["Céline Dion", "My Heart Will Go On"]`. La
   vérification exige que le nom de la case apparaisse dans le titre de la vidéo
   ou le nom de la chaîne ; une case `Titanic` pointant sur un clip de Céline
-  Dion échouerait sans cela. 30 des 42 entrées du thème « musiques de films »
-  en ont besoin.
+  Dion échouerait sans cela. C'est la norme sur un thème de films, pas
+  l'exception : 30 des 41 entrées de « musiques de films » en ont besoin, et 27
+  des 40 de « dessins animés ». `verify-catalog` signale les alias qui n'ont
+  jamais servi, pour qu'ils ne s'accumulent pas en décoration.
 - **`titresMin`** : `1`, `2` ou `3` (défaut `3`). Le plancher de titres par entrée
   pour ce thème. Voir plus haut : c'est un arbitrage entre variété et cases
   reconnaissables, pas une soupape pour un lot bâclé. `verify-catalog` annonce

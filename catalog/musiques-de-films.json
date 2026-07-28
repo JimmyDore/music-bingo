@@ -1,6 +1,10 @@
 {
   "id": "musiques-de-films",
   "name": "Musiques de films",
+  "lexique": {
+    "case": "film",
+    "cases": "films"
+  },
   "bands": [
     {
       "slug": "star-wars",
@@ -196,213 +200,6 @@
           "title": "Run To You",
           "youtubeId": "h9rCobRl-ng",
           "startAt": 62
-        }
-      ]
-    },
-    {
-      "slug": "shrek",
-      "name": "Shrek",
-      "alias": [
-        "Smash Mouth",
-        "Rufus Wainwright"
-      ],
-      "logo": null,
-      "tracks": [
-        {
-          "title": "All Star",
-          "youtubeId": "L_jWHffIx5E",
-          "startAt": 9
-        },
-        {
-          "title": "I'm A Believer",
-          "youtubeId": "0mYBSayCsH0",
-          "startAt": 10
-        },
-        {
-          "title": "Hallelujah",
-          "youtubeId": "7iDfvoqOhD8",
-          "startAt": 52
-        }
-      ]
-    },
-    {
-      "slug": "le-roi-lion",
-      "name": "Le Roi Lion",
-      "alias": [
-        "Dimitri Rougeul"
-      ],
-      "logo": null,
-      "tracks": [
-        {
-          "title": "L'histoire de la vie",
-          "youtubeId": "V6HRvViYk8o",
-          "startAt": 12
-        },
-        {
-          "title": "Hakuna Matata",
-          "youtubeId": "VJ1wZNnajjQ",
-          "startAt": 8
-        },
-        {
-          "title": "L'amour brille sous les étoiles",
-          "youtubeId": "D1EAVGbHYTc",
-          "startAt": 28
-        }
-      ]
-    },
-    {
-      "slug": "la-reine-des-neiges",
-      "name": "La Reine des Neiges",
-      "logo": null,
-      "tracks": [
-        {
-          "title": "Libérée, Délivrée",
-          "youtubeId": "vzgInDxzyGU",
-          "startAt": 57
-        },
-        {
-          "title": "Je voudrais un bonhomme de neige",
-          "youtubeId": "QzSWsKA0bT8",
-          "startAt": 10
-        },
-        {
-          "title": "L'amour est un cadeau",
-          "youtubeId": "-2oAWJ8D6gc",
-          "startAt": 16
-        }
-      ]
-    },
-    {
-      "slug": "aladdin",
-      "name": "Aladdin",
-      "alias": [
-        "Karine Costa"
-      ],
-      "logo": null,
-      "tracks": [
-        {
-          "title": "Ce rêve bleu",
-          "youtubeId": "FgRvmoqSJcU",
-          "startAt": 10
-        },
-        {
-          "title": "Je suis ton meilleur ami",
-          "youtubeId": "6FGXZwRQlNg",
-          "startAt": 12
-        },
-        {
-          "title": "Prince Ali",
-          "youtubeId": "LenWEHcdsPU",
-          "startAt": 10
-        }
-      ]
-    },
-    {
-      "slug": "la-belle-et-la-bete",
-      "name": "La Belle et la Bête",
-      "logo": null,
-      "tracks": [
-        {
-          "title": "Histoire éternelle",
-          "youtubeId": "uRLHGfpUIvs",
-          "startAt": 20
-        },
-        {
-          "title": "Belle",
-          "youtubeId": "XQinHicKz_Q",
-          "startAt": 12
-        },
-        {
-          "title": "Gaston",
-          "youtubeId": "XkrovLt15NA",
-          "startAt": 30
-        }
-      ]
-    },
-    {
-      "slug": "la-petite-sirene",
-      "name": "La Petite Sirène",
-      "logo": null,
-      "tracks": [
-        {
-          "title": "Sous l'océan",
-          "youtubeId": "ykLqcPfv7EE",
-          "startAt": 25
-        },
-        {
-          "title": "Partir là-bas",
-          "youtubeId": "rj50rngONWE",
-          "startAt": 30
-        },
-        {
-          "title": "Embrasse-la",
-          "youtubeId": "lMA1-0DyAWs",
-          "startAt": 30
-        }
-      ]
-    },
-    {
-      "slug": "coco",
-      "name": "Coco",
-      "logo": null,
-      "tracks": [
-        {
-          "title": "Un Poco Loco",
-          "youtubeId": "c9Hsvhe6gy4",
-          "startAt": 18
-        },
-        {
-          "title": "Corazón",
-          "youtubeId": "B_bXWGpciuI",
-          "startAt": 14
-        }
-      ]
-    },
-    {
-      "slug": "raiponce",
-      "name": "Raiponce",
-      "logo": null,
-      "tracks": [
-        {
-          "title": "Je veux y croire",
-          "youtubeId": "wJFfy_WhE78",
-          "startAt": 66
-        },
-        {
-          "title": "Où est la vraie vie ?",
-          "youtubeId": "mI5UHZdz-oU",
-          "startAt": 12
-        },
-        {
-          "title": "N'écoute que moi",
-          "youtubeId": "l9_Y-xH43o4",
-          "startAt": 20
-        }
-      ]
-    },
-    {
-      "slug": "tarzan",
-      "name": "Tarzan",
-      "alias": [
-        "Phil Collins",
-        "Frédérique Tirmont"
-      ],
-      "logo": null,
-      "tracks": [
-        {
-          "title": "Toujours dans mon coeur",
-          "youtubeId": "V12eVSTlhPc",
-          "startAt": 15
-        },
-        {
-          "title": "Enfant de l'homme",
-          "youtubeId": "iIXZdKszubo",
-          "startAt": 22
-        },
-        {
-          "title": "Entre deux mondes",
-          "youtubeId": "2XkOArg1TDs",
-          "startAt": 30
         }
       ]
     },
@@ -922,26 +719,6 @@
       ]
     },
     {
-      "slug": "toy-story",
-      "name": "Toy Story",
-      "logo": null,
-      "alias": [
-        "CharlElie Couture"
-      ],
-      "tracks": [
-        {
-          "title": "Je suis ton ami",
-          "youtubeId": "BTPTKOoMX24",
-          "startAt": 12
-        },
-        {
-          "title": "Étrange Bazar",
-          "youtubeId": "dwB8vm1_yWg",
-          "startAt": 25
-        }
-      ]
-    },
-    {
       "slug": "les-choristes",
       "name": "Les Choristes",
       "logo": null,
@@ -980,6 +757,239 @@
           "title": "Elysium",
           "youtubeId": "TaDajIe05bw",
           "startAt": 35
+        }
+      ]
+    },
+    {
+      "slug": "pretty-woman",
+      "name": "Pretty Woman",
+      "alias": [
+        "Roy Orbison",
+        "Roxette",
+        "Go West"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Oh, Pretty Woman",
+          "youtubeId": "3KFvoDDs0XM",
+          "startAt": 9
+        },
+        {
+          "title": "It Must Have Been Love",
+          "youtubeId": "k2C5TjS2sh4",
+          "startAt": 66
+        },
+        {
+          "title": "King Of Wishful Thinking",
+          "youtubeId": "XBZUz4C6kqk",
+          "startAt": 59
+        }
+      ]
+    },
+    {
+      "slug": "sister-act",
+      "name": "Sister Act",
+      "alias": [
+        "Release",
+        "Deloris & The Sisters",
+        "Whoopi Goldberg"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Hail Holy Queen",
+          "youtubeId": "Yev14Ti8_jY",
+          "startAt": 48
+        },
+        {
+          "title": "I Will Follow Him",
+          "youtubeId": "gdZcZemI84Y",
+          "startAt": 35
+        },
+        {
+          "title": "My Guy (My God)",
+          "youtubeId": "eNcYEQDHu9M",
+          "startAt": 45
+        }
+      ]
+    },
+    {
+      "slug": "la-fievre-du-samedi-soir",
+      "name": "La Fièvre du samedi soir",
+      "alias": [
+        "Bee Gees",
+        "Saturday Night Fever"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Stayin' Alive",
+          "youtubeId": "I_izvAbhExY",
+          "startAt": 15
+        },
+        {
+          "title": "Night Fever",
+          "youtubeId": "SkypZuY6ZvA",
+          "startAt": 49
+        },
+        {
+          "title": "How Deep Is Your Love",
+          "youtubeId": "XpqqjU7u5Yc",
+          "startAt": 51
+        }
+      ]
+    },
+    {
+      "slug": "le-parrain",
+      "name": "Le Parrain",
+      "alias": [
+        "The Godfather",
+        "Nino Rota",
+        "Andy Williams",
+        "Gianni Morandi"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Speak Softly Love",
+          "youtubeId": "3l3xsKBPqQw",
+          "startAt": 22
+        },
+        {
+          "title": "The Godfather Waltz",
+          "youtubeId": "LaI5jYU-sPw",
+          "startAt": 41
+        },
+        {
+          "title": "Parla più piano",
+          "youtubeId": "3jV1aNIgoxg",
+          "startAt": 16
+        }
+      ]
+    },
+    {
+      "slug": "le-grand-bleu",
+      "name": "Le Grand Bleu",
+      "alias": [
+        "The Big Blue",
+        "Big Blue",
+        "Éric Serra",
+        "Eric Serra",
+        "Grand Bleu"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "The Big Blue Overture",
+          "youtubeId": "rtBH5cG09Z0",
+          "startAt": 52
+        },
+        {
+          "title": "My Lady Blue",
+          "youtubeId": "dnfztV1mh0o",
+          "startAt": 48
+        },
+        {
+          "title": "Deep Blue Dream",
+          "youtubeId": "IJQRafZjN70",
+          "startAt": 40
+        }
+      ]
+    },
+    {
+      "slug": "la-boum",
+      "name": "La Boum",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Reality",
+          "youtubeId": "5zq0_x77aAE",
+          "startAt": 52
+        },
+        {
+          "title": "Your Eyes",
+          "youtubeId": "5hYXy6yQPo0",
+          "startAt": 44
+        }
+      ]
+    },
+    {
+      "slug": "ghostbusters",
+      "name": "Ghostbusters",
+      "alias": [
+        "SOS Fantômes",
+        "SOS Fantomes",
+        "Ray Parker Jr.",
+        "Ray Parker",
+        "Bobby Brown",
+        "Elmer Bernstein"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Ghostbusters",
+          "youtubeId": "Fe93CLbHjxQ",
+          "startAt": 25
+        },
+        {
+          "title": "On Our Own",
+          "youtubeId": "h86eMPyuEMo",
+          "startAt": 55
+        }
+      ]
+    },
+    {
+      "slug": "matrix",
+      "name": "Matrix",
+      "alias": [
+        "The Matrix",
+        "Rob Dougan",
+        "Rage Against the Machine",
+        "Marilyn Manson"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Clubbed To Death",
+          "youtubeId": "1yu-83mWkIU",
+          "startAt": 30
+        },
+        {
+          "title": "Wake Up",
+          "youtubeId": "4lzqUe1Qfec",
+          "startAt": 40
+        },
+        {
+          "title": "Rock Is Dead",
+          "youtubeId": "vgHY7fM3SHM",
+          "startAt": 40
+        }
+      ]
+    },
+    {
+      "slug": "le-cinquieme-element",
+      "name": "Le Cinquième Élément",
+      "alias": [
+        "The Fifth Element",
+        "5th Element",
+        "Le cinquième élément",
+        "Éric Serra",
+        "Eric Serra",
+        "Inva Mula",
+        "RXRA"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "The Diva Dance",
+          "youtubeId": "8qA7XtJE_f0",
+          "startAt": 50
+        },
+        {
+          "title": "Little Light of Love",
+          "youtubeId": "LvVRzfh_d1I",
+          "startAt": 55
         }
       ]
     }

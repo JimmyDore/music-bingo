@@ -1,0 +1,983 @@
+{
+  "id": "dessins-animes",
+  "name": "Dessins animés",
+  "lexique": {
+    "case": "dessin animé",
+    "cases": "dessins animés"
+  },
+  "bands": [
+    {
+      "slug": "shrek",
+      "name": "Shrek",
+      "alias": [
+        "Smash Mouth",
+        "Rufus Wainwright"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "All Star",
+          "youtubeId": "L_jWHffIx5E",
+          "startAt": 9
+        },
+        {
+          "title": "I'm A Believer",
+          "youtubeId": "0mYBSayCsH0",
+          "startAt": 10
+        },
+        {
+          "title": "Hallelujah",
+          "youtubeId": "7iDfvoqOhD8",
+          "startAt": 52
+        }
+      ]
+    },
+    {
+      "slug": "le-roi-lion",
+      "name": "Le Roi Lion",
+      "alias": [
+        "Dimitri Rougeul"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "L'histoire de la vie",
+          "youtubeId": "V6HRvViYk8o",
+          "startAt": 12
+        },
+        {
+          "title": "Hakuna Matata",
+          "youtubeId": "VJ1wZNnajjQ",
+          "startAt": 8
+        },
+        {
+          "title": "L'amour brille sous les étoiles",
+          "youtubeId": "D1EAVGbHYTc",
+          "startAt": 28
+        }
+      ]
+    },
+    {
+      "slug": "la-reine-des-neiges",
+      "name": "La Reine des Neiges",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Libérée, Délivrée",
+          "youtubeId": "vzgInDxzyGU",
+          "startAt": 57
+        },
+        {
+          "title": "Je voudrais un bonhomme de neige",
+          "youtubeId": "QzSWsKA0bT8",
+          "startAt": 10
+        },
+        {
+          "title": "L'amour est un cadeau",
+          "youtubeId": "-2oAWJ8D6gc",
+          "startAt": 16
+        }
+      ]
+    },
+    {
+      "slug": "aladdin",
+      "name": "Aladdin",
+      "alias": [
+        "Karine Costa"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Ce rêve bleu",
+          "youtubeId": "FgRvmoqSJcU",
+          "startAt": 10
+        },
+        {
+          "title": "Je suis ton meilleur ami",
+          "youtubeId": "6FGXZwRQlNg",
+          "startAt": 12
+        },
+        {
+          "title": "Prince Ali",
+          "youtubeId": "LenWEHcdsPU",
+          "startAt": 10
+        }
+      ]
+    },
+    {
+      "slug": "la-belle-et-la-bete",
+      "name": "La Belle et la Bête",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Histoire éternelle",
+          "youtubeId": "uRLHGfpUIvs",
+          "startAt": 20
+        },
+        {
+          "title": "Belle",
+          "youtubeId": "XQinHicKz_Q",
+          "startAt": 12
+        },
+        {
+          "title": "Gaston",
+          "youtubeId": "XkrovLt15NA",
+          "startAt": 30
+        }
+      ]
+    },
+    {
+      "slug": "la-petite-sirene",
+      "name": "La Petite Sirène",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Sous l'océan",
+          "youtubeId": "ykLqcPfv7EE",
+          "startAt": 25
+        },
+        {
+          "title": "Partir là-bas",
+          "youtubeId": "rj50rngONWE",
+          "startAt": 30
+        },
+        {
+          "title": "Embrasse-la",
+          "youtubeId": "lMA1-0DyAWs",
+          "startAt": 30
+        }
+      ]
+    },
+    {
+      "slug": "coco",
+      "name": "Coco",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Un Poco Loco",
+          "youtubeId": "c9Hsvhe6gy4",
+          "startAt": 18
+        },
+        {
+          "title": "Corazón",
+          "youtubeId": "B_bXWGpciuI",
+          "startAt": 14
+        }
+      ]
+    },
+    {
+      "slug": "raiponce",
+      "name": "Raiponce",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Je veux y croire",
+          "youtubeId": "wJFfy_WhE78",
+          "startAt": 66
+        },
+        {
+          "title": "Où est la vraie vie ?",
+          "youtubeId": "mI5UHZdz-oU",
+          "startAt": 12
+        },
+        {
+          "title": "N'écoute que moi",
+          "youtubeId": "l9_Y-xH43o4",
+          "startAt": 20
+        }
+      ]
+    },
+    {
+      "slug": "tarzan",
+      "name": "Tarzan",
+      "alias": [
+        "Phil Collins",
+        "Frédérique Tirmont"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Toujours dans mon coeur",
+          "youtubeId": "V12eVSTlhPc",
+          "startAt": 15
+        },
+        {
+          "title": "Enfant de l'homme",
+          "youtubeId": "iIXZdKszubo",
+          "startAt": 22
+        },
+        {
+          "title": "Entre deux mondes",
+          "youtubeId": "2XkOArg1TDs",
+          "startAt": 30
+        }
+      ]
+    },
+    {
+      "slug": "toy-story",
+      "name": "Toy Story",
+      "logo": null,
+      "alias": [
+        "CharlElie Couture"
+      ],
+      "tracks": [
+        {
+          "title": "Je suis ton ami",
+          "youtubeId": "BTPTKOoMX24",
+          "startAt": 12
+        },
+        {
+          "title": "Étrange Bazar",
+          "youtubeId": "dwB8vm1_yWg",
+          "startAt": 25
+        }
+      ]
+    },
+    {
+      "slug": "le-livre-de-la-jungle",
+      "name": "Le Livre de la Jungle",
+      "alias": [
+        "The Jungle Book",
+        "Disney",
+        "Walt Disney",
+        "Jean Stout",
+        "Roger Carel"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Il en faut peu pour être heureux",
+          "youtubeId": "gSigplXJPh8",
+          "startAt": 24
+        },
+        {
+          "title": "Être un homme comme vous",
+          "youtubeId": "xRbnBHizY-o",
+          "startAt": 12
+        },
+        {
+          "title": "Aie confiance",
+          "youtubeId": "6y1DL8ttKk8",
+          "startAt": 20
+        }
+      ]
+    },
+    {
+      "slug": "blanche-neige",
+      "name": "Blanche-Neige",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Heigh-Ho",
+          "youtubeId": "WhW0Oqc_SA4",
+          "startAt": 20
+        },
+        {
+          "title": "Un jour, mon prince viendra",
+          "youtubeId": "zk_QxnVWHug",
+          "startAt": 12
+        },
+        {
+          "title": "Sifflez en travaillant",
+          "youtubeId": "SORK9CdnwA4",
+          "startAt": 14
+        }
+      ]
+    },
+    {
+      "slug": "cendrillon",
+      "name": "Cendrillon",
+      "alias": [
+        "Cinderella",
+        "Disney",
+        "Walt Disney",
+        "Cast of Cinderella",
+        "Claude Chantal"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Tendre Rêve",
+          "youtubeId": "gxjhJuq0BUk",
+          "startAt": 50
+        },
+        {
+          "title": "Chanson Magique",
+          "youtubeId": "7R80o1704bA",
+          "startAt": 16
+        }
+      ]
+    },
+    {
+      "slug": "les-aristochats",
+      "name": "Les Aristochats",
+      "alias": [
+        "The Aristocats",
+        "Aristocats",
+        "Disney",
+        "Walt Disney",
+        "José Germain"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Tout le monde veut devenir un cat",
+          "youtubeId": "FKxW-buhKMk",
+          "startAt": 30
+        },
+        {
+          "title": "Des gammes et des arpèges",
+          "youtubeId": "G4gT6JRY5LI",
+          "startAt": 18
+        }
+      ]
+    },
+    {
+      "slug": "dumbo",
+      "name": "Dumbo",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Mon tout-petit",
+          "youtubeId": "bWjnaxhfLLU",
+          "startAt": 10
+        },
+        {
+          "title": "La marche des éléphants",
+          "youtubeId": "ErGxaIv5oLg",
+          "startAt": 14
+        }
+      ]
+    },
+    {
+      "slug": "peter-pan",
+      "name": "Peter Pan",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Tu t'envoles",
+          "youtubeId": "8Ae71rAeXBU",
+          "startAt": 56
+        },
+        {
+          "title": "À la file indienne",
+          "youtubeId": "aqfpbe6qnps",
+          "startAt": 14
+        }
+      ]
+    },
+    {
+      "slug": "robin-des-bois",
+      "name": "Robin des Bois",
+      "alias": [
+        "Disney",
+        "Walt Disney",
+        "Robin Hood",
+        "Jean Stout",
+        "Pierre Vassiliu"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Le Roi de mauvais aloi",
+          "youtubeId": "w5YU1uAuMqc",
+          "startAt": 15
+        },
+        {
+          "title": "A Nottingham",
+          "youtubeId": "BvOhrr7rS2o",
+          "startAt": 14
+        }
+      ]
+    },
+    {
+      "slug": "alice-au-pays-des-merveilles",
+      "name": "Alice au pays des merveilles",
+      "alias": [
+        "Disney",
+        "Walt Disney",
+        "Alice in Wonderland",
+        "Cast of Alice in Wonderland"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Joyeux non-anniversaire",
+          "youtubeId": "v6Ag26D2Coo",
+          "startAt": 15
+        },
+        {
+          "title": "Pays du Merveilleux",
+          "youtubeId": "sBwm40biIUk",
+          "startAt": 12
+        }
+      ]
+    },
+    {
+      "slug": "le-bossu-de-notre-dame",
+      "name": "Le Bossu de Notre-Dame",
+      "alias": [
+        "Disney",
+        "Walt Disney",
+        "The Hunchback of Notre Dame",
+        "Notre-Dame",
+        "Bernard Alane",
+        "Claudia Benamou"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Les Cloches de Notre-Dame",
+          "youtubeId": "8CNAKqxo0eM",
+          "startAt": 28
+        },
+        {
+          "title": "Charivari",
+          "youtubeId": "4xeXcVbuhHk",
+          "startAt": 24
+        },
+        {
+          "title": "Les bannis ont droit d'amour",
+          "youtubeId": "dSXpnR_1vEA",
+          "startAt": 18
+        }
+      ]
+    },
+    {
+      "slug": "hercule",
+      "name": "Hercule",
+      "alias": [
+        "Disney",
+        "Walt Disney",
+        "Hercules",
+        "Mimi Félixine",
+        "Emmanuel Dahl"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "De Zéro En Héros",
+          "youtubeId": "fZp791ygO5g",
+          "startAt": 12
+        },
+        {
+          "title": "Jamais Je N'avouerai",
+          "youtubeId": "q5Mb-cTOfiE",
+          "startAt": 20
+        },
+        {
+          "title": "Le Monde Qui Est Le Mien",
+          "youtubeId": "NizG2AXpSMU",
+          "startAt": 20
+        }
+      ]
+    },
+    {
+      "slug": "mulan",
+      "name": "Mulan",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Comme un homme",
+          "youtubeId": "pNk0AzU9WVQ",
+          "startAt": 14
+        },
+        {
+          "title": "Réflexion",
+          "youtubeId": "s-BQoPwKHfk",
+          "startAt": 20
+        },
+        {
+          "title": "Une belle fille à aimer",
+          "youtubeId": "NLtsQ83RViw",
+          "startAt": 14
+        }
+      ]
+    },
+    {
+      "slug": "pocahontas",
+      "name": "Pocahontas",
+      "alias": [
+        "Pocahontas",
+        "Pocahontas, Une Légende Indienne",
+        "Disney",
+        "Laura Mayne",
+        "Patrick Rocca"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "L'air du vent",
+          "youtubeId": "4u66ofTlnuU",
+          "startAt": 18
+        },
+        {
+          "title": "Des Sauvages",
+          "youtubeId": "tmTwYzmNi_Q",
+          "startAt": 16
+        },
+        {
+          "title": "Au détour de la rivière",
+          "youtubeId": "XHf5n6ewWbU",
+          "startAt": 18
+        }
+      ]
+    },
+    {
+      "slug": "la-princesse-et-la-grenouille",
+      "name": "La Princesse et la Grenouille",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Au bout du rêve",
+          "youtubeId": "YRBpiMWVJqU",
+          "startAt": 20
+        },
+        {
+          "title": "Mes amis de l'au-delà",
+          "youtubeId": "HWX84Lc127k",
+          "startAt": 22
+        },
+        {
+          "title": "Creuse encore et encore",
+          "youtubeId": "IXkHJUkT7BM",
+          "startAt": 20
+        }
+      ]
+    },
+    {
+      "slug": "vaiana",
+      "name": "Vaiana",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Le bleu lumière",
+          "youtubeId": "0j0lMSMBZ6I",
+          "startAt": 12
+        },
+        {
+          "title": "Pour les hommes",
+          "youtubeId": "FjIrqHunmfU",
+          "startAt": 16
+        },
+        {
+          "title": "L'explorateur",
+          "youtubeId": "TPqQg15P-lU",
+          "startAt": 20
+        }
+      ]
+    },
+    {
+      "slug": "encanto",
+      "name": "Encanto",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Ne parlons pas de Bruno",
+          "youtubeId": "h74mTuZvRxc",
+          "startAt": 16
+        },
+        {
+          "title": "Sous les apparences",
+          "youtubeId": "EtZGiM99YHw",
+          "startAt": 16
+        },
+        {
+          "title": "La famille Madrigal",
+          "youtubeId": "AS_8aArpYw8",
+          "startAt": 16
+        }
+      ]
+    },
+    {
+      "slug": "lilo-et-stitch",
+      "name": "Lilo & Stitch",
+      "alias": [
+        "Disney",
+        "Lilo et Stitch",
+        "Stitch",
+        "DisneyMusicVEVO",
+        "Elvis Presley",
+        "ElvisPresleyVEVO"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Hawaiian Roller Coaster Ride",
+          "youtubeId": "kXB-Ibr55LI",
+          "startAt": 18
+        },
+        {
+          "title": "Burning Love",
+          "youtubeId": "zf2VYAtqRe0",
+          "startAt": 10
+        }
+      ]
+    },
+    {
+      "slug": "frere-des-ours",
+      "name": "Frère des ours",
+      "alias": [
+        "Disney",
+        "Frere des ours",
+        "Brother Bear",
+        "Phil Collins"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "En Chemin",
+          "youtubeId": "ik3Nyxb0mqA",
+          "startAt": 14
+        },
+        {
+          "title": "Aucune issue",
+          "youtubeId": "AWLy1BE0Tlo",
+          "startAt": 16
+        }
+      ]
+    },
+    {
+      "slug": "anastasia",
+      "name": "Anastasia",
+      "alias": [
+        "Hélène Ségara",
+        "Helene Segara",
+        "Liz Callaway",
+        "Donna Lewis",
+        "Richard Marx",
+        "Don Bluth"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Loin du froid de décembre",
+          "youtubeId": "S6hP7soeOPs",
+          "startAt": 22
+        },
+        {
+          "title": "Journey to the Past",
+          "youtubeId": "gZQJsceaqDA",
+          "startAt": 14
+        },
+        {
+          "title": "At The Beginning",
+          "youtubeId": "JjGf5193UZg",
+          "startAt": 20
+        }
+      ]
+    },
+    {
+      "slug": "ratatouille",
+      "name": "Ratatouille",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Le Festin",
+          "youtubeId": "G3lSONLLx70",
+          "startAt": 12
+        },
+        {
+          "title": "Ratatouille Main Theme",
+          "youtubeId": "A078E6faw18",
+          "startAt": 20
+        }
+      ]
+    },
+    {
+      "slug": "la-haut",
+      "name": "Là-haut",
+      "alias": [
+        "Up",
+        "Michael Giacchino",
+        "Pixar",
+        "Disney",
+        "Walt Disney Records"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Married Life",
+          "youtubeId": "S1uWHjhluTI",
+          "startAt": 8
+        },
+        {
+          "title": "Carl Goes Up",
+          "youtubeId": "BSCvj3q5GPc",
+          "startAt": 84
+        }
+      ]
+    },
+    {
+      "slug": "le-monde-de-nemo",
+      "name": "Le Monde de Nemo",
+      "alias": [
+        "Finding Nemo",
+        "Nemo",
+        "Thomas Newman",
+        "Robbie Williams",
+        "Pixar",
+        "Disney"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Beyond the Sea",
+          "youtubeId": "FzKpTdQeQ34",
+          "startAt": 14
+        },
+        {
+          "title": "The Turtle Lope",
+          "youtubeId": "8ysV8qge_pw",
+          "startAt": 18
+        }
+      ]
+    },
+    {
+      "slug": "monstres-et-cie",
+      "name": "Monstres & Cie",
+      "alias": [
+        "Monsters Inc",
+        "Monsters, Inc.",
+        "Randy Newman",
+        "John Goodman",
+        "Billy Crystal",
+        "Pixar",
+        "Disney"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Monsters, Inc.",
+          "youtubeId": "ayMPmc0_2r8",
+          "startAt": 12
+        },
+        {
+          "title": "If I Didn't Have You",
+          "youtubeId": "41ill-Bq5UI",
+          "startAt": 20
+        }
+      ]
+    },
+    {
+      "slug": "cars",
+      "name": "Cars",
+      "alias": [
+        "Rascal Flatts",
+        "Chuck Berry",
+        "John Mayer",
+        "Pixar",
+        "Disney"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Life is a Highway",
+          "youtubeId": "R9I45U8t3M0",
+          "startAt": 16
+        },
+        {
+          "title": "Route 66",
+          "youtubeId": "2_Y4UxnwxuA",
+          "startAt": 14
+        }
+      ]
+    },
+    {
+      "slug": "wall-e",
+      "name": "WALL·E",
+      "alias": [
+        "Wall-E",
+        "WALL-E",
+        "Walle",
+        "Peter Gabriel",
+        "Thomas Newman",
+        "Michael Crawford",
+        "Hello Dolly",
+        "Pixar",
+        "Disney"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Put On Your Sunday Clothes",
+          "youtubeId": "GhBKjdb3Qss",
+          "startAt": 40
+        },
+        {
+          "title": "Define Dancing",
+          "youtubeId": "wvEwsc0Qmnw",
+          "startAt": 30
+        },
+        {
+          "title": "Down to Earth",
+          "youtubeId": "ztYLr1zdYwQ",
+          "startAt": 24
+        }
+      ]
+    },
+    {
+      "slug": "madagascar",
+      "name": "Madagascar",
+      "alias": [
+        "Sacha Baron Cohen",
+        "Reel 2 Real",
+        "Hans Zimmer",
+        "DreamWorks",
+        "will.i.am",
+        "Madagascar 2"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "I Like To Move It",
+          "youtubeId": "PLEQRIisP_Q",
+          "startAt": 15
+        },
+        {
+          "title": "Best Friends",
+          "youtubeId": "1h_JnYL_7uc",
+          "startAt": 20
+        }
+      ]
+    },
+    {
+      "slug": "kung-fu-panda",
+      "name": "Kung Fu Panda",
+      "alias": [
+        "Cee Lo Green",
+        "Cee-Lo Green",
+        "Jack Black",
+        "Hans Zimmer",
+        "John Powell",
+        "DreamWorks"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Kung Fu Fighting",
+          "youtubeId": "QspjKVTMlL8",
+          "startAt": 15
+        },
+        {
+          "title": "Oogway Ascends",
+          "youtubeId": "tAVnGvRwXew",
+          "startAt": 20
+        }
+      ]
+    },
+    {
+      "slug": "dragons",
+      "name": "Dragons",
+      "alias": [
+        "How to Train Your Dragon",
+        "John Powell",
+        "DreamWorks",
+        "Dragon"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Test Drive",
+          "youtubeId": "IpPIK4T068s",
+          "startAt": 15
+        },
+        {
+          "title": "Forbidden Friendship",
+          "youtubeId": "96NgGuKQcmo",
+          "startAt": 42
+        },
+        {
+          "title": "Romantic Flight",
+          "youtubeId": "ZJR8tuO-mIU",
+          "startAt": 20
+        }
+      ]
+    },
+    {
+      "slug": "moi-moche-et-mechant",
+      "name": "Moi, moche et méchant",
+      "alias": [
+        "Despicable Me",
+        "Pharrell Williams",
+        "Pharrell",
+        "Les Minions",
+        "Illumination"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Happy",
+          "youtubeId": "ZbZSe6N_BXs",
+          "startAt": 12
+        },
+        {
+          "title": "Despicable Me",
+          "youtubeId": "d7W5jppeFWg",
+          "startAt": 18
+        }
+      ]
+    },
+    {
+      "slug": "l-etrange-noel-de-monsieur-jack",
+      "name": "L'Étrange Noël de Monsieur Jack",
+      "alias": [
+        "The Nightmare Before Christmas",
+        "Danny Elfman",
+        "Tim Burton",
+        "Disney",
+        "Olivier Constantin",
+        "Monsieur Jack"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Bienvenue À Halloween",
+          "youtubeId": "_BqXIky_lfU",
+          "startAt": 12
+        },
+        {
+          "title": "La Complainte De Jack",
+          "youtubeId": "34dvelNiYxo",
+          "startAt": 14
+        }
+      ]
+    },
+    {
+      "slug": "le-prince-d-egypte",
+      "name": "Le Prince d'Égypte",
+      "alias": [
+        "The Prince of Egypt",
+        "Prince of Egypt",
+        "DreamWorks",
+        "Hans Zimmer",
+        "Stephen Schwartz",
+        "Eden Riegel",
+        "Ofra Haza",
+        "Amick Byram",
+        "Whitney Houston",
+        "Mariah Carey"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Deliver Us",
+          "youtubeId": "ie-FB6Opo5c",
+          "startAt": 12
+        },
+        {
+          "title": "The Plagues",
+          "youtubeId": "dMn5xcwpzUk",
+          "startAt": 10
+        },
+        {
+          "title": "When You Believe",
+          "youtubeId": "LKaXY4IdZ40",
+          "startAt": 16
+        }
+      ]
+    }
+  ],
+  "titresMin": 2,
+  "vuesMin": null
+}
