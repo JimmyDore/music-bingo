@@ -229,48 +229,45 @@
       "slug": "le-roi-lion",
       "name": "Le Roi Lion",
       "alias": [
-        "The Lion King"
+        "Dimitri Rougeul"
       ],
       "logo": null,
       "tracks": [
         {
-          "title": "Circle of Life",
-          "youtubeId": "GibiNy4d4gc",
+          "title": "L'histoire de la vie",
+          "youtubeId": "V6HRvViYk8o",
           "startAt": 12
         },
         {
           "title": "Hakuna Matata",
-          "youtubeId": "0MxulhivCvI",
-          "startAt": 28
+          "youtubeId": "VJ1wZNnajjQ",
+          "startAt": 8
         },
         {
-          "title": "Can You Feel The Love Tonight",
-          "youtubeId": "25QyCxVkXwQ",
-          "startAt": 30
+          "title": "L'amour brille sous les étoiles",
+          "youtubeId": "D1EAVGbHYTc",
+          "startAt": 28
         }
       ]
     },
     {
       "slug": "la-reine-des-neiges",
       "name": "La Reine des Neiges",
-      "alias": [
-        "Frozen"
-      ],
       "logo": null,
       "tracks": [
         {
-          "title": "Let It Go",
-          "youtubeId": "YVVTZgwYwVo",
+          "title": "Libérée, Délivrée",
+          "youtubeId": "vzgInDxzyGU",
           "startAt": 57
         },
         {
-          "title": "Do You Want to Build a Snowman?",
-          "youtubeId": "TeQ_TTyLGMs",
+          "title": "Je voudrais un bonhomme de neige",
+          "youtubeId": "QzSWsKA0bT8",
           "startAt": 10
         },
         {
-          "title": "Love Is an Open Door",
-          "youtubeId": "kQDw88hEr2c",
+          "title": "L'amour est un cadeau",
+          "youtubeId": "-2oAWJ8D6gc",
           "startAt": 16
         }
       ]
@@ -278,72 +275,69 @@
     {
       "slug": "aladdin",
       "name": "Aladdin",
+      "alias": [
+        "Karine Costa"
+      ],
       "logo": null,
       "tracks": [
         {
-          "title": "A Whole New World",
-          "youtubeId": "eitDnP0_83k",
-          "startAt": 25
+          "title": "Ce rêve bleu",
+          "youtubeId": "FgRvmoqSJcU",
+          "startAt": 10
         },
         {
-          "title": "Friend Like Me",
-          "youtubeId": "1at7kKzBYxI",
-          "startAt": 20
+          "title": "Je suis ton meilleur ami",
+          "youtubeId": "6FGXZwRQlNg",
+          "startAt": 12
         },
         {
-          "title": "Speechless",
-          "youtubeId": "mw5VIEIvuMI",
-          "startAt": 72
+          "title": "Prince Ali",
+          "youtubeId": "LenWEHcdsPU",
+          "startAt": 10
         }
       ]
     },
     {
       "slug": "la-belle-et-la-bete",
       "name": "La Belle et la Bête",
-      "alias": [
-        "Beauty and the Beast"
-      ],
       "logo": null,
       "tracks": [
         {
-          "title": "Beauty and the Beast",
-          "youtubeId": "axySrE0Kg6k",
-          "startAt": 34
+          "title": "Histoire éternelle",
+          "youtubeId": "uRLHGfpUIvs",
+          "startAt": 20
         },
         {
           "title": "Belle",
-          "youtubeId": "egQbaDRMxGI",
+          "youtubeId": "XQinHicKz_Q",
           "startAt": 12
         },
         {
           "title": "Gaston",
-          "youtubeId": "F16O5OAK2K8",
-          "startAt": 40
+          "youtubeId": "XkrovLt15NA",
+          "startAt": 30
         }
       ]
     },
     {
       "slug": "la-petite-sirene",
       "name": "La Petite Sirène",
-      "alias": [
-        "The Little Mermaid"
-      ],
       "logo": null,
       "tracks": [
         {
-          "title": "Under the Sea",
-          "youtubeId": "GC_mV1IpjWA",
-          "startAt": 27
+          "title": "Sous l'océan",
+          "youtubeId": "ykLqcPfv7EE",
+          "startAt": 25
         },
         {
-          "title": "Part of Your World",
-          "youtubeId": "SXKlJuO07eM",
+          "title": "Partir là-bas",
+          "youtubeId": "rj50rngONWE",
           "startAt": 30
         },
         {
-          "title": "Poor Unfortunate Souls",
-          "youtubeId": "YxrTRc0P_xs",
-          "startAt": 35
+          "title": "Embrasse-la",
+          "youtubeId": "lMA1-0DyAWs",
+          "startAt": 30
         }
       ]
     },
@@ -354,17 +348,12 @@
       "tracks": [
         {
           "title": "Un Poco Loco",
-          "youtubeId": "yg8116aeD7E",
+          "youtubeId": "c9Hsvhe6gy4",
           "startAt": 18
         },
         {
-          "title": "Remember Me",
-          "youtubeId": "E7VPdpEV1m0",
-          "startAt": 20
-        },
-        {
-          "title": "Proud Corazón",
-          "youtubeId": "sLkDCF_EbqI",
+          "title": "Corazón",
+          "youtubeId": "B_bXWGpciuI",
           "startAt": 14
         }
       ]
@@ -372,24 +361,21 @@
     {
       "slug": "raiponce",
       "name": "Raiponce",
-      "alias": [
-        "Tangled"
-      ],
       "logo": null,
       "tracks": [
         {
-          "title": "I See the Light",
-          "youtubeId": "ILRs2r6lcHY",
-          "startAt": 62
+          "title": "Je veux y croire",
+          "youtubeId": "wJFfy_WhE78",
+          "startAt": 66
         },
         {
-          "title": "When Will My Life Begin?",
-          "youtubeId": "kRXmAIHYQR4",
+          "title": "Où est la vraie vie ?",
+          "youtubeId": "mI5UHZdz-oU",
           "startAt": 12
         },
         {
-          "title": "Mother Knows Best",
-          "youtubeId": "-7jWt3JvJto",
+          "title": "N'écoute que moi",
+          "youtubeId": "l9_Y-xH43o4",
           "startAt": 20
         }
       ]
@@ -398,23 +384,24 @@
       "slug": "tarzan",
       "name": "Tarzan",
       "alias": [
-        "Phil Collins"
+        "Phil Collins",
+        "Frédérique Tirmont"
       ],
       "logo": null,
       "tracks": [
         {
-          "title": "You'll Be In My Heart",
-          "youtubeId": "EfHLHdSxQA0",
-          "startAt": 63
+          "title": "Toujours dans mon coeur",
+          "youtubeId": "V12eVSTlhPc",
+          "startAt": 15
         },
         {
-          "title": "Son of Man",
-          "youtubeId": "tiBaBca7-rY",
+          "title": "Enfant de l'homme",
+          "youtubeId": "iIXZdKszubo",
           "startAt": 22
         },
         {
-          "title": "Two Worlds",
-          "youtubeId": "wb5keTpC4WU",
+          "title": "Entre deux mondes",
+          "youtubeId": "2XkOArg1TDs",
           "startAt": 30
         }
       ]
@@ -939,17 +926,17 @@
       "name": "Toy Story",
       "logo": null,
       "alias": [
-        "Randy Newman"
+        "CharlElie Couture"
       ],
       "tracks": [
         {
-          "title": "You've Got a Friend in Me",
-          "youtubeId": "1MPZRcyTrcU",
+          "title": "Je suis ton ami",
+          "youtubeId": "BTPTKOoMX24",
           "startAt": 12
         },
         {
-          "title": "Strange Things",
-          "youtubeId": "HQHdqbJQMrc",
+          "title": "Étrange Bazar",
+          "youtubeId": "dwB8vm1_yWg",
           "startAt": 25
         }
       ]
