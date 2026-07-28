@@ -75,10 +75,28 @@ test('un thème sans kind ni lexique reste un thème de groupes', () => {
   assert.deepEqual(theme.lexique, { case: 'groupe', cases: 'groupes', titre: 'titre' });
 });
 
-test('les trois genres de thème sont acceptés', () => {
+test('tous les genres de thème déclarés sont acceptés', () => {
   for (const kind of KINDS) {
     assert.equal(parseTheme(clone((c) => (c.kind = kind))).kind, kind);
   }
+});
+
+test('le genre « generique » existe, et c\'est lui qui donne le bouton Rejouer', () => {
+  // Un générique de quinze secondes passe, la salle lève la tête, c'est fini :
+  // sans le bouton « ↺ Rejouer » il n'existe aucun moyen de le repasser, le
+  // Play/Pause ne rembobinant pas. C'est `kind` qui le déclenche côté console
+  // (`src/screens/Presentateur.tsx`), d'où une quatrième valeur plutôt que de
+  // déclarer `kind: "replique"` — ce serait mettre une donnée fausse dans le
+  // catalogue pour obtenir un comportement d'interface.
+  assert.ok(KINDS.includes('generique'), 'KINDS doit connaître le genre generique');
+  const theme = parseTheme(
+    clone((c) => {
+      c.kind = 'generique';
+      c.lexique = { case: 'générique', cases: 'génériques', titre: 'générique' };
+    }),
+  );
+  assert.equal(theme.kind, 'generique');
+  assert.deepEqual(theme.lexique, { case: 'générique', cases: 'génériques', titre: 'générique' });
 });
 
 test('un lexique partiel est complété côté serveur, jamais côté front', () => {

@@ -106,13 +106,14 @@ function Console({ code, token }: { code: string; token: string }) {
   const restants = etat?.remaining ?? null
   const poolEpuise = restants === 0
 
-  // Une réplique de film dure trois secondes : on la repasse. Un extrait
-  // musical se reconnaît en dix et on le laisse tourner — trois boutons larges
-  // sur un téléphone, ce serait un bouton de trop pour un besoin qui n'existe
-  // pas sur ces thèmes-là.
-  const rejouable = etat?.kind === 'pub' || etat?.kind === 'replique'
+  // Un extrait court passe, la salle lève la tête, c'est fini : une réplique de
+  // film dure trois secondes, un générique de série quinze — on les repasse. Un
+  // extrait musical de trois minutes se reconnaît en dix secondes et on le
+  // laisse tourner : trois boutons larges sur un téléphone, ce serait un bouton
+  // de trop pour un besoin qui n'existe pas sur ces thèmes-là.
+  const rejouable = etat?.kind === 'pub' || etat?.kind === 'replique' || etat?.kind === 'generique'
   // À trois boutons la barre déborde d'un écran de 360 px : on resserre plutôt
-  // que d'inventer une classe pour un cas qui ne concerne que deux thèmes.
+  // que d'inventer une classe pour les seuls thèmes à extraits courts.
   const etroit = rejouable ? ' px-2 text-base' : ''
 
   // L'arbitrage se superpose à la console au lieu de la remplacer : le lecteur

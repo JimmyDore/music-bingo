@@ -5,11 +5,12 @@ import { join } from 'node:path';
 // changement de code : le dossier est relu au démarrage, c'est tout.
 // Les fichiers commençant par « _ » sont ignorés (lots de travail intermédiaires).
 
-/** Les seuls genres de thème que le jeu connaît. `kind` ne pilote que trois
- *  choses : le lexique, la sévérité de la vérification du catalogue, et la
- *  présence du bouton « Rejouer » sur la console. Le bingo, lui, ne change pas —
- *  c'est le même jeu avec un autre catalogue. */
-export const KINDS = ['musique', 'pub', 'replique'];
+/** Les seuls genres de thème que le jeu connaît. `kind` ne pilote que deux
+ *  choses : le lexique, et la présence du bouton « Rejouer » sur la console.
+ *  Il ne touche pas à la vérification du catalogue — `tools/verify-catalog.mjs`
+ *  ne lit jamais `kind`. Le bingo, lui, ne change pas — c'est le même jeu avec
+ *  un autre catalogue. */
+export const KINDS = ['musique', 'pub', 'replique', 'generique'];
 
 /** Le vocabulaire par défaut est celui d'un thème musical : c'est le seul qui
  *  existait, et rien ne doit bouger à l'écran sur ces thèmes-là. */

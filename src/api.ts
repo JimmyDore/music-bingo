@@ -24,9 +24,10 @@ export type Titre = {
  */
 export type Lexique = { case: string; cases: string; titre: string }
 
-/** Une réplique dure trois secondes : c'est ce qui justifie le bouton
- *  « Rejouer » de la console, et rien d'autre dans le jeu. */
-export type KindTheme = 'musique' | 'pub' | 'replique'
+/** Un extrait court se repasse : une réplique dure trois secondes, un générique
+ *  de série quinze. C'est ce qui justifie le bouton « Rejouer » de la console,
+ *  et rien d'autre dans le jeu. */
+export type KindTheme = 'musique' | 'pub' | 'replique' | 'generique'
 
 export type Referentiels = {
   themes: { id: string; name: string; bands: number; kind: KindTheme; lexique: Lexique }[]

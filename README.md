@@ -200,11 +200,16 @@ Règles :
 
 ### Les champs optionnels
 
-- **`kind`** : `musique` (défaut), `pub` ou `replique`. Il ne pilote que trois
-  choses — le lexique, la sévérité de la vérification, et l'apparition du bouton
-  « ↺ Rejouer » sur la console (une réplique de film dure trois secondes : le
-  Play/Pause ne suffit pas, il faut pouvoir la repasser). Le bingo, lui, ne
-  change pas : c'est le même jeu avec un autre catalogue.
+- **`kind`** : `musique` (défaut), `pub`, `replique` ou `generique`. Il ne pilote
+  que **deux** choses — le lexique, et l'apparition du bouton « ↺ Rejouer » sur
+  la console. Il ne touche pas à la vérification du catalogue :
+  `tools/verify-catalog.mjs` ne lit jamais `kind`. Le bouton apparaît sur `pub`,
+  `replique` et `generique`, et pour la même raison sur les trois — l'extrait est
+  trop court pour que le Play/Pause suffise, et il ne rembobine pas. Une réplique
+  de film dure trois secondes, un générique de série quinze : elles passent, la
+  salle lève la tête, c'est fini. Un extrait musical de trois minutes n'en a pas
+  besoin. Le bingo, lui, ne change pas : c'est le même jeu avec un autre
+  catalogue.
 - **`lexique`** : `{ "case": "film", "cases": "films", "titre": "réplique" }`.
   Sans lui, l'interface parle de « groupes » — ce qui est absurde quand la case
   porte une marque ou un film. Défauts appliqués côté serveur, jamais côté
