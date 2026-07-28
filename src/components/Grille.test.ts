@@ -1,10 +1,18 @@
 import { describe, expect, it } from 'vitest'
-import catalogue from '../../catalog/rock-pop-punk.json'
+import rockPopPunk from '../../catalog/rock-pop-punk.json'
+import generiquesTv from '../../catalog/generiques-tv.json'
 import { avecLegende, tailleTexte } from './Grille'
 
 // Chasse moyenne d'une capitale d'Anton, en em. C'est l'hypothèse qui relie la
 // taille de police à la largeur occupée par un mot.
 const CHASSE = 0.5
+
+// Deux thèmes, pas un. Ces boucles n'ont jamais couvert « le catalogue » : elles
+// ne voyaient qu'un fichier, et « Linkin Park » ne dit rien de « Le Laboratoire
+// de Dexter ». La taille de police se règle sur le mot le plus long, jamais sur
+// la longueur totale — un thème dont les cases portent des noms d'émissions est
+// donc un jeu de contraintes différent, qu'il faut regarder.
+const CATALOGUES = [rockPopPunk, generiquesTv]
 
 const motLePlusLong = (nom: string) => Math.max(...nom.split(/\s+/).map((m) => m.length))
 
@@ -36,17 +44,22 @@ describe('tailleTexte', () => {
   it('aucun nom du catalogue ne déborde de sa case', () => {
     // La taille est en `cqw` : le mot le plus long doit tenir dans les 100 %
     // de la largeur de case, sinon il est rogné — ou coupé n'importe où.
-    for (const band of catalogue.bands) {
-      const largeur = tailleTexte(band.name) * motLePlusLong(band.name) * CHASSE
-      expect(largeur, `${band.name} déborde (${largeur.toFixed(1)} cqw)`).toBeLessThanOrEqual(100)
+    for (const catalogue of CATALOGUES) {
+      for (const band of catalogue.bands) {
+        const largeur = tailleTexte(band.name) * motLePlusLong(band.name) * CHASSE
+        expect(largeur, `${band.name} déborde (${largeur.toFixed(1)} cqw)`).toBeLessThanOrEqual(100)
+      }
     }
   })
 
   it('aucun nom du catalogue ne tombe sur la taille plancher', () => {
     // Si un nom atteint le plancher, c'est qu'il est trop long pour la formule
-    // et qu'il sera rogné : il faut alors le raccourcir dans le catalogue.
-    for (const band of catalogue.bands) {
-      expect(tailleTexte(band.name), `${band.name} est au plancher`).toBeGreaterThan(11)
+    // et qu'il sera rogné : il faut alors le raccourcir dans le catalogue — le
+    // nom affiché, jamais le seuil du test.
+    for (const catalogue of CATALOGUES) {
+      for (const band of catalogue.bands) {
+        expect(tailleTexte(band.name), `${band.name} est au plancher`).toBeGreaterThan(11)
+      }
     }
   })
 })

@@ -150,7 +150,8 @@ suivant — c'est le prix d'entrée d'une famille de thèmes, pas d'un thème.
 | `annees-80` — Années 80 | 50 | 124 |
 | `tubes-2000` — Tubes des années 2000 | 44 | 132 |
 | `variete-francaise` — Variété française | 44 | 132 |
-| `musiques-de-films` — Musiques de films | 43 | 129 |
+| `musiques-de-films` — Musiques de films | 42 | 114 |
+| `generiques-tv` — Génériques TV | 55 | 60 |
 
 ```json
 {

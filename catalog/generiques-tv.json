@@ -1,0 +1,718 @@
+{
+  "id": "generiques-tv",
+  "name": "Génériques TV",
+  "kind": "generique",
+  "lexique": {
+    "case": "générique",
+    "cases": "génériques",
+    "titre": "générique"
+  },
+  "titresMin": 1,
+  "vuesMin": null,
+  "dureeMin": 10,
+  "bands": [
+    {
+      "slug": "titeuf",
+      "name": "Titeuf",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "r0jmwd4uoPM",
+          "startAt": 2
+        }
+      ]
+    },
+    {
+      "slug": "code-lyoko",
+      "name": "Code Lyoko",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "c58zKvmtLJQ",
+          "startAt": 3
+        }
+      ]
+    },
+    {
+      "slug": "oggy-et-les-cafards",
+      "name": "Oggy et les cafards",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "ybI6UecpU8w",
+          "startAt": 2
+        }
+      ]
+    },
+    {
+      "slug": "kid-paddle",
+      "name": "Kid Paddle",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "générique",
+          "youtubeId": "gUzx4rMiJf4",
+          "startAt": 1
+        }
+      ]
+    },
+    {
+      "slug": "les-zinzins-de-lespace",
+      "name": "Les Zinzins de l'espace",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "mbd2linSia4",
+          "startAt": 3
+        }
+      ]
+    },
+    {
+      "slug": "totally-spies",
+      "name": "Totally Spies",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "U6lvy7ZFZ5M",
+          "startAt": 1
+        }
+      ]
+    },
+    {
+      "slug": "foot-2-rue",
+      "name": "Foot 2 Rue",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "CaR7ADuVWvg",
+          "startAt": 3
+        }
+      ]
+    },
+    {
+      "slug": "wakfu",
+      "name": "Wakfu",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "GZc0ZGFW9Yw",
+          "startAt": 3
+        }
+      ]
+    },
+    {
+      "slug": "ben-10",
+      "name": "Ben 10",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "générique",
+          "youtubeId": "Wd7vFAyFLZk",
+          "startAt": 3
+        }
+      ]
+    },
+    {
+      "slug": "les-supers-nanas",
+      "name": "Les Supers Nanas",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "9SfjOlHd9ZE",
+          "startAt": 2
+        }
+      ]
+    },
+    {
+      "slug": "le-laboratoire-de-dexter",
+      "name": "Le Laboratoire de Dexter",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "4ZUa5eXQ1X4",
+          "startAt": 1
+        }
+      ]
+    },
+    {
+      "slug": "johnny-bravo",
+      "name": "Johnny Bravo",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Intro",
+          "youtubeId": "MmfeL0R5rbY",
+          "startAt": 1
+        }
+      ]
+    },
+    {
+      "slug": "courage-le-chien-froussard",
+      "name": "Courage, le chien froussard",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "CS94Dhv8Eoo",
+          "startAt": 1
+        }
+      ]
+    },
+    {
+      "slug": "ed-edd-n-eddy",
+      "name": "Ed, Edd n Eddy",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Intro",
+          "youtubeId": "1BPLXepRC8E",
+          "startAt": 1
+        }
+      ]
+    },
+    {
+      "slug": "bob-leponge",
+      "name": "Bob l'éponge",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "0wGq5gpkBC0",
+          "startAt": 2
+        }
+      ]
+    },
+    {
+      "slug": "he-arnold",
+      "name": "Hé Arnold !",
+      "alias": [
+        "Hey Arnold"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Theme Song",
+          "youtubeId": "Z2EotmVUdDE",
+          "startAt": 2
+        }
+      ]
+    },
+    {
+      "slug": "les-razmoket",
+      "name": "Les Razmoket",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "3Hbi9ajKOy8",
+          "startAt": 2
+        }
+      ]
+    },
+    {
+      "slug": "kim-possible",
+      "name": "Kim Possible",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "GkKx5fz31w8",
+          "startAt": 2
+        }
+      ]
+    },
+    {
+      "slug": "phineas-et-ferb",
+      "name": "Phinéas et Ferb",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "cRlHqkzjTIM",
+          "startAt": 3
+        }
+      ]
+    },
+    {
+      "slug": "quoi-dneuf-scooby-doo",
+      "name": "Quoi d'neuf Scooby-Doo ?",
+      "logo": null,
+      "alias": [
+        "Scooby-Doo"
+      ],
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "Af9azB7r3TY",
+          "startAt": 3
+        },
+        {
+          "title": "Mystères Associés",
+          "youtubeId": "KjZ1uUvcksM",
+          "startAt": 2
+        }
+      ]
+    },
+    {
+      "slug": "avatar-le-dernier-maitre-de-lair",
+      "name": "Avatar, le dernier maître de l'air",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Le dernier maître de l'air",
+          "youtubeId": "BGycFj-V3x4",
+          "startAt": 3
+        }
+      ]
+    },
+    {
+      "slug": "pokemon",
+      "name": "Pokémon",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Attrapez-les tous",
+          "youtubeId": "YhN4oAS3O4c",
+          "startAt": 4
+        },
+        {
+          "title": "Un Monde Pokémon",
+          "youtubeId": "pbKMmh_tC4g",
+          "startAt": 4
+        },
+        {
+          "title": "La Quête Ultime",
+          "youtubeId": "CTq2fzdP7FI",
+          "startAt": 3
+        }
+      ]
+    },
+    {
+      "slug": "digimon",
+      "name": "Digimon",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "a5c_YLOBxEs",
+          "startAt": 3
+        },
+        {
+          "title": "Digimon 02",
+          "youtubeId": "-8NsvQMocGQ",
+          "startAt": 3
+        }
+      ]
+    },
+    {
+      "slug": "yu-gi-oh",
+      "name": "Yu-Gi-Oh!",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "puObZPagWUU",
+          "startAt": 3
+        },
+        {
+          "title": "Yu-Gi-Oh! GX",
+          "youtubeId": "4yzssYYz9mw",
+          "startAt": 3
+        }
+      ]
+    },
+    {
+      "slug": "naruto",
+      "name": "Naruto",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "oe4RnJM9RZM",
+          "startAt": 2
+        }
+      ]
+    },
+    {
+      "slug": "les-simpson",
+      "name": "Les Simpson",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "r_0qwPd9VHo",
+          "startAt": 3
+        }
+      ]
+    },
+    {
+      "slug": "south-park",
+      "name": "South Park",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "South Park Theme",
+          "youtubeId": "b7uJyw6eXzg",
+          "startAt": 3
+        }
+      ]
+    },
+    {
+      "slug": "un-gars-une-fille",
+      "name": "Un gars, une fille",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "WVTAA0J6E0k",
+          "startAt": 2
+        }
+      ]
+    },
+    {
+      "slug": "camera-cafe",
+      "name": "Caméra Café",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "9Ixc6RpbLew",
+          "startAt": 2
+        }
+      ]
+    },
+    {
+      "slug": "plus-belle-la-vie",
+      "name": "Plus belle la vie",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "jPFNEmbbI5o",
+          "startAt": 1
+        }
+      ]
+    },
+    {
+      "slug": "bref",
+      "name": "Bref",
+      "alias": [
+        "Carbon Kevlar"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Coco Shaker",
+          "youtubeId": "yH5sLu7gceU",
+          "startAt": 103
+        }
+      ]
+    },
+    {
+      "slug": "kaamelott",
+      "name": "Kaamelott",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Génériques",
+          "youtubeId": "UTjL2GIYXUA",
+          "startAt": 1
+        }
+      ]
+    },
+    {
+      "slug": "friends",
+      "name": "Friends",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "I'll Be There for You",
+          "youtubeId": "RIjTq_OdFvo",
+          "startAt": 1
+        }
+      ]
+    },
+    {
+      "slug": "malcolm",
+      "name": "Malcolm",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Malcolm in the Middle Theme",
+          "youtubeId": "ZtKqQNpFJCo",
+          "startAt": 2
+        }
+      ]
+    },
+    {
+      "slug": "scrubs",
+      "name": "Scrubs",
+      "alias": [
+        "Lazlo Bane"
+      ],
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Superman",
+          "youtubeId": "KYJwkbgkdFg",
+          "startAt": 38
+        }
+      ]
+    },
+    {
+      "slug": "the-big-bang-theory",
+      "name": "The Big Bang Theory",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Big Bang Theory Theme",
+          "youtubeId": "8KTA50Z9Z0U",
+          "startAt": 1
+        }
+      ]
+    },
+    {
+      "slug": "dr-house",
+      "name": "Dr House",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "QOrGzb9o7tE",
+          "startAt": 2
+        }
+      ]
+    },
+    {
+      "slug": "greys-anatomy",
+      "name": "Grey's Anatomy",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "H3J3qbsLXGo",
+          "startAt": 1
+        }
+      ]
+    },
+    {
+      "slug": "les-experts",
+      "name": "Les Experts",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "RNRFo4Jn5bg",
+          "startAt": 2
+        }
+      ]
+    },
+    {
+      "slug": "24-heures-chrono",
+      "name": "24 heures chrono",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "dEcLdbsq-qc",
+          "startAt": 2
+        }
+      ]
+    },
+    {
+      "slug": "buffy-contre-les-vampires",
+      "name": "Buffy contre les vampires",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "6stIFV34uMc",
+          "startAt": 2
+        }
+      ]
+    },
+    {
+      "slug": "charmed",
+      "name": "Charmed",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "OVoERU5W3Hs",
+          "startAt": 2
+        }
+      ]
+    },
+    {
+      "slug": "smallville",
+      "name": "Smallville",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "aE5IH2ZV8mQ",
+          "startAt": 2
+        }
+      ]
+    },
+    {
+      "slug": "les-freres-scott",
+      "name": "Les Frères Scott",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "TAAcPoXejVI",
+          "startAt": 2
+        }
+      ]
+    },
+    {
+      "slug": "prison-break",
+      "name": "Prison Break",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Générique",
+          "youtubeId": "xB6OQZRgl-E",
+          "startAt": 1
+        }
+      ]
+    },
+    {
+      "slug": "desperate-housewives",
+      "name": "Desperate Housewives",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Theme",
+          "youtubeId": "6AD2OA1EYbk",
+          "startAt": 2
+        }
+      ]
+    },
+    {
+      "slug": "x-files",
+      "name": "X-Files",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Opening Credits",
+          "youtubeId": "v4-GcS1UQyg",
+          "startAt": 2
+        }
+      ]
+    },
+    {
+      "slug": "game-of-thrones",
+      "name": "Game of Thrones",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Opening Credits",
+          "youtubeId": "s7L2PVdrb_8",
+          "startAt": 2
+        }
+      ]
+    },
+    {
+      "slug": "the-walking-dead",
+      "name": "The Walking Dead",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Opening Credits",
+          "youtubeId": "of-Bqmlgj98",
+          "startAt": 2
+        }
+      ]
+    },
+    {
+      "slug": "lost",
+      "name": "Lost",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Opening Titles",
+          "youtubeId": "9LDh8DefWpI",
+          "startAt": 1
+        }
+      ]
+    },
+    {
+      "slug": "breaking-bad",
+      "name": "Breaking Bad",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Main Title Theme",
+          "youtubeId": "ilfYnhXD-bE",
+          "startAt": 3
+        }
+      ]
+    },
+    {
+      "slug": "les-soprano",
+      "name": "Les Soprano",
+      "logo": null,
+      "alias": [
+        "The Sopranos"
+      ],
+      "tracks": [
+        {
+          "title": "Opening Credits",
+          "youtubeId": "mJpNmYeooQE",
+          "startAt": 3
+        }
+      ]
+    },
+    {
+      "slug": "weeds",
+      "name": "Weeds",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "Little Boxes",
+          "youtubeId": "yZnx-VbQ2bk",
+          "startAt": 3
+        }
+      ]
+    },
+    {
+      "slug": "true-blood",
+      "name": "True Blood",
+      "logo": null,
+      "alias": [
+        "Jace Everett"
+      ],
+      "tracks": [
+        {
+          "title": "Bad Things",
+          "youtubeId": "sMPNjPpdjKU",
+          "startAt": 34
+        }
+      ]
+    },
+    {
+      "slug": "sons-of-anarchy",
+      "name": "Sons of Anarchy",
+      "logo": null,
+      "tracks": [
+        {
+          "title": "This Life",
+          "youtubeId": "gmSWkFQsuPM",
+          "startAt": 3
+        }
+      ]
+    }
+  ]
+}
