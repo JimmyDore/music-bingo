@@ -113,8 +113,15 @@ test('le catalogue livré se charge et tient les trois tailles de grille', () =>
       theme.bands.length >= biggest,
       `${theme.id} : ${theme.bands.length} groupes, il en faut ${biggest} pour une grille 4×5`,
     );
+    // Trois titres par entrée, sauf si le thème a déclaré un plancher plus bas —
+    // cf. `titresMin` dans tools/verify-catalog.mjs. Le plafond, lui, ne bouge
+    // pas : une quatrième piste ne serait jamais tirée par personne.
+    const min = theme.titresMin ?? 3;
     for (const band of theme.bands) {
-      assert.equal(band.tracks.length, 3, `${band.slug} doit avoir 3 titres`);
+      assert.ok(
+        band.tracks.length >= min && band.tracks.length <= 3,
+        `${band.slug} : ${band.tracks.length} titres, attendu ${min} à 3`,
+      );
     }
   }
 });
