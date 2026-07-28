@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { api, ErreurApi, type Cellule } from '../api'
 import { Grille } from '../components/Grille'
 import { useSondage } from '../lib/poll'
+import { casesManquantes } from '../lib/regles'
 import {
   ecrireSessionJoueur,
   feteDejaVue,
@@ -14,6 +15,13 @@ import {
 const LIBELLE_REGLE: Record<string, string> = {
   ligne: 'Une ligne',
   'carton-plein': 'Carton plein',
+}
+
+/** Fin de la phrase « Encore 3 cases … ». Dire ce qui manque plutôt que « règle
+ *  non satisfaite » : le joueur doit comprendre en une lecture, en soirée. */
+const LIBELLE_MANQUE: Record<string, string> = {
+  ligne: 'pour compléter une ligne',
+  'carton-plein': 'pour le carton plein',
 }
 
 export function Joueur({ code }: { code: string }) {
@@ -289,6 +297,16 @@ function Partie({
 
   const total = coches.filter(Boolean).length
 
+  // Garde-fou, pas arbitre : le verdict reste humain (cf. README). Le bouton ne
+  // s'ouvre qu'une fois l'objectif atteint sur la grille, ce qui évite au
+  // présentateur d'arbitrer des bingos criés à trois cases cochées — l'écran
+  // d'arbitrage coupe la musique et suspend toute la pièce pour rien.
+  //
+  // Ça ne remplace pas l'arbitrage : cocher une case dont le groupe n'est jamais
+  // passé reste possible, et c'est toujours le présentateur qui le voit.
+  const manquantes = casesManquantes(coches, cols, meta?.winRule ?? '')
+  const objectif = manquantes === 0 ? null : LIBELLE_MANQUE[meta?.winRule ?? ''] ?? 'pour gagner'
+
   return (
     <div className="ecran flex min-h-dvh flex-col">
       <header className="flex items-center justify-between gap-3 pb-3">
@@ -352,9 +370,25 @@ function Partie({
               </p>
             </div>
           ) : (
-            <button type="button" className="bouton bouton--neon pulse-bingo" onClick={crierBingo}>
-              Bingo !
-            </button>
+            <>
+              {/* La pulsation ne bat que quand le bouton est vivant : un bouton
+                  éteint qui clignote appelle des taps qui ne feront rien. */}
+              <button
+                type="button"
+                className={`bouton bouton--neon${manquantes === 0 ? ' pulse-bingo' : ''}`}
+                onClick={crierBingo}
+                disabled={manquantes > 0}
+              >
+                Bingo !
+              </button>
+              {/* Le compte reste affiché en permanence : c'est ce qui transforme
+                  un bouton grisé en objectif, et il descend à chaque case. */}
+              {objectif && (
+                <p className="mt-2 text-center text-xs font-bold text-doux">
+                  {manquantes === 1 ? 'Encore une case' : `Encore ${manquantes} cases`} {objectif}
+                </p>
+              )}
+            </>
           )}
         </div>
       )}

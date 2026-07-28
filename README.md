@@ -14,20 +14,25 @@ titres depuis son téléphone, les autres cochent depuis le leur.
    son téléphone, entre un prénom et reçoit **une grille unique**.
 3. Le présentateur ouvre `/m/:code` — sa console — et lance les titres.
 4. Quand un groupe passe, ceux qui l'ont sur leur grille cochent la case.
-5. Quelqu'un crie BINGO et appuie sur le bouton. Le présentateur voit la
-   réclamation, regarde la grille du joueur en face de l'historique, et
-   **tranche à voix haute**.
+5. Quelqu'un crie BINGO et appuie sur le bouton — qui ne s'ouvre qu'une fois
+   l'objectif atteint sur sa grille. Le présentateur voit la réclamation,
+   regarde la grille du joueur en face de l'historique, et **tranche à voix
+   haute**.
 6. S'il valide, la partie se termine et chaque téléphone l'apprend : confettis
    et « TU AS GAGNÉ » chez le gagnant, pluie de pouces en bas — deux secondes et
    demie, pas plus — puis le nom du gagnant chez les autres.
 
 ### Ce que l'app ne fait pas, volontairement
 
-- **Elle ne détecte aucune victoire.** L'objectif (« carton plein », « une
-  ligne ») est une simple métadonnée affichée aux joueurs. Le bouton BINGO est
-  une *réclamation*, jamais une validation. Le verdict est humain — l'app se
-  contente de l'**enregistrer** une fois qu'il est tombé, pour que les
-  téléphones sachent qui fêter.
+- **Elle ne tranche aucune victoire.** Le bouton BINGO est une *réclamation*,
+  jamais une validation. Le verdict est humain — l'app se contente de
+  l'**enregistrer** une fois qu'il est tombé, pour que les téléphones sachent
+  qui fêter. Elle lit tout de même l'objectif pour garder le bouton fermé tant
+  qu'il n'est pas atteint sur la grille (`src/lib/regles.ts`) : ça évite au
+  présentateur de couper la musique pour arbitrer un bingo crié à trois cases.
+  Ce garde-fou échoue toujours **ouvert** — règle inconnue du front, grille
+  incomplète, il laisse passer. Un bouton bloqué à tort coûte bien plus cher
+  qu'une réclamation prématurée.
 - **Elle n'empêche pas la triche.** Cocher, décocher, tout cocher d'un coup :
   tout est permis. La triche est un problème social, pas logiciel. La console
   d'arbitrage se contente de signaler les cases cochées dont le groupe n'est
