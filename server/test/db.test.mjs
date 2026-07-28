@@ -1,5 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { DatabaseSync } from 'node:sqlite';
 
 import {
   claimBingo,
@@ -16,6 +20,7 @@ import {
   openDb,
   playedTracks,
   purgeOldGames,
+  setWinner,
   updateChecks,
 } from '../db.mjs';
 
@@ -83,6 +88,58 @@ test('une réclamation de BINGO se pose et se retire', () => {
   assert.ok(getPlayer(db, 'p-ABCD').bingoClaimedAt);
   dismissBingo(db, 'p-ABCD');
   assert.equal(getPlayer(db, 'p-ABCD').bingoClaimedAt, null);
+});
+
+test('désigner un gagnant termine la partie du même coup', () => {
+  const db = openDb(':memory:');
+  seedGame(db, 'ABCD');
+  assert.equal(getGame(db, 'ABCD').winnerId, null, 'personne n\'a gagné tant qu\'on n\'a pas tranché');
+
+  setWinner(db, 'ABCD', 'p-ABCD');
+  const game = getGame(db, 'ABCD');
+  assert.equal(game.winnerId, 'p-ABCD');
+  assert.equal(game.status, 'ended', 'un seul UPDATE : jamais de partie terminée sans son gagnant');
+});
+
+test('une base d\'avant le gagnant reçoit la colonne au démarrage', () => {
+  // La base de production vit dans un volume Docker : elle traverse les
+  // déploiements avec son ancien schéma, et `CREATE TABLE IF NOT EXISTS` ne la
+  // touche pas. Seule la migration gardée peut la rattraper — c'est le seul
+  // chemin qui compte en vrai, et il ne passe jamais par une base neuve.
+  const dossier = mkdtempSync(join(tmpdir(), 'bingo-migration-'));
+  const chemin = join(dossier, 'ancienne.db');
+  try {
+    const ancienne = new DatabaseSync(chemin);
+    ancienne.exec(`
+      CREATE TABLE games (
+        code          TEXT PRIMARY KEY,
+        theme         TEXT NOT NULL,
+        rows          INTEGER NOT NULL,
+        cols          INTEGER NOT NULL,
+        win_rule      TEXT NOT NULL,
+        status        TEXT NOT NULL,
+        master_token  TEXT NOT NULL,
+        created_at    TEXT NOT NULL DEFAULT (datetime('now'))
+      );
+    `);
+    ancienne
+      .prepare('INSERT INTO games (code, theme, rows, cols, win_rule, status, master_token) VALUES (?, ?, ?, ?, ?, ?, ?)')
+      .run('VIEU', 'test', 5, 4, 'ligne', 'ready', 'jeton');
+    ancienne.close();
+
+    const db = openDb(chemin);
+    assert.equal(getGame(db, 'VIEU').winnerId, null, 'la partie d\'avant survit à la migration');
+    setWinner(db, 'VIEU', 'p-1');
+    assert.equal(getGame(db, 'VIEU').winnerId, 'p-1');
+    db.close();
+
+    // Rouvrir ne rejoue pas l'ALTER TABLE : le boot doit rester idempotent.
+    const encore = openDb(chemin);
+    assert.equal(getGame(encore, 'VIEU').winnerId, 'p-1');
+    encore.close();
+  } finally {
+    rmSync(dossier, { recursive: true, force: true });
+  }
 });
 
 test('les parties de plus de 24 h sont purgées avec leurs joueurs et titres', () => {

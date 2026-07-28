@@ -3,7 +3,7 @@ import { randomBytes } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
-import { loadCatalog, themeSummaries } from './catalog.mjs';
+import { kindDe, lexiqueDe, loadCatalog, themeSummaries } from './catalog.mjs';
 import {
   GRID_SIZES,
   WIN_RULES,
@@ -35,6 +35,7 @@ import {
   playedTracks,
   purgeOldGames,
   setGameStatus,
+  setWinner,
   updateChecks,
 } from './db.mjs';
 import { prepareGame } from './verify.mjs';
@@ -109,6 +110,9 @@ async function route(req, res, seg, ctx) {
     if (req.method === 'DELETE' && seg[3] === 'claims' && seg.length === 5) {
       return rejectClaim(res, db, game, seg[4]);
     }
+    if (req.method === 'POST' && seg[3] === 'claims' && seg[5] === 'validate' && seg.length === 6) {
+      return validateClaim(res, db, game, seg[4]);
+    }
     return json(res, 404, { error: 'introuvable' });
   }
 
@@ -149,7 +153,8 @@ async function createGame(req, res, { db, themes, prepare, rng }) {
   const cells = grid.rows * grid.cols;
   const size = poolSize(cells);
   if (theme.bands.length < size) {
-    return json(res, 400, { error: `thème trop petit : ${theme.bands.length} groupes pour un pool de ${size}` });
+    const mot = lexiqueDe(theme).cases;
+    return json(res, 400, { error: `thème trop petit : ${theme.bands.length} ${mot} pour un pool de ${size}` });
   }
 
   let code = randomCode(rng);
@@ -184,6 +189,7 @@ function publicGame(res, db, themes, game) {
     code: game.code,
     theme: game.theme,
     themeName: themes.get(game.theme)?.name ?? game.theme,
+    ...vocabulaire(themes, game.theme),
     rows: game.rows,
     cols: game.cols,
     winRule: game.winRule,
@@ -228,10 +234,12 @@ function showPlayer(res, db, themes, player) {
       ? {
           code: game.code,
           themeName: themes.get(game.theme)?.name ?? game.theme,
+          ...vocabulaire(themes, game.theme),
           rows: game.rows,
           cols: game.cols,
           winRule: game.winRule,
           status: game.status,
+          ...winnerOf(db, game),
         }
       : null,
   });
@@ -255,10 +263,12 @@ function gameState(res, db, themes, game) {
   return json(res, 200, {
     code: game.code,
     themeName: themes.get(game.theme)?.name ?? game.theme,
+    ...vocabulaire(themes, game.theme),
     rows: game.rows,
     cols: game.cols,
     winRule: game.winRule,
     status: game.status,
+    ...winnerOf(db, game),
     poolSize: total,
     verified,
     remaining: total - history.length,
@@ -289,6 +299,8 @@ function playNext(res, db, game) {
   return json(res, 200, { track: publicTrack(track), remaining });
 }
 
+/** Fin neutre : on arrête la soirée sans désigner personne. `winner_player_id`
+ *  reste NULL, et l'écran de fin des joueurs ne fête ni ne console. */
 function endGame(res, db, game) {
   setGameStatus(db, game.code, 'ended');
   return json(res, 200, { ok: true });
@@ -301,7 +313,36 @@ function rejectClaim(res, db, game, playerId) {
   return json(res, 200, { ok: true });
 }
 
+/** Valider, c'est désigner un gagnant ET terminer la partie. Les deux sont
+ *  indissociables : c'est ce qui permet à l'écran de fin de savoir s'il doit
+ *  faire la fête, consoler, ou rester neutre. */
+function validateClaim(res, db, game, playerId) {
+  const player = getPlayer(db, playerId);
+  if (!player || player.gameCode !== game.code) return json(res, 404, { error: 'joueur introuvable' });
+  setWinner(db, game.code, player.id);
+  return json(res, 200, { ok: true, winnerId: player.id, winnerName: player.name });
+}
+
+/** Le gagnant part par id ET par nom : le joueur compare l'id au sien pour
+ *  savoir de quel côté il est, et affiche le nom sans avoir à lire l'état de la
+ *  partie — qui, lui, reste réservé au présentateur. */
+function winnerOf(db, game) {
+  if (!game.winnerId) return { winnerId: null, winnerName: null };
+  return { winnerId: game.winnerId, winnerName: getPlayer(db, game.winnerId)?.name ?? null };
+}
+
 // ------------------------------------------------------------------ helpers
+
+/**
+ * Le genre du thème et son vocabulaire, résolus ici et jamais côté front : sur
+ * un thème de films, le présentateur doit lire « le film n'est jamais passé »,
+ * pas « le groupe ». Un thème disparu du catalogue depuis la création de la
+ * partie retombe sur le vocabulaire musical plutôt que sur du vide.
+ */
+function vocabulaire(themes, id) {
+  const theme = themes.get(id);
+  return { kind: kindDe(theme), lexique: lexiqueDe(theme) };
+}
 
 function isMaster(req, game) {
   return bearer(req) === game.masterToken;

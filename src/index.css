@@ -204,13 +204,46 @@
     @apply text-nuit;
   }
 
+  /* La pile logo + légende occupe toute la case, quoi qu'il arrive : c'est elle
+     qui réserve la place et empêche le contenu de sauter quand le PNG arrive. */
+  .cellule-visuel {
+    @apply flex min-h-0 w-full flex-col items-center justify-center gap-1 self-stretch;
+  }
+
   .cellule-logo {
-    @apply max-h-[80%] max-w-[85%] object-contain;
+    /* `flex-1` plutôt qu'un `max-height` : une <img> pas encore chargée n'a
+       aucune dimension intrinsèque et mesurerait 0 px de haut. La case se
+       réorganiserait alors sous les yeux du joueur à l'arrivée des vingt
+       images. Ici la boîte est décidée par la case, jamais par le fichier.
+       88 % de large : le même filet d'air que gardait l'ancien `max-w`. */
+    @apply min-h-0 w-[88%] flex-1 object-contain;
+    /* Convention d'asset : une silhouette noire pleine sur fond transparent, et
+       tout le recoloriage se fait ici. Sur le fond nuit la silhouette est
+       repassée en blanc ; sur l'aplat stabilo (plus bas) elle redevient noire.
+       Un seul fichier par groupe, deux états parfaitement contrastés, et aucun
+       traitement d'image à faire en amont. */
+    filter: brightness(0) invert(1);
   }
 
   .cellule--cochee .cellule-logo {
-    /* Le logo reste lisible sur fond jaune. */
-    filter: brightness(0) saturate(100%);
+    /* Silhouette noire sur le jaune : l'inverse exact de l'état non coché. */
+    filter: brightness(0);
+  }
+
+  /* Le nom sous le logo, sur les grilles où il reste de la hauteur (cf.
+     `avecLegende` dans Grille.tsx). Sans lui, celui qui ne reconnaît pas
+     l'emblème d'un groupe a une case morte sur sa carte.
+     Une seule ligne, coupée aux points de suspension : deux lignes mangeraient
+     le logo, et un nom qui pousse la grille est pire qu'un nom tronqué. */
+  .cellule-legende {
+    @apply w-full shrink-0 overflow-hidden text-ellipsis whitespace-nowrap
+           font-titre text-[0.55rem] uppercase leading-none text-doux;
+  }
+
+  .cellule--cochee .cellule-legende {
+    /* `--color-doux` sur le stabilo tombe à 1,7:1 : illisible. Le nuit repasse
+       au-dessus de 10:1, atténué juste assez pour rester sous le logo. */
+    @apply text-nuit/75;
   }
 
   .cellule-coche {
@@ -305,10 +338,42 @@
     100% { transform: translateY(112vh) rotate(720deg); opacity: 0.9; }
   }
 
+  /* Victoire : mêmes confettis, en plus gros. La densité et la durée viennent
+     du composant, la taille d'ici — c'est le seul réglage qui ne se pilote pas
+     proprement en style inline. */
+  .confetti--fort span {
+    @apply h-4;
+  }
+
+  /* La pluie de pouces réutilise `chute` : on ne monte pas un second moteur
+     d'animation pour deux secondes et demie de charriage. */
+  .pluie-pouces {
+    @apply pointer-events-none fixed inset-0 z-50 overflow-hidden;
+  }
+
+  .pluie-pouces span {
+    @apply absolute block text-3xl leading-none;
+    top: -12vh;
+    animation: chute linear forwards;
+  }
+
+  /* Le seul écran plein cadre du jeu. Il ne dure que le temps de la fête : au
+     tap, il rend la main sur la grille figée. */
+  .ecran-victoire {
+    @apply fixed inset-0 z-50 flex w-full flex-col items-center justify-center gap-4
+           bg-nuit/95 px-6 text-center backdrop-blur;
+    animation: fete-bingo 620ms cubic-bezier(0.22, 1.2, 0.36, 1) both;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .pulse-bingo { animation: none; }
     .cellule, .bouton { transition: none; }
     .fete-bingo { animation: none; }
     .confetti { display: none; }
+    /* Quelqu'un qui a demandé moins d'animations ne reçoit pas une pluie de
+       pouces. Le « TU AS GAGNÉ », lui, reste : c'est un message, pas un effet —
+       le couper priverait le gagnant de l'information. */
+    .pluie-pouces { display: none; }
+    .ecran-victoire { animation: none; }
   }
 }

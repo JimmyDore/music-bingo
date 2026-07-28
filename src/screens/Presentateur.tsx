@@ -90,12 +90,30 @@ function Console({ code, token }: { code: string; token: string }) {
     lecteur.basculerLecture()
   }, [titre, lecteur])
 
+  // Recharger plutôt que rembobiner : c'est exactement le chemin du premier tap,
+  // donc la lecture repart d'un vrai geste utilisateur — iOS n'en accepte pas
+  // d'autre, et Pause/Play ne rembobine de toute façon rien.
+  const rejouer = useCallback(() => {
+    if (!titre) return
+    idCharge.current = titre.youtubeId
+    lecteur.charger(titre.youtubeId, titre.startAt)
+  }, [titre, lecteur])
+
   const reclamations = etat?.players.filter((p) => p.bingoClaimedAt !== null) ?? []
   const finie = etat?.status === 'ended'
   // `null` tant que le premier sondage n'a pas répondu : sans ça, « Suivant »
   // resterait grisé au chargement, et définitivement si le réseau bronche.
   const restants = etat?.remaining ?? null
   const poolEpuise = restants === 0
+
+  // Une réplique de film dure trois secondes : on la repasse. Un extrait
+  // musical se reconnaît en dix et on le laisse tourner — trois boutons larges
+  // sur un téléphone, ce serait un bouton de trop pour un besoin qui n'existe
+  // pas sur ces thèmes-là.
+  const rejouable = etat?.kind === 'pub' || etat?.kind === 'replique'
+  // À trois boutons la barre déborde d'un écran de 360 px : on resserre plutôt
+  // que d'inventer une classe pour un cas qui ne concerne que deux thèmes.
+  const etroit = rejouable ? ' px-2 text-base' : ''
 
   // L'arbitrage se superpose à la console au lieu de la remplacer : le lecteur
   // YouTube reste monté, donc la musique continue pendant qu'on tranche.
@@ -145,9 +163,19 @@ function Console({ code, token }: { code: string; token: string }) {
         </p>
       )}
 
+      {/* La console est un poste de travail, pas un écran de fête : pas de
+          confettis ici, juste le nom du gagnant en évidence — c'est ce que le
+          présentateur doit annoncer à voix haute. */}
       {finie && (
         <div className="carte mb-3 border-menthe text-center">
-          <p className="titre-affiche text-xl text-menthe">Partie terminée</p>
+          {etat?.winnerName ? (
+            <>
+              <p className="text-[0.65rem] font-bold uppercase tracking-widest text-doux">Bingo validé</p>
+              <p className="titre-affiche mt-1 text-3xl text-stabilo">{etat.winnerName}</p>
+            </>
+          ) : (
+            <p className="titre-affiche text-xl text-menthe">Partie terminée</p>
+          )}
           <p className="mt-1 text-xs font-semibold text-doux">
             {etat?.history.length ?? 0} titres joués · {etat?.players.length ?? 0} joueurs
           </p>
@@ -252,15 +280,28 @@ function Console({ code, token }: { code: string; token: string }) {
             </button>
           </div>
 
-          {/* Barre de transport : deux boutons, larges, loin de tout le reste. */}
+          {/* Barre de transport : deux boutons, larges, loin de tout le reste.
+              Trois seulement sur les thèmes courts, où repasser l'extrait fait
+              partie du jeu. « Suivant » garde sa place à droite : c'est celui
+              qu'on cherche sans regarder. */}
           <div className="fixed inset-x-0 bottom-0 z-30 border-t-2 border-bord bg-nuit/95 backdrop-blur">
             <div
               className="mx-auto flex max-w-lg gap-2 px-4 pt-3"
               style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom))' }}
             >
+              {rejouable && (
+                <button
+                  type="button"
+                  className={`bouton bouton--sombre flex-1${etroit}`}
+                  onClick={rejouer}
+                  disabled={!titre || !lecteur.etat.pret}
+                >
+                  ↺ Rejouer
+                </button>
+              )}
               <button
                 type="button"
-                className="bouton bouton--sombre flex-1"
+                className={`bouton bouton--sombre flex-1${etroit}`}
                 onClick={lecture}
                 disabled={!titre || !lecteur.etat.pret}
               >
@@ -268,7 +309,7 @@ function Console({ code, token }: { code: string; token: string }) {
               </button>
               <button
                 type="button"
-                className="bouton bouton--neon flex-1"
+                className={`bouton bouton--neon flex-1${etroit}`}
                 onClick={suivant}
                 disabled={enAttente || poolEpuise}
               >
@@ -297,8 +338,10 @@ function Console({ code, token }: { code: string; token: string }) {
             setArbitre(null)
             rafraichir()
           }}
+          // Valider enregistre le gagnant et termine la partie d'un seul geste :
+          // c'est ce qui permet aux joueurs de savoir de quel côté ils sont.
           onValider={async () => {
-            await api.terminer(code, token)
+            await api.validerBingo(code, token, arbitreVif.id)
             setArbitre(null)
             rafraichir()
           }}
@@ -397,8 +440,12 @@ function Partage({ code, ouvert, onBasculer }: { code: string; ouvert: boolean; 
 
 /**
  * Arbitrage d'une réclamation. L'app ne tranche pas : elle met sous les yeux du
- * présentateur la grille du joueur et les groupes réellement passés. Le verdict
+ * présentateur la grille du joueur et ce qui est réellement passé. Le verdict
  * est humain, et rejeter doit rester parfaitement banal.
+ *
+ * C'est ici que le vocabulaire du thème compte le plus : le présentateur lit ce
+ * texte à voix haute pendant que dix personnes attendent. « Le groupe n'est
+ * jamais passé » en parlant d'Intermarché, ça se remarque.
  */
 function Arbitrage({
   joueur,
@@ -416,6 +463,7 @@ function Arbitrage({
   const joues = new Set(etat.history.map((t) => t.slug))
   const cochees = joueur.card.filter((_, i) => joueur.checked[i])
   const suspectes = cochees.filter((c) => !joues.has(c.slug))
+  const mot = etat.lexique.case
 
   return (
     <div className="fixed inset-0 z-40 overflow-y-auto overscroll-contain bg-nuit" role="dialog" aria-modal="true">
@@ -435,13 +483,13 @@ function Arbitrage({
         <p className="bandeau-alerte mb-3 !border-neon/50 !bg-neon/10 !text-neon">
           <span aria-hidden="true">!</span>
           {suspectes.length === 1
-            ? '1 case cochée dont le groupe n\'est jamais passé.'
-            : `${suspectes.length} cases cochées dont le groupe n'est jamais passé.`}
+            ? `1 case cochée dont le ${mot} n'est jamais passé.`
+            : `${suspectes.length} cases cochées dont le ${mot} n'est jamais passé.`}
         </p>
       ) : (
         <p className="bandeau-alerte mb-3 !border-menthe/50 !bg-menthe/10 !text-menthe">
           <span aria-hidden="true">✓</span>
-          Toutes les cases cochées correspondent à un groupe passé.
+          Toutes les cases cochées correspondent à un {mot} passé.
         </p>
       )}
 

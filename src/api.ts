@@ -12,8 +12,24 @@ export type Titre = {
   startAt: number
 }
 
+/**
+ * Le vocabulaire du thème, déjà résolu par le serveur : le front ne connaît
+ * aucun défaut, il affiche le mot qu'on lui donne. Sur un thème musical c'est
+ * groupe / groupes / titre, et rien ne bouge à l'écran.
+ *
+ * Le lexique ne porte pas le genre grammatical : les mots s'insèrent là où la
+ * phrase d'origine disait « le groupe ». Un thème qui déclare un mot féminin
+ * doit choisir en conséquence — un champ de genre coûterait plus cher que la
+ * grimace qu'il évite.
+ */
+export type Lexique = { case: string; cases: string; titre: string }
+
+/** Une réplique dure trois secondes : c'est ce qui justifie le bouton
+ *  « Rejouer » de la console, et rien d'autre dans le jeu. */
+export type KindTheme = 'musique' | 'pub' | 'replique'
+
 export type Referentiels = {
-  themes: { id: string; name: string; bands: number }[]
+  themes: { id: string; name: string; bands: number; kind: KindTheme; lexique: Lexique }[]
   grids: { id: string; label: string; cols: number; rows: number }[]
   winRules: { id: string; label: string }[]
 }
@@ -22,6 +38,8 @@ export type Partie = {
   code: string
   theme: string
   themeName: string
+  kind: KindTheme
+  lexique: Lexique
   rows: number
   cols: number
   winRule: string
@@ -43,10 +61,16 @@ export type JoueurVu = {
 export type EtatPartie = {
   code: string
   themeName: string
+  kind: KindTheme
+  lexique: Lexique
   rows: number
   cols: number
   winRule: string
   status: Partie['status']
+  // `null` tant que personne n'a gagné : une partie peut se terminer sans
+  // vainqueur, et l'écran de fin doit alors rester neutre.
+  winnerId: string | null
+  winnerName: string | null
   poolSize: number
   verified: number
   remaining: number
@@ -64,10 +88,16 @@ export type Joueur = {
   game: {
     code: string
     themeName: string
+    kind: KindTheme
+    lexique: Lexique
     rows: number
     cols: number
     winRule: string
     status: Partie['status']
+    // Le joueur compare `winnerId` à son propre id : c'est tout ce qui sépare
+    // l'écran de victoire de l'écran de défaite.
+    winnerId: string | null
+    winnerName: string | null
   } | null
 }
 
@@ -138,4 +168,14 @@ export const api = {
 
   rejeterBingo: (code: string, token: string, playerId: string) =>
     request<{ ok: true }>('DELETE', `/api/games/${code}/claims/${playerId}`, { token }),
+
+  // Valider désigne le gagnant et termine la partie d'un seul coup — c'est ce
+  // qui remplace `terminer` dans le modal d'arbitrage. `terminer` reste pour la
+  // fin neutre, sans vainqueur.
+  validerBingo: (code: string, token: string, playerId: string) =>
+    request<{ ok: true; winnerId: string; winnerName: string }>(
+      'POST',
+      `/api/games/${code}/claims/${playerId}/validate`,
+      { token },
+    ),
 }

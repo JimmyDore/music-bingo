@@ -16,6 +16,9 @@ export function openDb(path = ':memory:') {
       win_rule      TEXT NOT NULL,
       status        TEXT NOT NULL,
       master_token  TEXT NOT NULL,
+      -- NULL tant que personne n'a gagné : une partie peut très bien se
+      -- terminer sans vainqueur (bouton « Terminer la partie »).
+      winner_player_id TEXT,
       created_at    TEXT NOT NULL DEFAULT (datetime('now'))
     );
     CREATE TABLE IF NOT EXISTS game_tracks (
@@ -45,7 +48,24 @@ export function openDb(path = ':memory:') {
     CREATE INDEX IF NOT EXISTS idx_players_game ON players(game_code);
     CREATE INDEX IF NOT EXISTS idx_games_created ON games(created_at);
   `);
+  migrer(db);
   return db;
+}
+
+/**
+ * Les colonnes ajoutées après coup ne peuvent pas venir du `CREATE TABLE` seul :
+ * `IF NOT EXISTS` ne touche pas une table qui existe déjà. Et la base vit dans
+ * un volume Docker qui survit aux déploiements — sans cette migration, la
+ * colonne n'existerait que sur les bases neuves, donc jamais en production.
+ *
+ * Gardée par `PRAGMA table_info` plutôt que par un try/catch : on veut qu'un
+ * vrai échec d'`ALTER TABLE` reste bruyant au démarrage, pas avalé en silence.
+ */
+function migrer(db) {
+  const colonnes = new Set(db.prepare('PRAGMA table_info(games)').all().map((c) => c.name));
+  if (!colonnes.has('winner_player_id')) {
+    db.exec('ALTER TABLE games ADD COLUMN winner_player_id TEXT');
+  }
 }
 
 export function newToken() {
@@ -72,6 +92,7 @@ export function getGame(db, code) {
     winRule: row.win_rule,
     status: row.status,
     masterToken: row.master_token,
+    winnerId: row.winner_player_id ?? null,
     createdAt: row.created_at,
   };
 }
@@ -82,6 +103,13 @@ export function gameCodeExists(db, code) {
 
 export function setGameStatus(db, code, status) {
   db.prepare('UPDATE games SET status = ? WHERE code = ?').run(status, code);
+}
+
+/** Désigner le gagnant et terminer la partie sont un seul geste, dans un seul
+ *  UPDATE : entre les deux, le gagnant verrait l'écran de fin neutre — celui
+ *  qu'on affiche justement quand personne n'a gagné. */
+export function setWinner(db, code, playerId) {
+  db.prepare("UPDATE games SET status = 'ended', winner_player_id = ? WHERE code = ?").run(playerId, code);
 }
 
 // ------------------------------------------------------------- titres

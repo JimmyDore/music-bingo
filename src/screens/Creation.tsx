@@ -38,6 +38,10 @@ export function Creation() {
     }
   }
 
+  // Le lexique vient du serveur, déjà résolu : un thème de films annonce
+  // « 42 films », le thème rock continue d'annoncer « 63 groupes ».
+  const themeChoisi = refs?.themes.find((t) => t.id === choix.theme)
+
   return (
     <div className="ecran">
       <Enseigne />
@@ -48,7 +52,7 @@ export function Creation() {
         <p className="mt-8 text-center text-sm font-semibold text-doux">Chargement…</p>
       ) : (
         <div className="mt-5 space-y-5">
-          <Bloc titre="Thème" indice={`${refs.themes.find((t) => t.id === choix.theme)?.bands ?? 0} groupes`}>
+          <Bloc titre="Thème" indice={themeChoisi && `${themeChoisi.bands} ${themeChoisi.lexique.cases}`}>
             {refs.themes.length === 1 ? (
               // Un seul thème : c'est une information, pas un choix. Un bouton
               // « sélectionné » tout seul fait croire à une option qui n'existe pas.

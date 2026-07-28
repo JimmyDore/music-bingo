@@ -2,8 +2,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   ecrireSessionJoueur,
   ecrireTokenPresentateur,
+  feteDejaVue,
   lireSessionJoueur,
   lireTokenPresentateur,
+  marquerFeteVue,
   oublierSessionJoueur,
 } from './storage'
 
@@ -78,5 +80,34 @@ describe('session du joueur', () => {
     expect(() => ecrireSessionJoueur('ABCD', { playerId: 'p1', token: 't1' })).not.toThrow()
     expect(lireSessionJoueur('ABCD')).toBeNull()
     expect(() => oublierSessionJoueur('ABCD')).not.toThrow()
+  })
+})
+
+describe('fête de fin de partie', () => {
+  it('ne se rejoue pas au refresh suivant', () => {
+    expect(feteDejaVue('ABCD')).toBe(false)
+    marquerFeteVue('ABCD')
+    expect(feteDejaVue('ABCD')).toBe(true)
+  })
+
+  it('ne déborde pas d\'une partie sur la suivante', () => {
+    marquerFeteVue('ABCD')
+    expect(feteDejaVue('WXYZ')).toBe(false)
+  })
+
+  it('rejoue la fête plutôt que de planter si localStorage refuse', () => {
+    vi.stubGlobal('window', {
+      localStorage: {
+        getItem: () => {
+          throw new Error('mode privé')
+        },
+        setItem: () => {
+          throw new Error('quota dépassé')
+        },
+        removeItem: () => {},
+      },
+    })
+    expect(() => marquerFeteVue('ABCD')).not.toThrow()
+    expect(feteDejaVue('ABCD')).toBe(false)
   })
 })

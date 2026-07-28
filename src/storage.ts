@@ -4,6 +4,7 @@
 
 const CLE_PRESENTATEUR = 'bingo:master:'
 const CLE_JOUEUR = 'bingo:player:'
+const CLE_FETE = 'bingo:fete:'
 
 export type SessionJoueur = { playerId: string; token: string }
 
@@ -57,4 +58,18 @@ export function oublierSessionJoueur(code: string): void {
   } catch {
     /* ignore */
   }
+}
+
+/** La fin de partie se voit à chaque ouverture ; la fête, une seule fois. Un
+ *  feu d'artifice rejoué à chaque refresh cesse d'être un événement, et une
+ *  pluie de pouces qui recommence à chaque refresh devient une punition.
+ *
+ *  Si localStorage refuse d'écrire (mode privé Safari), la fête se rejouera :
+ *  c'est le bon défaut, on ne prive personne de son moment pour un quota. */
+export function feteDejaVue(code: string): boolean {
+  return lire(CLE_FETE + code) === '1'
+}
+
+export function marquerFeteVue(code: string): void {
+  ecrire(CLE_FETE + code, '1')
 }

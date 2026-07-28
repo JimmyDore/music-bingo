@@ -2,9 +2,25 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { connect } from 'node:net';
 
+import { parseTheme } from '../catalog.mjs';
 import { fakeThemes, seeded, startApp } from './helpers.mjs';
 
 const join = (app, code, name) => app.call('POST', `/api/games/${code}/players`, { body: { name } });
+
+const LEXIQUE_MUSIQUE = { case: 'groupe', cases: 'groupes', titre: 'titre' };
+
+/**
+ * Le catalogue de test repeint en thème de répliques. On passe par `parseTheme`
+ * pour emprunter exactement le chemin d'un vrai fichier de catalogue — dont la
+ * résolution des défauts, ici volontairement partielle.
+ */
+function themeReplique(bandCount = 50) {
+  const base = fakeThemes(bandCount).get('test');
+  const theme = parseTheme(
+    JSON.stringify({ ...base, kind: 'replique', lexique: { case: 'film', cases: 'films' } }),
+  );
+  return new Map([['test', theme]]);
+}
 
 test('health répond ok', async (t) => {
   const app = await startApp();
@@ -41,6 +57,58 @@ test('une partie se crée, se prépare, puis passe à ready', async (t) => {
   assert.equal(game.winRule, 'carton-plein');
 });
 
+test('un thème sans lexique parle de groupes sur les quatre routes', async (t) => {
+  // La garantie « rien ne bouge à l'écran » : le thème musical continue de
+  // parler de groupes, et le front n'a aucun défaut à appliquer.
+  const app = await startApp();
+  t.after(app.close);
+  const { code, masterToken } = await app.createGame();
+  const { playerId, token } = (await join(app, code, 'Marie')).body;
+
+  const refs = (await app.call('GET', '/api/themes')).body;
+  assert.equal(refs.themes[0].kind, 'musique');
+  assert.deepEqual(refs.themes[0].lexique, LEXIQUE_MUSIQUE);
+
+  for (const [chemin, jeton] of [
+    [`/api/games/${code}`, undefined],
+    [`/api/games/${code}/state`, masterToken],
+  ]) {
+    const vue = (await app.call('GET', chemin, { token: jeton })).body;
+    assert.equal(vue.kind, 'musique', chemin);
+    assert.deepEqual(vue.lexique, LEXIQUE_MUSIQUE, chemin);
+  }
+  const joueur = (await app.call('GET', `/api/players/${playerId}`, { token })).body;
+  assert.equal(joueur.game.kind, 'musique');
+  assert.deepEqual(joueur.game.lexique, LEXIQUE_MUSIQUE);
+});
+
+test('le vocabulaire d\'un thème suit la partie jusqu\'à la console et aux joueurs', async (t) => {
+  const app = await startApp({ themes: themeReplique() });
+  t.after(app.close);
+  const { code, masterToken } = await app.createGame();
+  const { playerId, token } = (await join(app, code, 'Marie')).body;
+
+  // `titre` n'est pas déclaré : le serveur le complète, pour que le front n'ait
+  // jamais à connaître le mot « groupe ».
+  const attendu = { case: 'film', cases: 'films', titre: 'titre' };
+
+  const refs = (await app.call('GET', '/api/themes')).body;
+  assert.equal(refs.themes[0].kind, 'replique');
+  assert.deepEqual(refs.themes[0].lexique, attendu);
+
+  const partie = (await app.call('GET', `/api/games/${code}`)).body;
+  assert.equal(partie.kind, 'replique');
+  assert.deepEqual(partie.lexique, attendu);
+
+  const etat = (await app.call('GET', `/api/games/${code}/state`, { token: masterToken })).body;
+  assert.equal(etat.kind, 'replique', 'la console arbitre avec les mots du thème');
+  assert.deepEqual(etat.lexique, attendu);
+
+  const joueur = (await app.call('GET', `/api/players/${playerId}`, { token })).body;
+  assert.equal(joueur.game.kind, 'replique');
+  assert.deepEqual(joueur.game.lexique, attendu);
+});
+
 test('les paramètres de création sont validés', async (t) => {
   const app = await startApp();
   t.after(app.close);
@@ -62,6 +130,16 @@ test('un thème trop petit pour la grille est refusé proprement', async (t) => 
   });
   assert.equal(res.status, 400);
   assert.match(res.body.error, /trop petit/);
+  assert.match(res.body.error, /12 groupes/);
+
+  // Même refus, mais dans les mots du thème : le message part à l'écran.
+  const films = await startApp({ themes: themeReplique(12) });
+  t.after(films.close);
+  const surFilms = await films.call('POST', '/api/games', {
+    body: { theme: 'test', grid: '4x5', winRule: 'ligne' },
+  });
+  assert.equal(surFilms.status, 400);
+  assert.match(surFilms.body.error, /12 films/);
 });
 
 test('8 joueurs rejoignent : 8 grilles distinctes, toutes tirées du pool', async (t) => {
@@ -319,6 +397,87 @@ test('rejeter la réclamation d\'un joueur d\'une autre partie est refusé', asy
   const pb = (await join(app, b.code, 'Paul')).body;
   const res = await app.call('DELETE', `/api/games/${a.code}/claims/${pb.playerId}`, { token: a.masterToken });
   assert.equal(res.status, 404);
+});
+
+test('valider un bingo désigne le gagnant et termine la partie', async (t) => {
+  const app = await startApp();
+  t.after(app.close);
+  const { code, masterToken } = await app.createGame();
+  const marie = (await join(app, code, 'Marie')).body;
+  const paul = (await join(app, code, 'Paul')).body;
+
+  await app.call('POST', `/api/players/${marie.playerId}/bingo`, { token: marie.token });
+  const valide = await app.call('POST', `/api/games/${code}/claims/${marie.playerId}/validate`, {
+    token: masterToken,
+  });
+  assert.equal(valide.status, 200);
+  assert.equal(valide.body.winnerId, marie.playerId);
+  assert.equal(valide.body.winnerName, 'Marie');
+  assert.equal((await app.call('GET', `/api/games/${code}`)).body.status, 'ended');
+
+  // Chaque joueur compare `winnerId` à son propre id : c'est tout ce qui sépare
+  // l'écran de victoire de l'écran de défaite.
+  const vueMarie = (await app.call('GET', `/api/players/${marie.playerId}`, { token: marie.token })).body;
+  assert.equal(vueMarie.game.status, 'ended');
+  assert.equal(vueMarie.game.winnerId, marie.playerId);
+  assert.equal(vueMarie.game.winnerName, 'Marie');
+
+  const vuePaul = (await app.call('GET', `/api/players/${paul.playerId}`, { token: paul.token })).body;
+  assert.equal(vuePaul.game.winnerId, marie.playerId);
+  assert.notEqual(vuePaul.game.winnerId, paul.playerId, 'Paul a perdu');
+  assert.equal(vuePaul.game.winnerName, 'Marie');
+
+  const state = (await app.call('GET', `/api/games/${code}/state`, { token: masterToken })).body;
+  assert.equal(state.status, 'ended');
+  assert.equal(state.winnerId, marie.playerId);
+  assert.equal(state.winnerName, 'Marie', 'la console affiche le nom du gagnant');
+});
+
+test('une partie terminée par le bouton n\'a pas de gagnant', async (t) => {
+  // Fin neutre : ni fête, ni défaite. C'est une troisième fin, pas un cas
+  // dégradé de la victoire.
+  const app = await startApp();
+  t.after(app.close);
+  const { code, masterToken } = await app.createGame();
+  const marie = (await join(app, code, 'Marie')).body;
+
+  assert.equal((await app.call('POST', `/api/games/${code}/end`, { token: masterToken })).status, 200);
+
+  const vue = (await app.call('GET', `/api/players/${marie.playerId}`, { token: marie.token })).body;
+  assert.equal(vue.game.status, 'ended');
+  assert.equal(vue.game.winnerId, null);
+  assert.equal(vue.game.winnerName, null);
+
+  const state = (await app.call('GET', `/api/games/${code}/state`, { token: masterToken })).body;
+  assert.equal(state.winnerId, null);
+  assert.equal(state.winnerName, null);
+});
+
+test('valider un bingo est réservé au présentateur de cette partie', async (t) => {
+  const app = await startApp();
+  t.after(app.close);
+  const a = await app.createGame();
+  const b = await app.createGame();
+  const marie = (await join(app, a.code, 'Marie')).body;
+  const paul = (await join(app, b.code, 'Paul')).body;
+
+  const chemin = `/api/games/${a.code}/claims/${marie.playerId}/validate`;
+  assert.equal((await app.call('POST', chemin)).status, 403, 'sans token');
+  assert.equal((await app.call('POST', chemin, { token: marie.token })).status, 403, 'avec le token du joueur');
+  assert.equal((await app.call('POST', chemin, { token: b.masterToken })).status, 403, 'avec le token d\'une autre partie');
+
+  // Un joueur d'une autre partie ne peut pas être sacré gagnant ici.
+  const etranger = await app.call('POST', `/api/games/${a.code}/claims/${paul.playerId}/validate`, {
+    token: a.masterToken,
+  });
+  assert.equal(etranger.status, 404);
+  const fantome = await app.call('POST', `/api/games/${a.code}/claims/inconnu/validate`, { token: a.masterToken });
+  assert.equal(fantome.status, 404);
+
+  // Et après tous ces refus, la partie tourne toujours, sans gagnant.
+  const state = (await app.call('GET', `/api/games/${a.code}/state`, { token: a.masterToken })).body;
+  assert.equal(state.status, 'ready');
+  assert.equal(state.winnerId, null);
 });
 
 test('une partie ou un joueur inexistant rend 404', async (t) => {

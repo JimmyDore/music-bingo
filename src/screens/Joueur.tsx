@@ -2,7 +2,14 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { api, ErreurApi, type Cellule } from '../api'
 import { Grille } from '../components/Grille'
 import { useSondage } from '../lib/poll'
-import { ecrireSessionJoueur, lireSessionJoueur, oublierSessionJoueur, type SessionJoueur } from '../storage'
+import {
+  ecrireSessionJoueur,
+  feteDejaVue,
+  lireSessionJoueur,
+  marquerFeteVue,
+  oublierSessionJoueur,
+  type SessionJoueur,
+} from '../storage'
 
 const LIBELLE_REGLE: Record<string, string> = {
   ligne: 'Une ligne',
@@ -116,9 +123,15 @@ function Partie({
   const [cases, setCases] = useState<Cellule[] | null>(null)
   const [coches, setCoches] = useState<boolean[]>([])
   const [cols, setCols] = useState(4)
-  const [meta, setMeta] = useState<{ themeName: string; winRule: string; status: string } | null>(null)
+  const [meta, setMeta] = useState<{
+    themeName: string
+    winRule: string
+    status: string
+    winnerId: string | null
+    winnerName: string | null
+  } | null>(null)
   const [reclame, setReclame] = useState(false)
-  const [fete, setFete] = useState(false)
+  const [fete, setFete] = useState<'gagnant' | 'perdant' | null>(null)
   const [desynchronise, setDesynchronise] = useState(false)
   const chargeInitiale = useRef(false)
 
@@ -140,9 +153,37 @@ function Partie({
         themeName: donnees.game.themeName,
         winRule: donnees.game.winRule,
         status: donnees.game.status,
+        winnerId: donnees.game.winnerId,
+        winnerName: donnees.game.winnerName,
       })
     }
   }, [donnees])
+
+  // Le sondage tourne toutes les 3 s : le verdict arrive donc avec jusqu'à 3
+  // secondes de retard. Ce n'est pas un défaut — le présentateur l'annonce à
+  // voix haute, l'écran ne fait que confirmer ce que la pièce a déjà entendu.
+  const finie = meta?.status === 'ended'
+  const gagnant = finie && meta?.winnerId === session.playerId
+  const perdant = finie && meta?.winnerId != null && !gagnant
+
+  // La fête se voit une fois. L'écran de fin, lui, reste à chaque ouverture :
+  // un feu d'artifice rejoué à chaque refresh n'est plus un événement, et des
+  // pouces en bas qui recommencent à chaque refresh deviennent une punition.
+  useEffect(() => {
+    if (!gagnant && !perdant) return
+    if (feteDejaVue(code)) return
+    marquerFeteVue(code)
+    setFete(gagnant ? 'gagnant' : 'perdant')
+    if (navigator.vibrate) navigator.vibrate(gagnant ? [30, 40, 30, 40, 140] : 30)
+  }, [gagnant, perdant, code])
+
+  // La minuterie vit à part du déclenchement : sans ça, le double-montage de
+  // StrictMode annulerait le compte à rebours sans jamais le relancer.
+  useEffect(() => {
+    if (!fete) return
+    const id = window.setTimeout(() => setFete(null), fete === 'gagnant' ? 7000 : 2500)
+    return () => window.clearTimeout(id)
+  }, [fete])
 
   // Session réellement invalide (partie purgée après 24 h, token périmé) : on
   // repart du prénom plutôt que de laisser un écran mort.
@@ -217,10 +258,13 @@ function Partie({
     }
   }, [desynchronise, coches, envoyer])
 
+  // Crier bingo est une réclamation, jamais une victoire : la vibration et la
+  // carte « Bingo réclamé ! » suffisent. Les confettis ne tombent qu'à la
+  // validation — sinon ils tombaient aussi sur les bingos rejetés dix secondes
+  // plus tard, et le feu d'artifice de la victoire n'aurait fait que rejouer un
+  // effet déjà vu.
   const crierBingo = async () => {
     setReclame(true)
-    setFete(true)
-    window.setTimeout(() => setFete(false), 2600)
     if (navigator.vibrate) navigator.vibrate([25, 40, 25, 40, 60])
     try {
       await api.crierBingo(session.playerId, session.token)
@@ -244,7 +288,6 @@ function Partie({
   }
 
   const total = coches.filter(Boolean).length
-  const finie = meta?.status === 'ended'
 
   return (
     <div className="ecran flex min-h-dvh flex-col">
@@ -271,11 +314,31 @@ function Partie({
         </p>
       )}
 
-      {finie && (
-        <p className="carte mb-3 border-menthe text-center text-sm font-bold text-menthe">
-          Partie terminée. Merci d'avoir joué !
-        </p>
-      )}
+      {/* Trois fins possibles, et une seule est neutre : une partie peut se
+          terminer sans que personne ait gagné, et on ne fête rien dans ce
+          cas-là. */}
+      {finie &&
+        (gagnant ? (
+          <div className="carte mb-3 border-stabilo bg-stabilo/10 text-center">
+            <p className="titre-affiche text-2xl text-stabilo">Tu as gagné</p>
+            <p className="mt-1 text-xs font-semibold text-doux">
+              Bingo validé par le présentateur · {total}/{cases.length} cases
+            </p>
+          </div>
+        ) : perdant ? (
+          <div className="carte mb-3 text-center">
+            <p className="titre-affiche text-xl text-texte">
+              {meta?.winnerName ?? 'Quelqu’un'} a gagné
+            </p>
+            <p className="mt-1 text-xs font-semibold text-doux">
+              Toi : {total}/{cases.length} cases cochées. La revanche à la prochaine partie.
+            </p>
+          </div>
+        ) : (
+          <p className="carte mb-3 border-menthe text-center text-sm font-bold text-menthe">
+            Partie terminée. Merci d'avoir joué !
+          </p>
+        ))}
 
       <Grille cases={cases} coches={coches} cols={cols} onBasculer={finie ? undefined : basculer} plein />
 
@@ -296,30 +359,60 @@ function Partie({
         </div>
       )}
 
-      {fete && <Confettis />}
+      {fete === 'perdant' && <PluiePouces />}
+      {fete === 'gagnant' && (
+        <>
+          {/* Plein cadre et non une carte de plus : c'est le seul moment du jeu
+              où l'écran a le droit de prendre toute la place. Il se ferme au
+              tap, et tout seul, pour ne jamais bloquer la grille. */}
+          <button type="button" className="ecran-victoire" onClick={() => setFete(null)}>
+            {/* Interligne desserré : à 1, l'accent du « É » d'Anton remonte dans
+                la ligne du dessus et se colle au « AS ». */}
+            <span className="titre-affiche text-6xl leading-[1.12] text-stabilo">
+              Tu as
+              <br />
+              gagné
+            </span>
+            <span className="text-sm font-bold text-doux">Touche l'écran pour revoir ta grille</span>
+          </button>
+          {/* Après le panneau, jamais avant : à z-index égal, c'est l'ordre du
+              DOM qui tranche, et des confettis derrière un fond opaque ne se
+              voient pas. Ils laissent passer le tap (`pointer-events-none`). */}
+          <Confettis morceaux={110} dureeBase={2400} fort />
+        </>
+      )}
     </div>
   )
 }
 
-/** Crier BINGO est le sommet émotionnel du jeu : il doit s'y passer quelque
- *  chose. Pur CSS, aucune dépendance, et désactivé si l'utilisateur a demandé
- *  moins d'animations. */
-function Confettis() {
-  const morceaux = useMemo(
+/** Gagner est le sommet émotionnel du jeu : il doit s'y passer quelque chose.
+ *  Pur CSS, aucune dépendance, et désactivé si l'utilisateur a demandé moins
+ *  d'animations. Huit secondes de jeu par soirée ne justifient ni un canvas ni
+ *  un moteur de particules. */
+function Confettis({
+  morceaux = 44,
+  dureeBase = 1500,
+  fort = false,
+}: {
+  morceaux?: number
+  dureeBase?: number
+  fort?: boolean
+}) {
+  const pieces = useMemo(
     () =>
-      Array.from({ length: 44 }, (_, i) => ({
+      Array.from({ length: morceaux }, (_, i) => ({
         gauche: (i * 37) % 100,
         delai: (i % 11) * 90,
-        duree: 1500 + ((i * 137) % 900),
+        duree: dureeBase + ((i * 137) % 900),
         couleur: ['#ffd83d', '#ff2e88', '#34e0a1', '#f6f2ff'][i % 4],
         largeur: 5 + (i % 3) * 3,
       })),
-    [],
+    [morceaux, dureeBase],
   )
 
   return (
-    <div className="confetti" aria-hidden="true">
-      {morceaux.map((m, i) => (
+    <div className={fort ? 'confetti confetti--fort' : 'confetti'} aria-hidden="true">
+      {pieces.map((m, i) => (
         <span
           key={i}
           style={{
@@ -330,6 +423,40 @@ function Confettis() {
             animationDuration: `${m.duree}ms`,
           }}
         />
+      ))}
+    </div>
+  )
+}
+
+/** Deux secondes et demie de charriage, pas une de plus : au-delà la blague
+ *  devient une humiliation, et c'est une soirée entre amis. Les délais et les
+ *  durées sont bornés pour que la pluie soit finie avant qu'on la démonte. */
+function PluiePouces() {
+  const pouces = useMemo(
+    () =>
+      Array.from({ length: 28 }, (_, i) => ({
+        gauche: (i * 53) % 100,
+        delai: (i % 7) * 90,
+        duree: 1300 + ((i * 211) % 600),
+        taille: 1.4 + (i % 3) * 0.5,
+      })),
+    [],
+  )
+
+  return (
+    <div className="pluie-pouces" aria-hidden="true">
+      {pouces.map((p, i) => (
+        <span
+          key={i}
+          style={{
+            left: `${p.gauche}%`,
+            fontSize: `${p.taille}rem`,
+            animationDelay: `${p.delai}ms`,
+            animationDuration: `${p.duree}ms`,
+          }}
+        >
+          👎
+        </span>
       ))}
     </div>
   )
