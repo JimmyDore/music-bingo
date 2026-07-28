@@ -62,7 +62,17 @@ export function Creation() {
               // « sélectionné » tout seul fait croire à une option qui n'existe pas.
               <p className="titre-affiche text-2xl text-texte">{refs.themes[0].name}</p>
             ) : (
-              <div className="flex flex-wrap gap-2">
+              // Deux colonnes fixes, et pas un enroulement libre : à sept thèmes,
+              // `flex-wrap` tassait cinq pastilles sur la première ligne (titres
+              // coupés en trois) puis en étirait deux sur toute la largeur de la
+              // seconde. Ici toutes les tuiles font la même largeur quel que soit
+              // le nombre de thèmes, et les deux tuiles d'une même rangée se
+              // calent sur la plus haute quand un nom passe sur deux lignes.
+              // Pas d'`auto-rows-fr` : il alignerait aussi les rangées entre
+              // elles, donc toutes sur la plus haute — 100 px par tuile pour une
+              // ligne de texte, et un bloc de 800 px le jour où le catalogue
+              // atteint quinze thèmes.
+              <div className="grid grid-cols-2 gap-2">
                 {refs.themes.map((theme) => (
                   <button
                     key={theme.id}
@@ -84,7 +94,7 @@ export function Creation() {
                 <button
                   key={grid.id}
                   type="button"
-                  className="choix"
+                  className="choix flex-1"
                   aria-pressed={choix.grid === grid.id}
                   onClick={() => setChoix((c) => ({ ...c, grid: grid.id }))}
                 >
@@ -105,7 +115,7 @@ export function Creation() {
                   <button
                     key={regle.id}
                     type="button"
-                    className="choix"
+                    className="choix flex-1"
                     aria-pressed={choix.winRule === regle.id}
                     onClick={() => setChoix((c) => ({ ...c, winRule: regle.id }))}
                   >

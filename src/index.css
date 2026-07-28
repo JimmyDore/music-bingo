@@ -121,8 +121,12 @@
 
   /* --- Choix (thème / grille / règle) ----------------------------------- */
 
+  /* La pastille ne décide pas de sa largeur : les blocs Grille et Objectif sont
+     des rangées flex et ajoutent `flex-1` pour se partager la ligne, le bloc
+     Thème est une grille à deux colonnes qui la donne déjà. Porter `flex-1` ici
+     n'aurait servi que deux blocs sur trois, en silence. */
   .choix {
-    @apply flex min-h-14 flex-1 flex-col items-center justify-center gap-0.5 rounded-xl
+    @apply flex min-h-14 flex-col items-center justify-center gap-0.5 rounded-xl
            border-2 border-bord bg-nuit-2 px-2 py-2.5 text-center font-bold
            transition-colors;
   }
@@ -134,8 +138,13 @@
     @apply border-stabilo bg-stabilo text-nuit;
   }
 
+  /* Sur une demi-largeur de téléphone (~167 px), « Musiques de films » et
+     « Tubes des années 2000 » passent forcément sur deux lignes : `text-balance`
+     les coupe en deux moitiés égales plutôt qu'en un mot orphelin, et
+     l'interligne cesse d'être collé — `leading-none` faisait se toucher les
+     deux lignes. */
   .choix-titre {
-    @apply text-base leading-none;
+    @apply text-base leading-tight text-balance;
   }
 
   .choix-detail {
