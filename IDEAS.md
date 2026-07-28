@@ -1,8 +1,12 @@
 # Idées
 
 Ce fichier n'est pas une roadmap : c'est un carnet. Chaque idée est décrite avec
-ce qu'elle apporte, ce qu'elle coûte, et la décision qui reste à trancher. Rien
-ici n'est engagé.
+ce qu'elle apporte, ce qu'elle coûte, et la décision qui reste à trancher.
+
+> **Les quatre idées ont été implémentées.** Ce qui suit reste le raisonnement
+> qui a mené aux choix — il vaut d'être gardé, parce qu'il explique pourquoi le
+> code a la forme qu'il a. L'état de chacune est indiqué sous son titre, et le
+> bilan est en bas de page.
 
 **Trois règles qu'aucune idée ne doit casser** — elles sont ce qui fait que le
 jeu marche en soirée réelle :
@@ -19,6 +23,9 @@ jeu marche en soirée réelle :
 ---
 
 ## 1. Plus de thèmes
+
+> **Fait.** Quatre thèmes ajoutés — Années 80, Tubes des années 2000, Variété
+> française, Musiques de films. 175 cases et 525 titres de plus, tous vérifiés.
 
 Un seul thème aujourd'hui : `catalog/rock-pop-punk.json`, 63 groupes, 189
 titres. C'est correct pour une soirée, insuffisant pour deux.
@@ -71,6 +78,10 @@ c'est là que passe tout le temps — pas dans le code.
 ---
 
 ## 2. Feu d'artifice chez le gagnant, pouces en bas chez les autres
+
+> **Fait.** Colonne `winner_player_id` avec migration gardée, route
+> `…/claims/:playerId/validate`, écrans de victoire et de défaite, et les
+> confettis déplacés de la réclamation vers le verdict.
 
 Aujourd'hui, quand le présentateur valide un bingo, `onValider`
 (`src/screens/Presentateur.tsx:297`) appelle `api.terminer` — la partie se
@@ -141,6 +152,13 @@ jeu par soirée.
 ---
 
 ## 3. Pubs et répliques de films
+
+> **Mécanisme fait, catalogue non écrit.** `kind`, `lexique` et `alias` sont en
+> place, ainsi que le bouton « ↺ Rejouer ». Aucun thème « pub » ou « réplique »
+> n'a été construit : la barre des 10 M de vues, tenue par les quatre thèmes
+> musicaux, est hors d'atteinte pour des extraits de spots publicitaires, dont
+> les uploads sont des copies de particuliers à la durée de vie courte. Le jour
+> où on l'écrira, l'app est prête à l'accueillir.
 
 L'intuition est bonne et le doute aussi : **ça marche, et ça abîme le parti pris
 graphique.** Voilà où exactement.
@@ -213,6 +231,12 @@ marques est superbe ; le même en noms typographiés est fade.
 
 ## 4. Les logos dans la grille
 
+> **Rendu fait, logos non activés.** Le rendu (silhouette recolorée en CSS,
+> micro-légende, boîte réservée) et les contrôles de la CI sont en place, et
+> **50 des 63 logos** de `rock-pop-punk` sont sur le disque sous licence libre
+> vérifiée. La règle du tout ou rien interdit d'activer à 50/63 — voir le bilan
+> en bas de page pour ce qu'il reste à trancher.
+
 Le mécanisme existe déjà **entièrement** : champ `logo` dans le JSON,
 `/logos/<slug>.png`, `.cellule-logo` en CSS, et un repli silencieux sur le nom
 typographié si le fichier manque (`Grille.tsx:28-34`). Le catalogue part avec
@@ -269,15 +293,40 @@ moins besoin de logos — sa typo affiche fonctionne déjà bien.
 
 ---
 
-## Ordre de bataille
+## Bilan
 
-| # | Idée | Code à écrire | Temps réel | Effet en soirée |
-|---|---|---|---|---|
-| 2 | Écran de victoire / défaite | migration SQL + 1 route + 1 écran | ~une demi-journée | **fort** — c'est le moment qui manque |
-| 1 | Un thème de plus | aucun | quelques heures de catalogue | **fort** — c'est ce qui fait revenir |
-| 4 | Logos | quasi aucun | long (collecte + normalisation) | fort sur les bons thèmes |
-| 3 | Pubs / répliques | lexique + `kind` + bouton rejouer | moyen, plus le catalogue | dépend entièrement de 4 |
+| # | Idée | État | Reste à faire |
+|---|---|---|---|
+| 1 | Plus de thèmes | **livré** — 4 thèmes, 525 titres | rien |
+| 2 | Victoire / défaite | **livré** | rien |
+| 3 | Pubs / répliques | mécanisme livré | écrire un catalogue, si on y tient |
+| 4 | Logos | rendu livré, 50/63 collectés | **une décision** (ci-dessous) |
 
-L'ordre a une logique : **2** est la seule idée qui répare un manque
-(l'app n'a pas de fin), **1** est gratuite en code, et **3** ne mérite d'être
-faite qu'après **4**.
+### Ce qu'il reste à trancher : les 13 logos manquants
+
+Les logos sont prêts et invisibles. Neuf groupes n'ont **aucun fichier libre
+existant** (le logo à la langue des Rolling Stones est une œuvre protégée de
+John Pasche, et les groupes français — Téléphone, Noir Désir, Shaka Ponk,
+Pleymo, Skip the Use — n'ont rien sur Commons). Quatre ont un fichier libre
+mais illisible en silhouette : le logo de blink-182 mélange des lettres
+transparentes et un « 182 » posé sur une plaque opaque, qu'aucun canal alpha ne
+peut rendre.
+
+Aucune de ces impasses ne se résout en cherchant mieux. Les sorties possibles,
+par ordre de dégât croissant :
+
+1. **Ne rien activer** (état actuel). Le thème rock garde ses 63 groupes et sa
+   typo d'affiche, qui fonctionne déjà très bien. Les 50 fichiers attendent.
+2. **Assouplir la règle du tout ou rien.** Sur les grilles 3×3 et 4×4 le nom
+   reste affiché sous le logo : une case sans logo y est moins criante qu'on ne
+   le craignait en écrivant cette section. En 4×5, en revanche, c'est un
+   patchwork.
+3. **Redessiner les 13 manquants à la main.** C'est créer une œuvre dérivée,
+   avec ce que ça implique — et plusieurs heures de tracé.
+4. **Retirer les 13 groupes du thème** pour tomber à 50 cases (au-dessus du
+   minimum de 40). À écarter : on perdrait les Rolling Stones, blink-182 et
+   toute la scène française, c'est-à-dire l'identité du thème.
+
+La recommandation est **1 ou 2**, et c'est un choix de goût, pas d'ingénierie :
+il faut regarder une grille 4×5 à moitié logotypée sur un vrai téléphone avant
+de trancher.

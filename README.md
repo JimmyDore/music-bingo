@@ -17,12 +17,17 @@ titres depuis son téléphone, les autres cochent depuis le leur.
 5. Quelqu'un crie BINGO et appuie sur le bouton. Le présentateur voit la
    réclamation, regarde la grille du joueur en face de l'historique, et
    **tranche à voix haute**.
+6. S'il valide, la partie se termine et chaque téléphone l'apprend : confettis
+   et « TU AS GAGNÉ » chez le gagnant, pluie de pouces en bas — deux secondes et
+   demie, pas plus — puis le nom du gagnant chez les autres.
 
 ### Ce que l'app ne fait pas, volontairement
 
 - **Elle ne détecte aucune victoire.** L'objectif (« carton plein », « une
   ligne ») est une simple métadonnée affichée aux joueurs. Le bouton BINGO est
-  une *réclamation*, jamais une validation. Le verdict est humain.
+  une *réclamation*, jamais une validation. Le verdict est humain — l'app se
+  contente de l'**enregistrer** une fois qu'il est tombé, pour que les
+  téléphones sachent qui fêter.
 - **Elle n'empêche pas la triche.** Cocher, décocher, tout cocher d'un coup :
   tout est permis. La triche est un problème social, pas logiciel. La console
   d'arbitrage se contente de signaler les cases cochées dont le groupe n'est
@@ -55,7 +60,8 @@ oubli.
 ### Schéma
 
 ```
-games(code PK, theme, rows, cols, win_rule, status, master_token, created_at)
+games(code PK, theme, rows, cols, win_rule, status, master_token, created_at,
+      winner_player_id)
 game_tracks(game_code, position, band_slug, band_name, track_title,
             youtube_id, start_at, played_at, verified)
 players(id PK, game_code, name, token, card_json, checked_json,
@@ -64,6 +70,11 @@ players(id PK, game_code, name, token, card_json, checked_json,
 
 Grille et cases cochées sont stockées en JSON sur la ligne du joueur : une
 partie dure une soirée, on ne fera jamais de requête analytique dessus.
+
+`winner_player_id` est arrivé après coup, et la base vit dans un volume
+persistant : `CREATE TABLE IF NOT EXISTS` n'ajoute pas une colonne à une table
+qui existe déjà. La migration lit donc `PRAGMA table_info(games)` au démarrage
+et ne fait l'`ALTER TABLE` que si la colonne manque.
 
 ### API
 
@@ -78,12 +89,19 @@ GET    /api/games/:code/state           → { players[], history[], current } (t
 POST   /api/games/:code/next            → { track }                       (token présentateur)
 POST   /api/games/:code/end             → { ok }                          (token présentateur)
 DELETE /api/games/:code/claims/:playerId → { ok }                         (token présentateur)
+POST   /api/games/:code/claims/:playerId/validate → { ok }                (token présentateur)
 GET    /api/themes                      → { themes[], grids[], winRules[] }
 GET    /api/health                      → { ok: true }
 ```
 
 Le token présentateur est le seul garde-fou sur la lecture et l'arbitrage : un
 joueur ne doit pas pouvoir piloter la partie.
+
+Deux façons de terminer, et c'est volontaire : `/end` clôt la partie **sans
+gagnant** (l'écran de fin reste neutre), `/claims/:playerId/validate` enregistre
+le verdict du présentateur et termine dans le même `UPDATE`. Les charges utiles
+joueur et présentateur portent alors `winnerId` / `winnerName` — c'est ce qui
+permet à chaque téléphone de savoir s'il doit fêter ou encaisser.
 
 ## Développement
 
@@ -115,10 +133,19 @@ node tools/smoke.mjs https://bingo.jimmydore.fr
 Un fichier JSON par thème dans `catalog/`. **Ajouter un thème = ajouter un
 fichier. Zéro changement de code** : le dossier est relu au démarrage de l'API.
 
+| Thème | Cases | Titres |
+|---|---|---|
+| `rock-pop-punk` — Rock / Pop-punk | 63 | 189 |
+| `annees-80` — Années 80 | 44 | 132 |
+| `tubes-2000` — Tubes des années 2000 | 44 | 132 |
+| `variete-francaise` — Variété française | 44 | 132 |
+| `musiques-de-films` — Musiques de films | 43 | 129 |
+
 ```json
 {
   "id": "rock-pop-punk",
   "name": "Rock / Pop-punk",
+  "kind": "musique",
   "bands": [
     {
       "slug": "linkin-park",
@@ -135,18 +162,42 @@ fichier. Zéro changement de code** : le dossier est relu au démarrage de l'API
 Règles :
 
 - **3 titres par groupe**, mais **un seul tiré par partie** — c'est ce qui fait
-  que rejouer le même thème ne redonne pas la même bande-son.
+  que rejouer le même thème ne redonne pas la même bande-son. Les trois doivent
+  donc être reconnaissables : pas un tube et deux faces B.
 - **Une case = un groupe**, jamais un titre.
 - `startAt` = seconde à laquelle démarrer, pour tomber sur la partie
   reconnaissable et pas sur 20 secondes d'intro. **Jamais 0.**
 - Il faut au moins **40 groupes** par thème : le pool d'une partie fait le
   double du nombre de cases, et la plus grande grille en compte 20.
+- **10 millions de vues** par titre, en cible. En dessous, la moitié de la salle
+  ne reconnaît rien et la case est un trou noir. `--views` audite le catalogue
+  sur ce critère.
+
+### Trois champs optionnels
+
+- **`kind`** : `musique` (défaut), `pub` ou `replique`. Il ne pilote que trois
+  choses — le lexique, la sévérité de la vérification, et l'apparition du bouton
+  « ↺ Rejouer » sur la console (une réplique de film dure trois secondes : le
+  Play/Pause ne suffit pas, il faut pouvoir la repasser). Le bingo, lui, ne
+  change pas : c'est le même jeu avec un autre catalogue.
+- **`lexique`** : `{ "case": "film", "cases": "films", "titre": "réplique" }`.
+  Sans lui, l'interface parle de « groupes » — ce qui est absurde quand la case
+  porte une marque ou un film. Défauts appliqués côté serveur, jamais côté
+  front. ⚠️ Le lexique ne porte pas le genre grammatical : `case: "marque"`
+  donnerait « le marque ».
+- **`alias`** sur une entrée : `["Céline Dion", "My Heart Will Go On"]`. La
+  vérification exige que le nom de la case apparaisse dans le titre de la vidéo
+  ou le nom de la chaîne ; une case `Titanic` pointant sur un clip de Céline
+  Dion échouerait sans cela. 16 des 43 entrées du thème « musiques de films »
+  en ont besoin.
 
 ### Vérifier le catalogue
 
 ```bash
-node tools/verify-catalog.mjs              # oEmbed + structure (~1 min)
+node tools/verify-catalog.mjs               # oEmbed + structure (~3 min)
 node tools/verify-catalog.mjs --durations   # + durées via yt-dlp (lent)
+node tools/verify-catalog.mjs --views       # + audit des vues (lent)
+node tools/verify-catalog.mjs catalog/x.json # un seul fichier
 node tools/probe.mjs <youtubeId> [...]      # sonder un id à la main
 ```
 
@@ -156,16 +207,52 @@ correspondent bien au groupe annoncé, et qu'aucun titre ne sent le live, la
 reprise ou le remix. **Il tourne dans la CI** : le catalogue pourrira avec le
 temps, et il vaut mieux l'apprendre par un job rouge que pendant une soirée.
 
-### Ajouter un logo
+Il refuse aussi les **collisions internes** — un titre qui se confond avec le
+nom d'une autre case rend la grille inarbitrable. Ce n'est pas théorique :
+« Timber » de Pitbull est contenu dans « Justin Timberlake », et « Sia » dans
+« Enrique Iglesias ».
 
-Le catalogue part sans aucun logo — le mécanisme existe pour qu'on puisse en
-ajouter plus tard sans toucher une ligne de code.
+Sous 10 M de vues, `--views` **alerte sans faire rougir la CI** : un clip
+confidentiel est un problème de goût, pas de correction.
 
-1. Dépose `public/logos/<slug>.png` (fond transparent, ~400 px de côté).
+### Les logos
+
+1. Dépose `public/logos/<slug>.png` (**fond transparent**, ~400 px de côté).
 2. Dans le JSON du thème, passe `"logo": null` à `"logo": "<slug>.png"`.
 
-La case affiche alors le logo à la place du nom typographié. Si le fichier
-manque, l'affichage retombe silencieusement sur le nom.
+La case affiche alors le logo à la place du nom typographié — plus le nom en
+micro-légende en dessous sur les grilles 3×3 et 4×4, où la place existe. Le
+logo seul est plus beau ; il rend aussi le jeu plus dur, et la moitié d'une
+salle ne reconnaît pas le logo des Scorpions. En 4×5, la légende saute faute de
+place. Si le fichier manque, l'affichage retombe silencieusement sur le nom.
+
+**La couleur du fichier source n'a aucune importance.** Le recoloriage est fait
+en CSS : `brightness(0) invert(1)` sur une case normale (silhouette blanche sur
+le fond nuit), `brightness(0)` sur une case cochée (silhouette noire sur
+l'aplat stabilo). Ces filtres écrasent toute couleur et ne touchent pas au
+canal alpha. **La seule exigence réelle est donc la transparence** : un logo sur
+fond opaque devient un rectangle plein.
+
+C'est aussi pourquoi il n'y a aucun traitement d'image dans le dépôt — deux
+filtres CSS remplacent une chaîne de build, et un seul fichier par groupe suffit
+pour les deux états.
+
+**Règle du tout ou rien** : dès qu'une entrée d'un thème a un logo, toutes
+doivent en avoir un, et le fichier doit exister. `verify-catalog` le contrôle.
+Une grille où six cases ont un logo et quatorze un nom ressemble à un bug, pas à
+un choix.
+
+`tools/fetch-logos.mjs` récupère les logos depuis Wikimedia Commons, contrôle la
+licence par l'API (jamais devinée), vérifie le canal alpha, et détoure au besoin
+les aplats opaques. `public/logos/LICENSES.md` porte, pour chaque fichier, la
+licence, l'auteur et l'URL source : **rien qui ne soit pas libre n'entre ici**,
+le dépôt est public.
+
+> État actuel : **50 des 63 groupes** de `rock-pop-punk` ont un logo libre. Les
+> logos ne sont donc **pas activés** — la règle du tout ou rien l'interdit. Neuf
+> groupes n'ont aucun fichier libre existant (le logo à la langue des Rolling
+> Stones est une œuvre protégée), quatre en ont un qui reste illisible une fois
+> réduit en silhouette. Les fichiers gagnés attendent sur le disque.
 
 ## Déploiement
 
