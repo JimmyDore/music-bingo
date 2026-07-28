@@ -28,6 +28,14 @@ export function kindDe(theme) {
   return theme?.kind ?? 'musique';
 }
 
+/** Les bornes de durée d'un thème. La marge de lecture dérive du plancher :
+ *  un thème de génériques accepte des vidéos de 15 s, où « laisser 30 s de
+ *  lecture après startAt » est arithmétiquement impossible. */
+export function bornesDuree(theme) {
+  const dureeMin = theme?.dureeMin ?? 90;
+  return { dureeMin, resteMin: Math.min(30, dureeMin - 1) };
+}
+
 /** Charge tous les thèmes du dossier. Lève si un fichier est invalide. */
 export function loadCatalog(dir) {
   const themes = new Map();
@@ -75,6 +83,12 @@ export function parseTheme(raw, label = 'thème') {
   }
   if (data.vuesMin !== undefined && data.vuesMin !== null && !(typeof data.vuesMin === 'number' && data.vuesMin >= 0)) {
     throw new Error(`${label} : vuesMin invalide (${data.vuesMin})`);
+  }
+  // Comme `titresMin` et `vuesMin` : un réglage que seul verify-catalog consomme,
+  // validé ici parce qu'un champ que la CI lit et que le boot ignore, c'est une
+  // faute de frappe qui ne se découvre jamais.
+  if (data.dureeMin != null && !(Number.isInteger(data.dureeMin) && data.dureeMin >= 5)) {
+    throw new Error(`${label} : dureeMin invalide (${data.dureeMin}) — un entier de 5 au moins`);
   }
 
   const slugs = new Set();

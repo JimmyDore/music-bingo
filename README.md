@@ -138,6 +138,12 @@ node tools/smoke.mjs https://bingo.jimmydore.fr
 Un fichier JSON par thème dans `catalog/`. **Ajouter un thème = ajouter un
 fichier. Zéro changement de code** : le dossier est relu au démarrage de l'API.
 
+La promesse tient pour un thème musical ordinaire, et c'est le cas courant. Un
+thème qui sort des hypothèses du format paie son écart en code, une fois : des
+extraits de 15 secondes là où le catalogue en attend 90 ont coûté le champ
+`dureeMin` et la marge de lecture qui en dérive. Le champ ajouté sert ensuite au
+suivant — c'est le prix d'entrée d'une famille de thèmes, pas d'un thème.
+
 | Thème | Cases | Titres |
 |---|---|---|
 | `rock-pop-punk` — Rock / Pop-punk | 63 | 189 |
@@ -216,6 +222,18 @@ Règles :
   le plancher entrée par entrée sans que personne l'ait décidé.
 - **`vuesMin`** : un nombre, ou `null` pour sortir le thème de l'audit `--views`
   (classement compris). Défaut : 10 M.
+- **`dureeMin`** : le plancher de durée des vidéos du thème, en secondes (défaut
+  `90`, minimum `5`). Le plafond, lui, ne se paramètre pas : 480 s pour tout le
+  monde. Ce champ existe pour les thèmes dont les extraits sont courts par
+  nature — un générique de série dure 15 à 60 secondes, et le régime à 90 les
+  refuserait tous. ⚠️ **La marge de lecture en dérive et ne se règle pas à
+  part** : le vérificateur exige `min(30, dureeMin - 1)` secondes de lecture
+  après `startAt`. C'est ce couplage qui fait tout l'intérêt du champ — sur une
+  vidéo de 15 s, réclamer 30 s de lecture après un `startAt` obligatoirement
+  positif est arithmétiquement impossible, et un thème de génériques serait
+  refusé entrée par entrée avec un message qui ne désigne pas la cause. Les deux
+  bornes sortent donc de `bornesDuree()` dans `server/catalog.mjs`, et le défaut
+  de 90 n'est écrit qu'une fois.
 
 ### Vérifier le catalogue
 

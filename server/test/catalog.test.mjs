@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
-import { KINDS, loadCatalog, parseTheme, themeSummaries } from '../catalog.mjs';
+import { KINDS, bornesDuree, loadCatalog, parseTheme, themeSummaries } from '../catalog.mjs';
 import { GRID_SIZES, poolSize } from '../game.mjs';
 
 const CATALOG_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'catalog');
@@ -55,6 +55,13 @@ test('un catalogue cassé explose au boot, pas en soirée', () => {
     ['alias en chaîne', clone((c) => (c.bands[0].alias = 'Back to the Future')), /alias invalide/],
     ['alias numérique', clone((c) => (c.bands[0].alias = [3])), /alias invalide/],
     ['alias vide', clone((c) => (c.bands[0].alias = ['  '])), /alias invalide/],
+    // Sous 5 secondes, la marge de lecture dérivée (`dureeMin - 1`) ne protège
+    // plus rien, et un extrait de 4 secondes n'est pas un générique.
+    ['dureeMin à 0', clone((c) => (c.dureeMin = 0)), /dureeMin invalide/],
+    ['dureeMin sous le plancher', clone((c) => (c.dureeMin = 4)), /dureeMin invalide/],
+    ['dureeMin négatif', clone((c) => (c.dureeMin = -1)), /dureeMin invalide/],
+    ['dureeMin décimal', clone((c) => (c.dureeMin = 1.5)), /dureeMin invalide/],
+    ['dureeMin en chaîne', clone((c) => (c.dureeMin = '30')), /dureeMin invalide/],
   ];
   for (const [label, raw, pattern] of cases) {
     assert.throws(() => parseTheme(raw), pattern, label);
@@ -94,6 +101,41 @@ test('les alias sont validés au boot, pas seulement en CI', () => {
   // `null` vaut absence, par symétrie avec `logo` et avec le script.
   assert.equal(parseTheme(clone((c) => (c.bands[0].alias = null))).bands[0].alias, null);
   assert.deepEqual(parseTheme(clone((c) => (c.bands[0].alias = []))).bands[0].alias, []);
+});
+
+test('un dureeMin valide est conservé jusqu\'au vérificateur', () => {
+  // Le serveur n'en fait rien : c'est `tools/verify-catalog.mjs` qui le lit. Il
+  // doit donc survivre au parse, sinon le réglage n'existe que sur le papier.
+  assert.equal(parseTheme(clone((c) => (c.dureeMin = 10))).dureeMin, 10);
+  assert.equal(parseTheme(clone((c) => (c.dureeMin = 5))).dureeMin, 5);
+  // `null` vaut absence, par symétrie avec `logo`, `alias` et `vuesMin`.
+  assert.equal(parseTheme(clone((c) => (c.dureeMin = null))).dureeMin, null);
+  assert.equal(parseTheme(JSON.stringify(valid)).dureeMin, undefined);
+});
+
+test('bornesDuree : sans dureeMin, les cinq thèmes livrés ne bougent pas d\'un pouce', () => {
+  // C'est LE test de non-régression du plancher de durée par thème. L'ancien
+  // vérificateur appliquait `duree < 90` et `startAt > duree - 30` ; le nouveau
+  // applique `duree < dureeMin` et `duree - startAt < resteMin`. Sur un thème
+  // qui ne déclare rien, les deux couples sont arithmétiquement identiques —
+  // `duree - startAt < 30` ⟺ `startAt > duree - 30`. Ce test énonce la
+  // contrainte au lieu de la laisser reposer sur une relecture.
+  assert.deepEqual(bornesDuree({}), { dureeMin: 90, resteMin: 30 });
+  assert.deepEqual(bornesDuree(), { dureeMin: 90, resteMin: 30 });
+  assert.deepEqual(bornesDuree(null), { dureeMin: 90, resteMin: 30 });
+  assert.deepEqual(bornesDuree(parseTheme(JSON.stringify(valid))), { dureeMin: 90, resteMin: 30 });
+});
+
+test('bornesDuree : un plancher bas fait dériver la marge de lecture', () => {
+  // Les deux bornes ne peuvent pas être réglées séparément : sur une vidéo de
+  // 15 s, exiger 30 s de lecture après `startAt` est impossible, alors qu'un
+  // `startAt` strictement positif est obligatoire. À 10 s de plancher, un
+  // générique de 15 s accepte un startAt jusqu'à 6, un de 10 s impose 1.
+  assert.deepEqual(bornesDuree({ dureeMin: 10 }), { dureeMin: 10, resteMin: 9 });
+  assert.deepEqual(bornesDuree({ dureeMin: 5 }), { dureeMin: 5, resteMin: 4 });
+  // Le plafond de marge ne bouge pas : un thème exigeant ne réclame pas plus de
+  // 30 s de lecture qu'un thème ordinaire.
+  assert.deepEqual(bornesDuree({ dureeMin: 200 }), { dureeMin: 200, resteMin: 30 });
 });
 
 test('un slug en double est refusé', () => {

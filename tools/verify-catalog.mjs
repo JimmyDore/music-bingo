@@ -18,10 +18,14 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { promisify } from 'node:util';
 
+import { bornesDuree } from '../server/catalog.mjs';
+
 const run = promisify(execFile);
 
 const CONCURRENCE = 6;
-const DUREE_MIN = 90;
+// Le plancher de durée, lui, est par thème : il vit dans `bornesDuree`, avec la
+// marge de lecture qui en dérive. Le garder en double ici garantirait qu'un jour
+// les deux divergent. `DUREE_MAX` reste — aucun thème ne la paramètre.
 const DUREE_MAX = 480;
 const TITRES_PAR_GROUPE = 3;
 // Trois titres restent la cible : c'est ce qui fait qu'une même entrée ne rejoue
@@ -304,6 +308,11 @@ for (const chemin of chemins) {
   if (vuesMin !== null && (typeof vuesMin !== 'number' || !(vuesMin >= 0))) {
     erreurs.push(`${chemin} : vuesMin = ${theme.vuesMin} — attendu un nombre positif, null, ou absent`);
   }
+  // Les deux bornes de durée sortent du même réglage, et c'est le point : sur une
+  // vidéo de 15 s, exiger 30 s de lecture après `startAt` est impossible, alors
+  // qu'un `startAt` strictement positif est obligatoire. Les régler séparément
+  // rendrait un thème de génériques intégralement refusé.
+  const { dureeMin, resteMin } = bornesDuree(theme);
 
   // --- contrôles de structure, sans réseau -------------------------------
   const slugs = new Set();
@@ -471,11 +480,11 @@ for (const chemin of chemins) {
     }
 
     if (avecDurees && meta) {
-      if (meta.duree < DUREE_MIN || meta.duree > DUREE_MAX) {
-        defauts.push(`durée ${meta.duree}s hors plage ${DUREE_MIN}-${DUREE_MAX}s`);
+      if (meta.duree < dureeMin || meta.duree > DUREE_MAX) {
+        defauts.push(`durée ${meta.duree}s hors plage ${dureeMin}-${DUREE_MAX}s`);
       }
-      if (track.startAt > meta.duree - 30) {
-        defauts.push(`startAt ${track.startAt}s trop proche de la fin (durée ${meta.duree}s)`);
+      if (meta.duree - track.startAt < resteMin) {
+        defauts.push(`startAt ${track.startAt}s laisse moins de ${resteMin}s de lecture (durée ${meta.duree}s)`);
       }
       // L'embarquabilité réelle, plutôt que déduite du seul code oEmbed.
       if (!meta.embarquable) defauts.push('playable_in_embed = False');
