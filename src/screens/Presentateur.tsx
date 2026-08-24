@@ -41,7 +41,9 @@ function Console({ code, token }: { code: string; token: string }) {
   const { donnees: etat, erreur, rafraichir } = useSondage<EtatPartie>(() => api.etat(code, token), 2000)
   const [titre, setTitre] = useState<Titre | null>(null)
   const [enAttente, setEnAttente] = useState(false)
-  const [arbitre, setArbitre] = useState<JoueurVu | null>(null)
+  // `departage` distingue les deux raisons d'ouvrir l'arbitrage : un bingo crié
+  // en cours de partie, ou le sacre de fin de pool quand personne n'a gagné.
+  const [arbitre, setArbitre] = useState<{ joueur: JoueurVu; departage: boolean } | null>(null)
   const [partageOuvert, setPartageOuvert] = useState(true)
   const [panne, setPanne] = useState<string | null>(null)
   const idCharge = useRef<string | null>(null)
@@ -118,7 +120,21 @@ function Console({ code, token }: { code: string; token: string }) {
 
   // L'arbitrage se superpose à la console au lieu de la remplacer : le lecteur
   // YouTube reste monté, donc la musique continue pendant qu'on tranche.
-  const arbitreVif = arbitre ? (etat?.players.find((p) => p.id === arbitre.id) ?? arbitre) : null
+  const arbitreVif = arbitre
+    ? { ...arbitre, joueur: etat?.players.find((p) => p.id === arbitre.joueur.id) ?? arbitre.joueur }
+    : null
+
+  // Départage de fin de partie. Le pool épuisé garantit que toutes les cases de
+  // toutes les grilles sont passées (elles sont tirées du pool) : s'il n'y a
+  // toujours pas de bingo, c'est que tout le monde a raté des reconnaissances.
+  // Le plus de cases cochées gagne — la liste des joueurs se classe et chaque
+  // ligne s'ouvre pour vérifier la grille avant de sacrer. Le verdict reste
+  // humain : à ce stade l'historique ne peut plus rien prouver, tout est passé.
+  const departage = poolEpuise && !finie
+  const classement = departage
+    ? [...(etat?.players ?? [])].sort((a, b) => b.checkedCount - a.checkedCount)
+    : etat?.players ?? []
+  const meilleurScore = departage && classement.length > 0 ? classement[0].checkedCount : 0
 
   return (
     <div className="ecran pb-40">
@@ -149,7 +165,7 @@ function Console({ code, token }: { code: string; token: string }) {
               key={joueur.id}
               type="button"
               className="bouton bouton--stabilo pulse-bingo"
-              onClick={() => setArbitre(joueur)}
+              onClick={() => setArbitre({ joueur, departage: false })}
             >
               Bingo de {joueur.name} — vérifier
             </button>
@@ -157,10 +173,11 @@ function Console({ code, token }: { code: string; token: string }) {
         </div>
       )}
 
-      {poolEpuise && !finie && (
+      {departage && (
         <p className="bandeau-alerte mb-3 !border-menthe/50 !bg-menthe/10 !text-menthe">
           <span aria-hidden="true">✓</span>
-          Tous les titres sont passés. Arbitre le dernier bingo, puis termine la partie.
+          Tous les titres sont passés. Pas de bingo&nbsp;? Départage&nbsp;: le plus de cases
+          cochées gagne — touche un joueur pour vérifier sa grille et le sacrer.
         </p>
       )}
 
@@ -218,20 +235,42 @@ function Console({ code, token }: { code: string; token: string }) {
         <h2 className="titre-affiche mb-2 text-sm tracking-widest text-doux">
           Joueurs · {etat?.players.length ?? 0}
         </h2>
-        {etat && etat.players.length > 0 ? (
+        {etat && classement.length > 0 ? (
           <ul className="space-y-1.5">
-            {etat.players.map((joueur) => (
-              <li
-                key={joueur.id}
-                className="flex items-center justify-between gap-3 rounded-xl border-2 border-bord bg-nuit-2 px-3 py-2"
-              >
-                <span className="min-w-0 truncate font-bold text-texte">{joueur.name}</span>
-                <span className="shrink-0 font-titre font-black text-stabilo">
-                  {joueur.checkedCount}
-                  <span className="text-doux">/{joueur.cells}</span>
-                </span>
-              </li>
-            ))}
+            {classement.map((joueur) => {
+              const compteur = (
+                <>
+                  <span className="min-w-0 truncate font-bold text-texte">{joueur.name}</span>
+                  <span className="shrink-0 font-titre font-black text-stabilo">
+                    {joueur.checkedCount}
+                    <span className="text-doux">/{joueur.cells}</span>
+                  </span>
+                </>
+              )
+              const meneur = departage && joueur.checkedCount === meilleurScore && meilleurScore > 0
+              return (
+                <li key={joueur.id}>
+                  {departage ? (
+                    // La bordure ne désigne que le score en tête, pas le gagnant :
+                    // en cas d'égalité, tous les meneurs brillent et c'est au
+                    // présentateur de trancher — le verdict reste humain.
+                    <button
+                      type="button"
+                      className={`flex w-full items-center justify-between gap-3 rounded-xl border-2 bg-nuit-2 px-3 py-2 ${
+                        meneur ? 'border-stabilo' : 'border-bord'
+                      }`}
+                      onClick={() => setArbitre({ joueur, departage: true })}
+                    >
+                      {compteur}
+                    </button>
+                  ) : (
+                    <div className="flex items-center justify-between gap-3 rounded-xl border-2 border-bord bg-nuit-2 px-3 py-2">
+                      {compteur}
+                    </div>
+                  )}
+                </li>
+              )
+            })}
           </ul>
         ) : (
           <p className="text-sm text-doux">Personne n'a encore rejoint. Montre-leur le QR code.</p>
@@ -331,18 +370,21 @@ function Console({ code, token }: { code: string; token: string }) {
 
       {arbitreVif && etat && (
         <Arbitrage
-          joueur={arbitreVif}
+          joueur={arbitreVif.joueur}
+          departage={arbitreVif.departage}
           etat={etat}
           onFermer={() => setArbitre(null)}
           onRejeter={async () => {
-            await api.rejeterBingo(code, token, arbitreVif.id)
+            await api.rejeterBingo(code, token, arbitreVif.joueur.id)
             setArbitre(null)
             rafraichir()
           }}
           // Valider enregistre le gagnant et termine la partie d'un seul geste :
           // c'est ce qui permet aux joueurs de savoir de quel côté ils sont.
+          // Le sacre du départage passe par la même route — le serveur n'exige
+          // aucune réclamation pour désigner un gagnant.
           onValider={async () => {
-            await api.validerBingo(code, token, arbitreVif.id)
+            await api.validerBingo(code, token, arbitreVif.joueur.id)
             setArbitre(null)
             rafraichir()
           }}
@@ -440,9 +482,15 @@ function Partage({ code, ouvert, onBasculer }: { code: string; ouvert: boolean; 
 }
 
 /**
- * Arbitrage d'une réclamation. L'app ne tranche pas : elle met sous les yeux du
- * présentateur la grille du joueur et ce qui est réellement passé. Le verdict
- * est humain, et rejeter doit rester parfaitement banal.
+ * Arbitrage d'une réclamation — ou sacre du départage de fin de pool, qui met
+ * exactement la même chose sous les yeux : la grille du joueur et ce qui est
+ * réellement passé. L'app ne tranche pas, le verdict est humain, et rejeter
+ * doit rester parfaitement banal.
+ *
+ * En départage, l'historique ne peut plus rien prouver : tout le pool est
+ * passé, donc toute case cochée « correspond » — le bandeau de cases suspectes
+ * n'apprendrait rien. On dit à la place ce qui se lit vraiment sur la grille :
+ * les cases vides sont les reconnaissances ratées, de quoi charrier la salle.
  *
  * C'est ici que le vocabulaire du thème compte le plus : le présentateur lit ce
  * texte à voix haute pendant que dix personnes attendent. « Le groupe n'est
@@ -450,12 +498,14 @@ function Partage({ code, ouvert, onBasculer }: { code: string; ouvert: boolean; 
  */
 function Arbitrage({
   joueur,
+  departage,
   etat,
   onFermer,
   onRejeter,
   onValider,
 }: {
   joueur: JoueurVu
+  departage: boolean
   etat: EtatPartie
   onFermer: () => void
   onRejeter: () => Promise<void>
@@ -473,14 +523,23 @@ function Arbitrage({
         <button type="button" className="bouton bouton--fantome !justify-start" onClick={onFermer}>
           ← Retour à la console
         </button>
-        <h1 className="titre-affiche mt-1 text-2xl text-stabilo">Bingo de {joueur.name}</h1>
+        <h1 className="titre-affiche mt-1 text-2xl text-stabilo">
+          {departage ? 'Départage — ' : 'Bingo de '}
+          {joueur.name}
+        </h1>
         <p className="text-sm font-semibold text-doux">
           {joueur.checkedCount}/{joueur.cells} cases cochées · Objectif&nbsp;:{' '}
           {LIBELLE_REGLE[etat.winRule] ?? etat.winRule}
         </p>
       </header>
 
-      {suspectes.length > 0 ? (
+      {departage ? (
+        <p className="bandeau-alerte mb-3 !border-menthe/50 !bg-menthe/10 !text-menthe">
+          <span aria-hidden="true">✓</span>
+          Tous les titres sont passés&nbsp;: les cases vides sont celles que {joueur.name} n'a
+          pas reconnues.
+        </p>
+      ) : suspectes.length > 0 ? (
         <p className="bandeau-alerte mb-3 !border-neon/50 !bg-neon/10 !text-neon">
           <span aria-hidden="true">!</span>
           {suspectes.length === 1
@@ -515,10 +574,18 @@ function Arbitrage({
           className="mx-auto flex max-w-lg items-center gap-6 px-4 pt-3"
           style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom))' }}
         >
-          {/* Rejeter doit être parfaitement banal : la triche est prévue. */}
-          <button type="button" className="bouton bouton--sombre flex-1" onClick={() => void onRejeter()}>
-            Rejeter
-          </button>
+          {/* Rejeter doit être parfaitement banal : la triche est prévue. En
+              départage il n'y a rien à rejeter — on referme, et le présentateur
+              choisit quelqu'un d'autre dans le classement. */}
+          {departage ? (
+            <button type="button" className="bouton bouton--sombre flex-1" onClick={onFermer}>
+              Retour
+            </button>
+          ) : (
+            <button type="button" className="bouton bouton--sombre flex-1" onClick={() => void onRejeter()}>
+              Rejeter
+            </button>
+          )}
           {/* Valider termine la partie pour tout le monde, sans retour arrière.
               D'où l'écart franc avec « Rejeter » et la confirmation : c'est le
               bouton le plus destructeur du jeu, à portée de pouce, à la seconde
@@ -527,7 +594,10 @@ function Arbitrage({
             type="button"
             className="bouton bouton--stabilo flex-1"
             onClick={() => {
-              if (window.confirm(`Bingo validé pour ${joueur.name} ? La partie se termine pour tout le monde.`)) {
+              const question = departage
+                ? `Victoire de ${joueur.name} au départage ? La partie se termine pour tout le monde.`
+                : `Bingo validé pour ${joueur.name} ? La partie se termine pour tout le monde.`
+              if (window.confirm(question)) {
                 void onValider()
               }
             }}

@@ -433,6 +433,40 @@ test('valider un bingo désigne le gagnant et termine la partie', async (t) => {
   assert.equal(state.winnerName, 'Marie', 'la console affiche le nom du gagnant');
 });
 
+test('le départage sacre un gagnant sans réclamation', async (t) => {
+  // Pool épuisé sans bingo : toutes les grilles sont pourtant entièrement
+  // passées (elles sont tirées du pool), donc tout le monde a raté des
+  // reconnaissances. La console départage au nombre de cases cochées, et le
+  // sacre passe par `validate` — sans que le joueur ait crié bingo.
+  const app = await startApp();
+  t.after(app.close);
+  const { code, masterToken } = await app.createGame();
+  const marie = (await join(app, code, 'Marie')).body;
+  const paul = (await join(app, code, 'Paul')).body;
+
+  for (let i = 0; i < 40; i++) {
+    await app.call('POST', `/api/games/${code}/next`, { token: masterToken });
+  }
+  await app.call('PUT', `/api/players/${marie.playerId}/checks`, {
+    body: { checked: marie.card.map((_, i) => i < 18) },
+    token: marie.token,
+  });
+
+  const sacre = await app.call('POST', `/api/games/${code}/claims/${marie.playerId}/validate`, {
+    token: masterToken,
+  });
+  assert.equal(sacre.status, 200);
+  assert.equal(sacre.body.winnerId, marie.playerId);
+  assert.equal(sacre.body.winnerName, 'Marie');
+
+  // La fin est identique à celle d'un bingo validé : fête chez Marie, défaite
+  // chez Paul — pas une fin neutre.
+  const vuePaul = (await app.call('GET', `/api/players/${paul.playerId}`, { token: paul.token })).body;
+  assert.equal(vuePaul.game.status, 'ended');
+  assert.equal(vuePaul.game.winnerId, marie.playerId);
+  assert.equal(vuePaul.game.winnerName, 'Marie');
+});
+
 test('une partie terminée par le bouton n\'a pas de gagnant', async (t) => {
   // Fin neutre : ni fête, ni défaite. C'est une troisième fin, pas un cas
   // dégradé de la victoire.

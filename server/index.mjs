@@ -315,7 +315,11 @@ function rejectClaim(res, db, game, playerId) {
 
 /** Valider, c'est désigner un gagnant ET terminer la partie. Les deux sont
  *  indissociables : c'est ce qui permet à l'écran de fin de savoir s'il doit
- *  faire la fête, consoler, ou rester neutre. */
+ *  faire la fête, consoler, ou rester neutre.
+ *
+ *  Aucune réclamation n'est requise : le départage de fin de pool — quand tout
+ *  est passé sans bingo — sacre le joueur le mieux coché par cette même route.
+ *  Le verdict reste humain dans les deux cas, inutile d'avoir deux chemins. */
 function validateClaim(res, db, game, playerId) {
   const player = getPlayer(db, playerId);
   if (!player || player.gameCode !== game.code) return json(res, 404, { error: 'joueur introuvable' });

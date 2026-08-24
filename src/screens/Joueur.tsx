@@ -339,8 +339,10 @@ function Partie({
         (gagnant ? (
           <div className="carte mb-3 border-stabilo bg-stabilo/10 text-center">
             <p className="titre-affiche text-2xl text-stabilo">Tu as gagné</p>
+            {/* « Victoire » et non « bingo » : on gagne aussi au départage,
+                quand le pool s'épuise sans que personne ait complété. */}
             <p className="mt-1 text-xs font-semibold text-doux">
-              Bingo validé par le présentateur · {total}/{cases.length} cases
+              Victoire validée par le présentateur · {total}/{cases.length} cases
             </p>
           </div>
         ) : perdant ? (

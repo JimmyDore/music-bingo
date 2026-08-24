@@ -108,6 +108,13 @@ le verdict du présentateur et termine dans le même `UPDATE`. Les charges utile
 joueur et présentateur portent alors `winnerId` / `winnerName` — c'est ce qui
 permet à chaque téléphone de savoir s'il doit fêter ou encaisser.
 
+`validate` n'exige **aucune réclamation** : c'est ce qui permet le départage de
+fin de pool. Quand tous les titres sont passés sans bingo, toutes les grilles
+sont pourtant entièrement passées (elles sont tirées du pool) — tout le monde a
+raté des reconnaissances. La console classe alors les joueurs par cases cochées
+et le présentateur sacre le meilleur par la même route, après avoir regardé sa
+grille. Le verdict reste humain, comme pour un bingo crié.
+
 ## Développement
 
 Deux terminaux :

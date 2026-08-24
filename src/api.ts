@@ -172,7 +172,8 @@ export const api = {
 
   // Valider désigne le gagnant et termine la partie d'un seul coup — c'est ce
   // qui remplace `terminer` dans le modal d'arbitrage. `terminer` reste pour la
-  // fin neutre, sans vainqueur.
+  // fin neutre, sans vainqueur. Le serveur n'exige aucune réclamation : le
+  // départage de fin de pool sacre le joueur le mieux coché par la même route.
   validerBingo: (code: string, token: string, playerId: string) =>
     request<{ ok: true; winnerId: string; winnerName: string }>(
       'POST',
