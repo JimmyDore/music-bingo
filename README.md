@@ -217,8 +217,10 @@ Règles :
   trop court pour que le Play/Pause suffise, et il ne rembobine pas. Une réplique
   de film dure trois secondes, un générique de série quinze : elles passent, la
   salle lève la tête, c'est fini. Un extrait musical de trois minutes n'en a pas
-  besoin. Le bingo, lui, ne change pas : c'est le même jeu avec un autre
-  catalogue.
+  besoin. L'historique « Déjà passés », lui, se repasse d'un tap sur **tous**
+  les thèmes — contester une case ou réentendre un titre n'a rien de spécifique
+  aux extraits courts. Le bingo, lui, ne change pas : c'est le même jeu avec un
+  autre catalogue.
 - **`lexique`** : `{ "case": "film", "cases": "films", "titre": "réplique" }`.
   Sans lui, l'interface parle de « groupes » — ce qui est absurde quand la case
   porte une marque ou un film. Défauts appliqués côté serveur, jamais côté

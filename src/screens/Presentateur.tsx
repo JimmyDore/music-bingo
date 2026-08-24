@@ -101,6 +101,21 @@ function Console({ code, token }: { code: string; token: string }) {
     lecteur.charger(titre.youtubeId, titre.startAt)
   }, [titre, lecteur])
 
+  // Repasser n'importe quel titre déjà joué, d'un tap sur l'historique : la
+  // salle n'a pas reconnu, quelqu'un conteste, on veut réentendre. Même chemin
+  // que « Rejouer » — un chargement complet dans le geste du tap, la seule
+  // lecture qu'iOS accepte. On bascule aussi `titre` pour que le nom affiché,
+  // Play/Pause et « Rejouer » suivent ce qui joue vraiment. « Suivant » ne
+  // bouge pas : le pool vit côté serveur, pas dans cet état local.
+  const rejouerTitre = useCallback(
+    (t: Titre) => {
+      setTitre(t)
+      idCharge.current = t.youtubeId
+      lecteur.charger(t.youtubeId, t.startAt)
+    },
+    [lecteur],
+  )
+
   const reclamations = etat?.players.filter((p) => p.bingoClaimedAt !== null) ?? []
   const finie = etat?.status === 'ended'
   // `null` tant que le premier sondage n'a pas répondu : sans ça, « Suivant »
@@ -282,22 +297,38 @@ function Console({ code, token }: { code: string; token: string }) {
           Déjà passés · {etat?.history.length ?? 0}
         </h2>
         {etat && etat.history.length > 0 ? (
-          <ol className="space-y-1">
-            {etat.history.map((t, i) => (
-              <li
-                key={t.youtubeId}
-                className="flex items-baseline gap-2 rounded-lg px-2 py-1.5 odd:bg-nuit-2/60"
-              >
-                <span className="w-6 shrink-0 text-right font-titre text-xs font-black text-doux">
-                  {etat.history.length - i}
-                </span>
-                <span className="min-w-0">
-                  <span className="font-bold text-texte">{t.name}</span>
-                  <span className="text-sm text-doux"> — {t.title}</span>
-                </span>
-              </li>
-            ))}
-          </ol>
+          <>
+            <p className="mb-2 text-xs text-doux">Touche un titre pour le repasser.</p>
+            <ol className="space-y-1">
+              {/* Chaque ligne est un bouton : le zébrage odd: reste sur le li,
+                  qui garde la position dans la liste. */}
+              {etat.history.map((t, i) => (
+                <li key={t.youtubeId} className="rounded-lg odd:bg-nuit-2/60">
+                  <button
+                    type="button"
+                    className="flex w-full items-baseline gap-2 rounded-lg px-2 py-1.5 text-left"
+                    onClick={() => rejouerTitre(t)}
+                    disabled={!lecteur.etat.pret}
+                  >
+                    <span className="w-6 shrink-0 text-right font-titre text-xs font-black text-doux">
+                      {etat.history.length - i}
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span
+                        className={`font-bold ${titre?.youtubeId === t.youtubeId ? 'text-stabilo' : 'text-texte'}`}
+                      >
+                        {t.name}
+                      </span>
+                      <span className="text-sm text-doux"> — {t.title}</span>
+                    </span>
+                    <span className="shrink-0 text-xs font-bold text-doux" aria-hidden="true">
+                      ▶
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ol>
+          </>
         ) : (
           <p className="text-sm text-doux">L'historique servira à vérifier les réclamations de bingo.</p>
         )}
