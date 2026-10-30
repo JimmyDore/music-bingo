@@ -92,6 +92,7 @@ PUT    /api/players/:id/checks          → { ok }                          (tok
 POST   /api/players/:id/bingo           → { ok }                          (token joueur)
 GET    /api/games/:code/state           → { players[], history[], current } (token présentateur)
 POST   /api/games/:code/next            → { track }                       (token présentateur)
+POST   /api/games/:code/rattrapage      → { track }                       (token présentateur)
 POST   /api/games/:code/end             → { ok }                          (token présentateur)
 DELETE /api/games/:code/claims/:playerId → { ok }                         (token présentateur)
 POST   /api/games/:code/claims/:playerId/validate → { ok }                (token présentateur)
@@ -114,6 +115,17 @@ sont pourtant entièrement passées (elles sont tirées du pool) — tout le mon
 raté des reconnaissances. La console classe alors les joueurs par cases cochées
 et le présentateur sacre le meilleur par la même route, après avoir regardé sa
 grille. Le verdict reste humain, comme pour un bingo crié.
+
+L'autre issue est le **rattrapage**, ouvert en même temps : une fois le pool
+épuisé, « Suivant » devient « ↻ Rattrapage » et appelle `/rattrapage`. Chaque
+appel relit les grilles et repêche un groupe non coché, en commençant par les
+groupes qui n'ont pas encore eu de seconde chance, puis par celui qui manque à
+la ligne (ou au carton) la plus avancée. Le titre joué est **un autre morceau**
+du groupe pris dans le catalogue, ou le même si le groupe n'en a qu'un. Ces
+titres sont marqués `rattrapage = 1` dans `game_tracks` : ils entrent dans
+l'historique, mais pas dans le pool d'où sont tirées les grilles, ni dans
+`remaining`. Rien n'est planifié d'avance, puisque chaque titre repêché fait
+cocher des cases et change la priorité du suivant.
 
 ## Développement
 

@@ -10,6 +10,8 @@ export type Titre = {
   title: string
   youtubeId: string
   startAt: number
+  /** Repêché après le pool, pour un groupe que des joueurs n'ont pas coché. */
+  rattrapage?: boolean
 }
 
 /**
@@ -164,6 +166,11 @@ export const api = {
 
   titreSuivant: (code: string, token: string) =>
     request<{ track: Titre | null; remaining: number }>('POST', `/api/games/${code}/next`, { token }),
+
+  // Pool épuisé sans bingo : un autre titre d'un groupe raté, choisi au plus
+  // près du bingo. `null` quand toutes les grilles sont entièrement cochées.
+  rattrapage: (code: string, token: string) =>
+    request<{ track: Titre | null }>('POST', `/api/games/${code}/rattrapage`, { token }),
 
   terminer: (code: string, token: string) => request<{ ok: true }>('POST', `/api/games/${code}/end`, { token }),
 

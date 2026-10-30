@@ -467,6 +467,66 @@ test('le départage sacre un gagnant sans réclamation', async (t) => {
   assert.equal(vuePaul.game.winnerName, 'Marie');
 });
 
+test('le rattrapage repasse un autre titre d\'un groupe raté, sans toucher au pool', async (t) => {
+  const app = await startApp({ rng: seeded(7) });
+  t.after(app.close);
+  const { code, masterToken } = await app.createGame({ grid: '3x3', winRule: 'ligne' });
+  const marie = (await join(app, code, 'Marie')).body;
+
+  // Avant la fin du pool, il n'y a rien à rattraper.
+  const tot = await app.call('POST', `/api/games/${code}/rattrapage`, { token: masterToken });
+  assert.equal(tot.status, 409);
+
+  const pool = [];
+  for (let i = 0; i < 18; i++) {
+    pool.push((await app.call('POST', `/api/games/${code}/next`, { token: masterToken })).body.track);
+  }
+  // Marie a tout coché sauf la dernière case de sa première ligne.
+  await app.call('PUT', `/api/players/${marie.playerId}/checks`, {
+    body: { checked: marie.card.map((_, i) => i !== 2) },
+    token: marie.token,
+  });
+
+  const res = await app.call('POST', `/api/games/${code}/rattrapage`, { token: masterToken });
+  assert.equal(res.status, 200);
+  assert.equal(res.body.track.slug, marie.card[2].slug);
+  assert.equal(res.body.track.rattrapage, true);
+  const original = pool.find((p) => p.slug === marie.card[2].slug);
+  assert.notEqual(res.body.track.youtubeId, original.youtubeId);
+
+  // Le titre entre dans l'historique, pas dans le pool.
+  const etat = (await app.call('GET', `/api/games/${code}/state`, { token: masterToken })).body;
+  assert.equal(etat.history.length, 19);
+  assert.equal(etat.history[0].youtubeId, res.body.track.youtubeId);
+  assert.equal(etat.poolSize, 18);
+  assert.equal(etat.remaining, 0);
+  const suivant = await app.call('POST', `/api/games/${code}/next`, { token: masterToken });
+  assert.equal(suivant.body.track, null);
+
+  // Un retardataire tire sa grille dans le pool, jamais dans le rattrapage.
+  const paul = (await join(app, code, 'Paul')).body;
+  assert.equal(new Set(paul.card.map((c) => c.slug)).size, 9);
+
+  // Tout coché : plus rien à repêcher.
+  for (const j of [marie, paul]) {
+    await app.call('PUT', `/api/players/${j.playerId}/checks`, {
+      body: { checked: j.card.map(() => true) },
+      token: j.token,
+    });
+  }
+  const vide = await app.call('POST', `/api/games/${code}/rattrapage`, { token: masterToken });
+  assert.equal(vide.body.track, null);
+});
+
+test('le rattrapage est réservé au présentateur', async (t) => {
+  const app = await startApp();
+  t.after(app.close);
+  const { code } = await app.createGame();
+  const marie = (await join(app, code, 'Marie')).body;
+  const res = await app.call('POST', `/api/games/${code}/rattrapage`, { token: marie.token });
+  assert.equal(res.status, 403);
+});
+
 test('une partie terminée par le bouton n\'a pas de gagnant', async (t) => {
   // Fin neutre : ni fête, ni défaite. C'est une troisième fin, pas un cas
   // dégradé de la victoire.

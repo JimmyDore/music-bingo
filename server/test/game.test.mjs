@@ -4,6 +4,8 @@ import assert from 'node:assert/strict';
 import {
   GRID_SIZES,
   cardSignature,
+  choisirRattrapage,
+  choisirTitreRattrapage,
   cleanName,
   drawCard,
   drawPool,
@@ -127,4 +129,57 @@ test('cleanName normalise et borne le prénom', () => {
   assert.equal(cleanName('   '), null);
   assert.equal(cleanName('x'.repeat(25)), null);
   assert.equal(cleanName(42), null);
+});
+
+// Une grille 3×3 dont les cases portent les slugs a…i, cochée selon `masque`.
+function joueur(masque, slugs = 'abcdefghi') {
+  return {
+    card: [...slugs].map((slug) => ({ slug })),
+    checked: [...masque].map((c) => c === 'x'),
+  };
+}
+
+test('le rattrapage repêche la case qui manque à la ligne la plus avancée', () => {
+  // Ligne du haut à une case (c), celle du bas à deux (g, h).
+  const p = joueur('xx.' + 'x..' + '..x');
+  assert.equal(choisirRattrapage([p], 3, 'ligne', new Map()), 'c');
+});
+
+test('en carton plein, la grille la plus avancée passe avant les autres', () => {
+  const presque = joueur('xxxxxxxx.', 'abcdefghi');
+  const loin = joueur('.........', 'jklmnopqr');
+  assert.equal(choisirRattrapage([loin, presque], 3, 'carton-plein', new Map()), 'i');
+});
+
+test('à proximité égale, le groupe qui débloque le plus de grilles passe d\'abord', () => {
+  const p1 = joueur('xx.' + 'xx.' + 'xxx', 'abcdefghi');
+  const p2 = joueur('xx.' + 'xxx' + 'xxx', 'jkcmnopqr');
+  // c manque à deux lignes à une case (une par grille), f à une seule.
+  assert.equal(choisirRattrapage([p1, p2], 3, 'ligne', new Map()), 'c');
+});
+
+test('un groupe déjà repêché laisse passer ceux qui n\'ont pas eu de seconde chance', () => {
+  // c est à une case du bingo, mais déjà repassé une fois : un joueur absent
+  // ne doit pas monopoliser le rattrapage.
+  const p = joueur('xx.' + 'x..' + 'xxx');
+  const plays = new Map([['c', 2], ['e', 1], ['f', 1]]);
+  // e et f sont à égalité parfaite : le hasard choisit, mais jamais c.
+  assert.ok(['e', 'f'].includes(choisirRattrapage([p], 3, 'ligne', plays)));
+});
+
+test('une ligne déjà pleine ne compte plus, et sans case vide il n\'y a rien à repêcher', () => {
+  const pleine = joueur('xxx' + 'x.x' + 'xxx');
+  assert.equal(choisirRattrapage([pleine], 3, 'ligne', new Map()), 'e');
+  assert.equal(choisirRattrapage([joueur('xxxxxxxxx')], 3, 'ligne', new Map()), null);
+  assert.equal(choisirRattrapage([], 3, 'ligne', new Map()), null);
+});
+
+test('le titre repêché est un autre morceau, sauf pour un groupe à titre unique', () => {
+  const titres = [{ youtubeId: 'aaaaaaaaaaa' }, { youtubeId: 'bbbbbbbbbbb' }, { youtubeId: 'ccccccccccc' }];
+  for (let seed = 0; seed < 20; seed++) {
+    const t = choisirTitreRattrapage(titres, new Set(['aaaaaaaaaaa', 'ccccccccccc']), seeded(seed));
+    assert.equal(t.youtubeId, 'bbbbbbbbbbb');
+  }
+  const seul = [{ youtubeId: 'aaaaaaaaaaa' }];
+  assert.equal(choisirTitreRattrapage(seul, new Set(['aaaaaaaaaaa'])).youtubeId, 'aaaaaaaaaaa');
 });

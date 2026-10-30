@@ -118,3 +118,68 @@ export function cleanName(raw) {
   if (name.length === 0 || name.length > 24) return null;
   return name;
 }
+
+/**
+ * Les zones à compléter pour gagner, en indices de cases : chaque rangée pour
+ * « Une ligne », la grille entière pour « Carton plein ». Même lecture que
+ * `src/lib/regles.ts` — une rangée horizontale, ni colonne ni diagonale.
+ */
+function zonesGagnantes(cells, cols, winRule) {
+  const tout = Array.from({ length: cells }, (_, i) => i);
+  if (winRule !== 'ligne' || cols <= 0) return [tout];
+  const zones = [];
+  for (let debut = 0; debut + cols <= cells; debut += cols) zones.push(tout.slice(debut, debut + cols));
+  return zones;
+}
+
+/**
+ * Rattrapage de fin de pool : quel groupe repasser maintenant.
+ *
+ * Tout le pool est passé, donc chaque case non cochée est un groupe que son
+ * joueur a raté. On repêche d'abord ceux qui n'ont pas encore eu de seconde
+ * chance (`plays`, nombre de passages du groupe dans la partie) — sinon un
+ * joueur parti fumer laisserait sa case en tête de file pour toujours. À
+ * passages égaux, le plus près du bingo d'abord : la case qui manque à la zone
+ * la plus avancée d'une grille, puis celle qui en débloque le plus.
+ *
+ * Rend `null` quand plus aucune grille n'a de case vide. Ce n'est qu'un ordre
+ * de passage : rien ici ne déclare un gagnant.
+ */
+export function choisirRattrapage(players, cols, winRule, plays, rng = Math.random) {
+  const candidats = new Map();
+  for (const p of players) {
+    for (const zone of zonesGagnantes(p.card.length, cols, winRule)) {
+      const vides = zone.filter((i) => !p.checked[i]);
+      // Zone pleine : ce joueur a de quoi crier bingo, la suite le regarde.
+      if (vides.length === 0) continue;
+      for (const i of vides) {
+        const slug = p.card[i].slug;
+        const c = candidats.get(slug) ?? { slug, manque: Infinity, zones: 0 };
+        if (vides.length < c.manque) {
+          c.manque = vides.length;
+          c.zones = 0;
+        }
+        if (vides.length === c.manque) c.zones++;
+        candidats.set(slug, c);
+      }
+    }
+  }
+  if (candidats.size === 0) return null;
+  const rang = (c) => [plays.get(c.slug) ?? 0, c.manque, -c.zones];
+  // Mélange d'abord : à égalité parfaite, l'ordre du tri ne doit pas rejouer
+  // toujours le même groupe.
+  const tries = shuffle([...candidats.values()], rng).sort((a, b) => {
+    const [ra, rb] = [rang(a), rang(b)];
+    for (let k = 0; k < ra.length; k++) if (ra[k] !== rb[k]) return ra[k] - rb[k];
+    return 0;
+  });
+  return tries[0].slug;
+}
+
+/** Un titre du groupe qui n'est pas encore passé : la seconde chance vaut mieux
+ *  avec un autre morceau. Faute de mieux (groupe à titre unique), on repasse le
+ *  même — une case qui rejoue son titre reste une case jouable. */
+export function choisirTitreRattrapage(tracks, dejaJoues, rng = Math.random) {
+  const neufs = tracks.filter((t) => !dejaJoues.has(t.youtubeId));
+  return shuffle(neufs.length > 0 ? neufs : tracks, rng)[0];
+}

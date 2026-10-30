@@ -7,6 +7,8 @@ import { kindDe, lexiqueDe, loadCatalog, themeSummaries } from './catalog.mjs';
 import {
   GRID_SIZES,
   WIN_RULES,
+  choisirRattrapage,
+  choisirTitreRattrapage,
   cleanName,
   drawPool,
   drawUniqueCard,
@@ -24,6 +26,7 @@ import {
   getPlayer,
   insertGame,
   insertPlayer,
+  insertRattrapage,
   insertTracks,
   listPlayers,
   listSignatures,
@@ -106,6 +109,7 @@ async function route(req, res, seg, ctx) {
 
     if (req.method === 'GET' && seg[3] === 'state' && seg.length === 4) return gameState(res, db, themes, game);
     if (req.method === 'POST' && seg[3] === 'next' && seg.length === 4) return playNext(res, db, game);
+    if (req.method === 'POST' && seg[3] === 'rattrapage' && seg.length === 4) return playRattrapage(res, ctx, game);
     if (req.method === 'POST' && seg[3] === 'end' && seg.length === 4) return endGame(res, db, game);
     if (req.method === 'DELETE' && seg[3] === 'claims' && seg.length === 5) {
       return rejectClaim(res, db, game, seg[4]);
@@ -271,7 +275,9 @@ function gameState(res, db, themes, game) {
     ...winnerOf(db, game),
     poolSize: total,
     verified,
-    remaining: total - history.length,
+    // Le pool seul : les titres de rattrapage sont dans l'historique, pas dans
+    // ce qui reste à passer.
+    remaining: listTracks(db, game.code).filter((t) => t.playedAt === null).length,
     current: history.length > 0 ? history[history.length - 1] : null,
     history: history.map(publicTrack).reverse(), // le plus récent en tête
     players: listPlayers(db, game.code).map((p) => ({
@@ -287,7 +293,14 @@ function gameState(res, db, themes, game) {
 }
 
 function publicTrack(t) {
-  return { slug: t.slug, name: t.name, title: t.title, youtubeId: t.youtubeId, startAt: t.startAt };
+  return {
+    slug: t.slug,
+    name: t.name,
+    title: t.title,
+    youtubeId: t.youtubeId,
+    startAt: t.startAt,
+    rattrapage: t.rattrapage === true,
+  };
 }
 
 function playNext(res, db, game) {
@@ -297,6 +310,42 @@ function playNext(res, db, game) {
   markPlayed(db, game.code, track.position);
   const remaining = listTracks(db, game.code).filter((t) => t.playedAt === null).length;
   return json(res, 200, { track: publicTrack(track), remaining });
+}
+
+/**
+ * Rattrapage : le pool est épuisé sans bingo, on repasse un autre titre d'un
+ * groupe que des joueurs n'ont pas coché, au plus près du bingo d'abord.
+ *
+ * Rien n'est planifié à l'avance : chaque appel relit les grilles telles
+ * qu'elles sont, puisque chaque titre repêché fait cocher des cases et change
+ * la priorité du suivant. Le départage reste ouvert en parallèle — c'est au
+ * présentateur de choisir quand on arrête de repêcher.
+ */
+function playRattrapage(res, { db, themes, rng }, game) {
+  if (game.status === 'preparing') return json(res, 409, { error: 'partie en cours de préparation' });
+  if (game.status === 'ended') return json(res, 409, { error: 'partie terminée' });
+  if (nextTrack(db, game.code)) return json(res, 409, { error: 'le pool n\'est pas encore épuisé' });
+
+  const joues = playedTracks(db, game.code);
+  const plays = new Map();
+  for (const t of joues) plays.set(t.slug, (plays.get(t.slug) ?? 0) + 1);
+  const slug = choisirRattrapage(listPlayers(db, game.code), game.cols, game.winRule, plays, rng);
+  if (!slug) return json(res, 200, { track: null });
+
+  // Les titres du catalogue, ou à défaut celui du pool : un thème retiré du
+  // catalogue depuis la création de la partie ne doit pas bloquer la fin.
+  const band = themes.get(game.theme)?.bands.find((b) => b.slug === slug);
+  const duPool = joues.find((t) => t.slug === slug);
+  const titres = band?.tracks ?? [duPool];
+  const titre = choisirTitreRattrapage(titres, new Set(joues.map((t) => t.youtubeId)), rng);
+  const track = insertRattrapage(db, game.code, {
+    slug,
+    name: band?.name ?? duPool.name,
+    title: titre.title,
+    youtubeId: titre.youtubeId,
+    startAt: titre.startAt,
+  });
+  return json(res, 200, { track: publicTrack(track) });
 }
 
 /** Fin neutre : on arrête la soirée sans désigner personne. `winner_player_id`

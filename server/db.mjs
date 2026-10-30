@@ -33,6 +33,10 @@ export function openDb(path = ':memory:') {
       -- vérification oEmbed faite à la préparation de la partie : une vidéo
       -- retirée de YouTube depuis la dernière CI ne doit pas tomber en soirée.
       verified    INTEGER NOT NULL DEFAULT 0,
+      -- 1 pour un titre repêché après le pool : il est joué et entre dans
+      -- l'historique, mais ne fait pas partie du pool d'où sont tirées les
+      -- grilles.
+      rattrapage  INTEGER NOT NULL DEFAULT 0,
       PRIMARY KEY (game_code, position)
     );
     CREATE TABLE IF NOT EXISTS players (
@@ -65,6 +69,10 @@ function migrer(db) {
   const colonnes = new Set(db.prepare('PRAGMA table_info(games)').all().map((c) => c.name));
   if (!colonnes.has('winner_player_id')) {
     db.exec('ALTER TABLE games ADD COLUMN winner_player_id TEXT');
+  }
+  const colonnesTitres = new Set(db.prepare('PRAGMA table_info(game_tracks)').all().map((c) => c.name));
+  if (!colonnesTitres.has('rattrapage')) {
+    db.exec('ALTER TABLE game_tracks ADD COLUMN rattrapage INTEGER NOT NULL DEFAULT 0');
   }
 }
 
@@ -134,12 +142,15 @@ function toTrack(row) {
     startAt: row.start_at,
     playedAt: row.played_at,
     verified: row.verified === 1,
+    rattrapage: row.rattrapage === 1,
   };
 }
 
+/** Le pool seul, sans les titres de rattrapage : c'est là que les grilles sont
+ *  tirées, et un groupe repêché n'y apparaît pas deux fois. */
 export function listTracks(db, code) {
   return db
-    .prepare('SELECT * FROM game_tracks WHERE game_code = ? ORDER BY position')
+    .prepare('SELECT * FROM game_tracks WHERE game_code = ? AND rattrapage = 0 ORDER BY position')
     .all(code)
     .map(toTrack);
 }
@@ -160,7 +171,7 @@ export function markVerified(db, code, position) {
 
 export function countVerified(db, code) {
   const row = db
-    .prepare('SELECT COUNT(*) AS total, SUM(verified) AS ok FROM game_tracks WHERE game_code = ?')
+    .prepare('SELECT COUNT(*) AS total, SUM(verified) AS ok FROM game_tracks WHERE game_code = ? AND rattrapage = 0')
     .get(code);
   return { total: row.total ?? 0, verified: row.ok ?? 0 };
 }
@@ -178,6 +189,18 @@ export function markPlayed(db, code, position) {
     code,
     position,
   );
+}
+
+/** Ajoute un titre de rattrapage, déjà joué : il n'existe que parce qu'on le
+ *  passe maintenant. Sa position suit le reste, l'historique reste dans l'ordre. */
+export function insertRattrapage(db, code, track) {
+  const { fin } = db.prepare('SELECT COALESCE(MAX(position), -1) + 1 AS fin FROM game_tracks WHERE game_code = ?').get(code);
+  db.prepare(
+    `INSERT INTO game_tracks
+       (game_code, position, band_slug, band_name, track_title, youtube_id, start_at, played_at, verified, rattrapage)
+     VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'), 1, 1)`,
+  ).run(code, fin, track.slug, track.name, track.title, track.youtubeId, track.startAt);
+  return { ...track, position: fin, rattrapage: true };
 }
 
 /** Historique des groupes déjà passés — c'est ce qui permet d'arbitrer un BINGO. */

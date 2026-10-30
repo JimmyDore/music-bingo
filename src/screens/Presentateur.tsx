@@ -46,10 +46,18 @@ function Console({ code, token }: { code: string; token: string }) {
   const [arbitre, setArbitre] = useState<{ joueur: JoueurVu; departage: boolean } | null>(null)
   const [partageOuvert, setPartageOuvert] = useState(true)
   const [panne, setPanne] = useState<string | null>(null)
+  // Le rattrapage n'a plus rien à repêcher : toutes les grilles sont pleines.
+  // Le bouton reste actif — un joueur peut décocher, et le tap suivant relit.
+  const [rienARepecher, setRienARepecher] = useState(false)
   const idCharge = useRef<string | null>(null)
 
   const lecteur = useLecteurYouTube()
   useVerrouEcran(true)
+
+  // `null` tant que le premier sondage n'a pas répondu : sans ça, « Suivant »
+  // resterait grisé au chargement, et définitivement si le réseau bronche.
+  const restants = etat?.remaining ?? null
+  const poolEpuise = restants === 0
 
   // Après un refresh, on retrouve le titre en cours sans le relancer : sur iOS
   // la lecture doit repartir d'un vrai tap, jamais d'un effet.
@@ -62,13 +70,16 @@ function Console({ code, token }: { code: string; token: string }) {
     setEnAttente(true)
     setPanne(null)
     try {
-      const res = await api.titreSuivant(code, token)
+      // Une fois le pool épuisé, « Suivant » enchaîne sur le rattrapage : même
+      // geste, même chargement dans le tap — seule la source du titre change.
+      const res = poolEpuise ? await api.rattrapage(code, token) : await api.titreSuivant(code, token)
+      setRienARepecher(res.track === null && poolEpuise)
       if (res.track) {
         setTitre(res.track)
         setPartageOuvert(false)
         idCharge.current = res.track.youtubeId
         lecteur.charger(res.track.youtubeId, res.track.startAt)
-      } else {
+      } else if (!poolEpuise) {
         setTitre(null)
       }
       rafraichir()
@@ -78,7 +89,7 @@ function Console({ code, token }: { code: string; token: string }) {
     } finally {
       setEnAttente(false)
     }
-  }, [code, token, enAttente, lecteur, rafraichir])
+  }, [code, token, enAttente, lecteur, rafraichir, poolEpuise])
 
   const lecture = useCallback(() => {
     if (!titre) return
@@ -118,10 +129,6 @@ function Console({ code, token }: { code: string; token: string }) {
 
   const reclamations = etat?.players.filter((p) => p.bingoClaimedAt !== null) ?? []
   const finie = etat?.status === 'ended'
-  // `null` tant que le premier sondage n'a pas répondu : sans ça, « Suivant »
-  // resterait grisé au chargement, et définitivement si le réseau bronche.
-  const restants = etat?.remaining ?? null
-  const poolEpuise = restants === 0
 
   // Un extrait court passe, la salle lève la tête, c'est fini : une réplique de
   // film dure trois secondes, un générique de série quinze — on les repasse. Un
@@ -139,12 +146,15 @@ function Console({ code, token }: { code: string; token: string }) {
     ? { ...arbitre, joueur: etat?.players.find((p) => p.id === arbitre.joueur.id) ?? arbitre.joueur }
     : null
 
-  // Départage de fin de partie. Le pool épuisé garantit que toutes les cases de
+  // Fin de pool sans bingo. Le pool épuisé garantit que toutes les cases de
   // toutes les grilles sont passées (elles sont tirées du pool) : s'il n'y a
   // toujours pas de bingo, c'est que tout le monde a raté des reconnaissances.
-  // Le plus de cases cochées gagne — la liste des joueurs se classe et chaque
-  // ligne s'ouvre pour vérifier la grille avant de sacrer. Le verdict reste
-  // humain : à ce stade l'historique ne peut plus rien prouver, tout est passé.
+  // Deux issues, au choix du présentateur et ouvertes en même temps :
+  // - le rattrapage, par « Suivant » : un autre titre d'un groupe raté, au plus
+  //   près du bingo d'abord, jusqu'à ce que quelqu'un crie BINGO ;
+  // - le départage : le plus de cases cochées gagne — la liste des joueurs se
+  //   classe et chaque ligne s'ouvre pour vérifier la grille avant de sacrer.
+  // Le verdict reste humain dans les deux cas.
   const departage = poolEpuise && !finie
   const classement = departage
     ? [...(etat?.players ?? [])].sort((a, b) => b.checkedCount - a.checkedCount)
@@ -162,7 +172,9 @@ function Console({ code, token }: { code: string; token: string }) {
         </div>
         <div className="shrink-0 text-right">
           <p className="font-titre text-2xl font-black tracking-widest text-texte">{code}</p>
-          <p className="text-[0.65rem] font-bold uppercase tracking-wider text-doux">{restants} titres restants</p>
+          <p className="text-[0.65rem] font-bold uppercase tracking-wider text-doux">
+            {poolEpuise && !finie ? 'Rattrapage' : `${restants} titres restants`}
+          </p>
         </div>
       </header>
 
@@ -191,8 +203,11 @@ function Console({ code, token }: { code: string; token: string }) {
       {departage && (
         <p className="bandeau-alerte mb-3 !border-menthe/50 !bg-menthe/10 !text-menthe">
           <span aria-hidden="true">✓</span>
-          Tous les titres sont passés. Pas de bingo&nbsp;? Départage&nbsp;: le plus de cases
-          cochées gagne — touche un joueur pour vérifier sa grille et le sacrer.
+          <span>
+            Tous les titres sont passés, pas de bingo. <strong>↻ Rattrapage</strong> repasse un autre
+            titre des {etat?.lexique.cases ?? 'groupes'} pas cochés, au plus près du bingo d'abord. Ou
+            départage&nbsp;: le plus de cases cochées gagne — touche un joueur pour le sacrer.
+          </span>
         </p>
       )}
 
@@ -231,18 +246,26 @@ function Console({ code, token }: { code: string; token: string }) {
         <div className="mt-2 min-h-10">
           {titre ? (
             <>
-              <p className="titre-affiche text-base text-texte">{titre.name}</p>
+              <p className="titre-affiche text-base text-texte">
+                {titre.name}
+                {titre.rattrapage && <span className="ml-2 text-xs text-menthe">↻ rattrapage</span>}
+              </p>
               <p className="text-sm font-semibold text-doux">{titre.title}</p>
             </>
           ) : (
             <p className="text-sm font-semibold text-doux">
               {poolEpuise && (etat?.history.length ?? 0) > 0
-                ? 'Pool épuisé — tous les titres sont passés.'
+                ? 'Pool épuisé — Rattrapage pour repasser un titre raté.'
                 : 'Appuie sur Suivant pour lancer le premier titre.'}
             </p>
           )}
           {lecteur.etat.erreur && <p className="mt-1 text-sm font-bold text-neon">{lecteur.etat.erreur}</p>}
           {panne && <p className="mt-1 text-sm font-bold text-neon">{panne}</p>}
+          {rienARepecher && poolEpuise && !finie && (
+            <p className="mt-1 text-sm font-bold text-menthe">
+              Plus rien à repêcher&nbsp;: toutes les grilles sont cochées. Place au départage.
+            </p>
+          )}
         </div>
       </section>
 
@@ -302,8 +325,10 @@ function Console({ code, token }: { code: string; token: string }) {
             <ol className="space-y-1">
               {/* Chaque ligne est un bouton : le zébrage odd: reste sur le li,
                   qui garde la position dans la liste. */}
+              {/* Clé par rang : un groupe à titre unique repasse au rattrapage
+                  avec le même youtubeId. */}
               {etat.history.map((t, i) => (
-                <li key={t.youtubeId} className="rounded-lg odd:bg-nuit-2/60">
+                <li key={etat.history.length - i} className="rounded-lg odd:bg-nuit-2/60">
                   <button
                     type="button"
                     className="flex w-full items-baseline gap-2 rounded-lg px-2 py-1.5 text-left"
@@ -320,6 +345,7 @@ function Console({ code, token }: { code: string; token: string }) {
                         {t.name}
                       </span>
                       <span className="text-sm text-doux"> — {t.title}</span>
+                      {t.rattrapage && <span className="text-xs font-bold text-menthe"> ↻</span>}
                     </span>
                     <span className="shrink-0 text-xs font-bold text-doux" aria-hidden="true">
                       ▶
@@ -382,9 +408,9 @@ function Console({ code, token }: { code: string; token: string }) {
                 type="button"
                 className={`bouton bouton--neon flex-1${etroit}`}
                 onClick={suivant}
-                disabled={enAttente || poolEpuise}
+                disabled={enAttente}
               >
-                {poolEpuise ? 'Fini' : '⏭ Suivant'}
+                {poolEpuise ? '↻ Rattrapage' : '⏭ Suivant'}
               </button>
             </div>
           </div>
@@ -591,8 +617,8 @@ function Arbitrage({
           Déjà passés · {etat.history.length}
         </h2>
         <ol className="max-h-64 space-y-1 overflow-y-auto rounded-xl border-2 border-bord bg-nuit-2 p-2">
-          {etat.history.map((t) => (
-            <li key={t.youtubeId} className="flex items-baseline gap-2 px-1 py-1">
+          {etat.history.map((t, i) => (
+            <li key={etat.history.length - i} className="flex items-baseline gap-2 px-1 py-1">
               <span className="font-bold text-texte">{t.name}</span>
               <span className="min-w-0 truncate text-xs text-doux">{t.title}</span>
             </li>
